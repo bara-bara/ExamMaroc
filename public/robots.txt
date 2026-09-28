@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://exammaroc.vercel.app/sitemap.xml

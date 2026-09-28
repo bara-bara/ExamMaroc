@@ -1,6 +1,73 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
   <head>
+    <script>
+      (function() {
+        if (typeof window === 'undefined') return;
+
+        // Catch and prevent error bubbling
+        window.addEventListener('error', function(e) {
+          if (e && e.message && e.message.indexOf('fetch') !== -1 && e.message.indexOf('getter') !== -1) {
+            e.preventDefault();
+            if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        var prevOnError = window.onerror;
+        window.onerror = function(msg) {
+          if (typeof msg === 'string' && msg.indexOf('fetch') !== -1 && msg.indexOf('getter') !== -1) {
+            return true;
+          }
+          return prevOnError ? prevOnError.apply(this, arguments) : false;
+        };
+
+        // Ensure fetch has a setter on window and all prototypes
+        try {
+          var customFetch = null;
+          var curr = window;
+          while (curr) {
+            try {
+              var desc = Object.getOwnPropertyDescriptor(curr, 'fetch');
+              if (desc && desc.get && !desc.set) {
+                (function(target, d) {
+                  Object.defineProperty(target, 'fetch', {
+                    configurable: true,
+                    enumerable: d.enumerable !== false,
+                    get: function() {
+                      return customFetch !== null ? customFetch : (d.get ? d.get.call(this) : d.value);
+                    },
+                    set: function(fn) {
+                      customFetch = fn;
+                    }
+                  });
+                })(curr, desc);
+              }
+            } catch (_) {}
+            curr = Object.getPrototypeOf(curr);
+          }
+
+          if (typeof Window !== 'undefined' && Window.prototype) {
+            try {
+              var pDesc = Object.getOwnPropertyDescriptor(Window.prototype, 'fetch');
+              if (pDesc && pDesc.get && !pDesc.set) {
+                var origGet = pDesc.get;
+                Object.defineProperty(Window.prototype, 'fetch', {
+                  configurable: true,
+                  enumerable: pDesc.enumerable !== false,
+                  get: function() {
+                    return customFetch !== null ? customFetch : origGet.call(this);
+                  },
+                  set: function(fn) {
+                    customFetch = fn;
+                  }
+                });
+              }
+            } catch (_) {}
+          }
+        } catch (_) {}
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ExamMaroc - جميع نماذج امتحانات الجامعات المغربية | تحميل PDF مجاناً</title>
