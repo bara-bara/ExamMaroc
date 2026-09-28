@@ -1,0 +1,6 @@
+{
+  "name": "ExamMaroc - نماذج امتحانات الجامعات المغربية",
+  "description": "المنصة المغربية الأولى لنماذج امتحانات الجامعات والتعليم العالي بالمغرب. ابحث وحمّل امتحانات سابقة بصيغة PDF حسب الجامعة، الشعبة، الفصل والمادة مجاناً.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
