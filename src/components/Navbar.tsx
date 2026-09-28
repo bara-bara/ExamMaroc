@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, GraduationCap, Menu, X, BookOpen, School, Layers, ShieldCheck } from 'lucide-react';
+import { Search, GraduationCap, Menu, X, BookOpen, School, Layers } from 'lucide-react';
 import { StorageService } from '../services/storageService';
 
 const NAV_LINKS = [
@@ -162,17 +162,8 @@ export default function Navbar() {
             </form>
           </div>
 
-          {/* Quick Admin & Mobile Menu Trigger */}
+          {/* Mobile Menu Trigger */}
           <div className="flex items-center gap-2">
-            <Link
-              to="/admin"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
-              title="لوحة الإدارة"
-            >
-              <ShieldCheck className="h-3.5 w-3.5 text-slate-500" />
-              <span>الإشراف</span>
-            </Link>
-
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
@@ -212,14 +203,6 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                to="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center justify-between"
-              >
-                <span>لوحة تحكم المشرفين</span>
-                <ShieldCheck className="h-4 w-4 text-slate-400" />
-              </Link>
             </nav>
           </div>
         )}

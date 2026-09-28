@@ -370,7 +370,7 @@ export class StorageService {
     };
   }
 
-  // Admin mutation methods
+  // Data mutation methods
   static saveExam(examData: Partial<Exam>): Exam {
     const exams = this.getExamsList();
     if (examData.id) {

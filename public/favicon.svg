@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#090d16" />
+    </linearGradient>
+    <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+    <linearGradient id="tasselGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#38bdf8" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Background -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bgGrad)" stroke="#334155" stroke-width="1.5" />
+
+  <!-- Subtle Moroccan Star / Academic Accent in BG -->
+  <circle cx="32" cy="32" r="23" stroke="#38bdf8" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="2 3" />
+
+  <!-- Graduation Cap Group -->
+  <g filter="url(#glow)">
+    <!-- Rhombus / Cap top -->
+    <path
+      d="M32 17 L51 25.5 L32 34 L13 25.5 Z"
+      fill="url(#capGrad)"
+    />
+
+    <!-- Cap lower band / skullcap -->
+    <path
+      d="M20 29 V38 C20 43.5 44 43.5 44 38 V29"
+      stroke="url(#capGrad)"
+      stroke-width="3"
+      stroke-linecap="round"
+      fill="none"
+    />
+
+    <!-- Tassel and cord -->
+    <!-- Tassel cord from cap center button to right side -->
+    <path
+      d="M32 25.5 C38 26.5 46 29 48 34 V42"
+      stroke="url(#tasselGrad)"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+    />
+    <!-- Small button on top -->
+    <circle cx="32" cy="25.5" r="2" fill="#fbbf24" />
+    <!-- Tassel bell / tip -->
+    <circle cx="48" cy="43" r="2" fill="#fbbf24" />
+  </g>
+
+  <!-- Small Academic Book pages / base accent -->
+  <path
+    d="M26 48 C29 46.5 32 47 32 47 C32 47 35 46.5 38 48"
+    stroke="#94a3b8"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    fill="none"
+  />
+</svg>
