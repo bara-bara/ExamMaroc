@@ -7,6 +7,9 @@ import UniversityDetailPage from './pages/UniversityDetailPage';
 import ProgramDetailPage from './pages/ProgramDetailPage';
 import ExamsPage from './pages/ExamsPage';
 import ExamDetailPage from './pages/ExamDetailPage';
+import CorrectedExamsPage from './pages/CorrectedExamsPage';
+import FacultiesPage from './pages/FacultiesPage';
+import AdminAuditPage from './pages/AdminAuditPage';
 import LatestExamsPage from './pages/LatestExamsPage';
 import SubjectsPage from './pages/SubjectsPage';
 import SearchPage from './pages/SearchPage';
@@ -39,6 +42,12 @@ export default function App() {
           <Route path="/universites/:uniSlug/:progSlug" element={<ProgramDetailPage />} />
           
           <Route path="/examens" element={<ExamsPage />} />
+          <Route path="/examens-corriges" element={<CorrectedExamsPage />} />
+          <Route path="/etablissements" element={<FacultiesPage />} />
+          <Route path="/facultes" element={<FacultiesPage />} />
+          <Route path="/gestion-examens" element={<AdminAuditPage />} />
+          <Route path="/admin/audit" element={<AdminAuditPage />} />
+
           <Route path="/examens/:uniSlug" element={<ExamsPage />} />
           <Route path="/examens/:uniSlug/:progSlug/:semester" element={<ExamsPage />} />
           <Route path="/examens/:uniSlug/:progSlug/:semester/:subSlug" element={<ExamsPage />} />

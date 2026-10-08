@@ -12,12 +12,24 @@ import {
 } from '../data/initialData';
 
 const STORAGE_KEYS = {
-  UNIVERSITIES: 'exammaroc_universities_v2',
-  FACULTIES: 'exammaroc_faculties_v2',
-  PROGRAMS: 'exammaroc_programs_v2',
-  SUBJECTS: 'exammaroc_subjects_v2',
-  EXAMS: 'exammaroc_exams_v2',
+  UNIVERSITIES: 'exammaroc_universities_v3',
+  FACULTIES: 'exammaroc_faculties_v3',
+  PROGRAMS: 'exammaroc_programs_v3',
+  SUBJECTS: 'exammaroc_subjects_v3',
+  EXAMS: 'exammaroc_exams_v3',
+  REPORTS: 'exammaroc_reports_v1',
 };
+
+export interface ExamReport {
+  id: string;
+  exam_id: string;
+  exam_title: string;
+  issue_type: 'broken_link' | 'wrong_file' | 'missing_pages' | 'suggest_correction' | 'other';
+  details: string;
+  contact?: string;
+  created_at: string;
+  status: 'pending' | 'resolved';
+}
 
 function getStoredOrInit<T extends { id: string }>(key: string, initial: T[]): T[] {
   try {
@@ -65,6 +77,22 @@ export interface EnrichedExam extends Exam {
   _subject?: Subject;
 }
 
+export interface ExamFilters {
+  university_id?: string;
+  program_id?: string;
+  faculty_id?: string;
+  subject_id?: string;
+  semester?: string;
+  session?: string;
+  year?: number | string;
+  correction_type?: 'officiel' | 'propose' | 'sans_corrige' | 'all';
+  has_correction?: boolean;
+  language?: string;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}
+
 export class StorageService {
   private static getUniversitiesList(): University[] {
     return getStoredOrInit(STORAGE_KEYS.UNIVERSITIES, INITIAL_UNIVERSITIES);
@@ -110,6 +138,12 @@ export class StorageService {
     return this.getFacultiesList().find((f) => f.id === id);
   }
 
+  static getFacultyBySlug(uniSlugOrId: string, facSlug: string): Faculty | undefined {
+    const uni = this.getUniversityBySlug(uniSlugOrId) || this.getUniversityById(uniSlugOrId);
+    const all = this.getFacultiesList();
+    return all.find((f) => f.slug.toLowerCase() === facSlug.toLowerCase() && (!uni || f.university_id === uni.id));
+  }
+
   static getPrograms(universityId?: string, facultyId?: string): Program[] {
     let progs = this.getProgramsList();
     if (universityId) {
@@ -131,8 +165,15 @@ export class StorageService {
     );
   }
 
-  static getSubjects(): Subject[] {
-    return this.getSubjectsList();
+  static getSubjects(programSlug?: string, semester?: string): Subject[] {
+    let subs = this.getSubjectsList();
+    if (programSlug) {
+      subs = subs.filter(s => s.program_slug === programSlug);
+    }
+    if (semester) {
+      subs = subs.filter(s => s.semester === semester);
+    }
+    return subs;
   }
 
   static getSubjectById(id: string): Subject | undefined {
@@ -175,16 +216,7 @@ export class StorageService {
     }));
   }
 
-  static getExams(filters?: {
-    university_id?: string;
-    program_id?: string;
-    faculty_id?: string;
-    subject_id?: string;
-    semester?: string;
-    session?: string;
-    year?: number | string;
-    limit?: number;
-  }): EnrichedExam[] {
+  static getExams(filters?: ExamFilters): EnrichedExam[] {
     let exams = this.getExamsList();
 
     if (filters) {
@@ -209,16 +241,48 @@ export class StorageService {
       if (filters.year) {
         exams = exams.filter((e) => String(e.year) === String(filters.year));
       }
+      if (filters.has_correction !== undefined) {
+        exams = exams.filter((e) =>
+          filters.has_correction
+            ? (e.has_correction || e.correction_type === 'officiel' || e.correction_type === 'propose')
+            : (e.correction_type === 'sans_corrige' || !e.has_correction)
+        );
+      }
+      if (filters.correction_type && filters.correction_type !== 'all') {
+        exams = exams.filter((e) => e.correction_type === filters.correction_type);
+      }
+      if (filters.language) {
+        exams = exams.filter((e) => e.language === filters.language || (filters.language === 'all'));
+      }
+      if (filters.search) {
+        const q = filters.search.trim().toLowerCase();
+        exams = exams.filter((e) => {
+          const t = (e.title || '').toLowerCase();
+          const d = (e.description || '').toLowerCase();
+          const tags = (e.tags || []).map(x => x.toLowerCase()).join(' ');
+          return t.includes(q) || d.includes(q) || tags.includes(q);
+        });
+      }
     }
 
-    // Sort by year desc
-    exams.sort((a, b) => (b.year || 0) - (a.year || 0));
+    // Sort by year desc, then download_count desc
+    exams.sort((a, b) => (b.year || 0) - (a.year || 0) || (b.download_count || 0) - (a.download_count || 0));
 
+    if (filters?.offset) {
+      exams = exams.slice(filters.offset);
+    }
     if (filters?.limit) {
       exams = exams.slice(0, filters.limit);
     }
 
     return this.enrichExams(exams);
+  }
+
+  static getCorrectedExams(filters?: ExamFilters): EnrichedExam[] {
+    return this.getExams({
+      ...filters,
+      has_correction: true,
+    });
   }
 
   static getExamBySlug(slug: string): EnrichedExam | undefined {
@@ -233,10 +297,11 @@ export class StorageService {
     const all = this.getExamsList().filter((e) => e.id !== exam.id);
     const scored = all.map((item) => {
       let score = 0;
-      if (item.subject_id && item.subject_id === exam.subject_id) score += 5;
-      if (item.program_id && item.program_id === exam.program_id) score += 3;
+      if (item.subject_id && item.subject_id === exam.subject_id) score += 6;
+      if (item.program_id && item.program_id === exam.program_id) score += 4;
       if (item.semester === exam.semester) score += 2;
-      if (item.university_id === exam.university_id) score += 1;
+      if (item.university_id === exam.university_id) score += 2;
+      if (item.correction_type !== 'sans_corrige') score += 1;
       return { exam: item, score };
     });
 
@@ -273,7 +338,7 @@ export class StorageService {
         u.city_ar.includes(query)
       ) {
         results.push({
-          label: `${u.name_fr} (${u.city})`,
+          label: `${u.name_ar} (${u.city_ar})`,
           type: 'university',
           slug: u.slug,
           to: `/universites/${u.slug}`,
@@ -284,10 +349,10 @@ export class StorageService {
     subs.forEach((s) => {
       if (s.name_fr.toLowerCase().includes(q) || s.name_ar.includes(query)) {
         results.push({
-          label: `${s.name_fr} - ${s.name_ar}`,
+          label: `${s.name_ar} (${s.name_fr}) - ${s.semester || ''}`,
           type: 'subject',
           slug: s.slug,
-          to: `/search?q=${encodeURIComponent(s.name_fr)}`,
+          to: `/search?q=${encodeURIComponent(s.name_ar)}`,
         });
       }
     });
@@ -296,10 +361,10 @@ export class StorageService {
       if (p.name_fr.toLowerCase().includes(q) || p.name_ar.includes(query)) {
         const uni = unis.find((u) => u.id === p.university_id);
         results.push({
-          label: p.name_fr,
+          label: `${p.name_ar} - ${p.name_fr}`,
           type: 'program',
           slug: p.slug,
-          to: uni ? `/universites/${uni.slug}/${p.slug}` : `/search?q=${encodeURIComponent(p.name_fr)}`,
+          to: uni ? `/universites/${uni.slug}/${p.slug}` : `/search?q=${encodeURIComponent(p.name_ar)}`,
         });
       }
     });
@@ -329,14 +394,15 @@ export class StorageService {
         const semester = (exam.semester || '').toLowerCase();
         const year = String(exam.year || '');
 
-        if (title.includes(q)) score += 15;
-        if (tags.includes(q)) score += 10;
-        if (sub && (sub.name_fr.toLowerCase().includes(q) || sub.name_ar.includes(query))) score += 12;
-        if (prog && (prog.name_fr.toLowerCase().includes(q) || prog.name_ar.includes(query))) score += 8;
-        if (uni && (uni.name_fr.toLowerCase().includes(q) || uni.name_ar.includes(query) || uni.city.toLowerCase().includes(q))) score += 8;
+        if (title.includes(q)) score += 20;
+        if (tags.includes(q)) score += 12;
+        if (sub && (sub.name_fr.toLowerCase().includes(q) || sub.name_ar.includes(query))) score += 15;
+        if (prog && (prog.name_fr.toLowerCase().includes(q) || prog.name_ar.includes(query))) score += 10;
+        if (uni && (uni.name_fr.toLowerCase().includes(q) || uni.name_ar.includes(query) || uni.city.toLowerCase().includes(q))) score += 10;
         if (semester === q) score += 10;
         if (year === q) score += 5;
-        if (desc.includes(q)) score += 3;
+        if (desc.includes(q)) score += 4;
+        if (exam.has_correction) score += 1;
 
         return { exam, score, uni, prog, sub };
       })
@@ -359,6 +425,7 @@ export class StorageService {
     const subs = this.getSubjectsList();
     const exams = this.getExamsList();
     const downloads = exams.reduce((sum, e) => sum + (e.download_count || 0), 0);
+    const correctedExams = exams.filter(e => e.has_correction || e.correction_type !== 'sans_corrige').length;
 
     return {
       universities: unis.length,
@@ -366,8 +433,80 @@ export class StorageService {
       programs: progs.length,
       subjects: subs.length,
       exams: exams.length,
+      correctedExams,
       downloads,
     };
+  }
+
+  // --- Reporting System ---
+  static reportIssue(
+    examId: string,
+    examTitle: string,
+    issueType: 'broken_link' | 'wrong_file' | 'missing_pages' | 'suggest_correction' | 'other',
+    details: string,
+    contact?: string
+  ): ExamReport {
+    let reports: ExamReport[] = [];
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.REPORTS);
+      if (raw) reports = JSON.parse(raw);
+    } catch {}
+
+    const newReport: ExamReport = {
+      id: 'rep_' + Date.now(),
+      exam_id: examId,
+      exam_title: examTitle,
+      issue_type: issueType,
+      details,
+      contact,
+      created_at: new Date().toISOString(),
+      status: 'pending',
+    };
+
+    reports.unshift(newReport);
+    save(STORAGE_KEYS.REPORTS, reports);
+
+    // If report is broken link, mark exam status as reported
+    const exams = this.getExamsList();
+    const target = exams.find(e => e.id === examId);
+    if (target) {
+      target.verification_status = 'reported';
+      save(STORAGE_KEYS.EXAMS, exams);
+    }
+
+    return newReport;
+  }
+
+  static getReports(): ExamReport[] {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.REPORTS);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  static resolveReport(reportId: string): boolean {
+    let reports = this.getReports();
+    const rep = reports.find(r => r.id === reportId);
+    if (rep) {
+      rep.status = 'resolved';
+      save(STORAGE_KEYS.REPORTS, reports);
+      return true;
+    }
+    return false;
+  }
+
+  static verifyExam(examId: string): boolean {
+    const exams = this.getExamsList();
+    const target = exams.find(e => e.id === examId);
+    if (target) {
+      target.verification_status = 'verified';
+      target.last_verified_date = new Date().toISOString().split('T')[0];
+      save(STORAGE_KEYS.EXAMS, exams);
+      return true;
+    }
+    return false;
   }
 
   // Data mutation methods
@@ -407,9 +546,17 @@ export class StorageService {
       source_url: examData.source_url || '',
       file_name: examData.file_name,
       file_uri: examData.file_uri,
+      correction_type: examData.correction_type || 'sans_corrige',
+      has_correction: Boolean(examData.has_correction || examData.correction_type === 'officiel' || examData.correction_type === 'propose'),
+      correction_notes: examData.correction_notes,
+      verification_status: examData.verification_status || 'verified',
+      last_verified_date: examData.last_verified_date || new Date().toISOString().split('T')[0],
+      source_origin: examData.source_origin || 'المستودع الأكاديمي الرقمي',
+      language: examData.language || 'ar',
       tags: examData.tags || [],
       seo_title: examData.seo_title,
       seo_description: examData.seo_description,
+      status: 'published',
       created_date: new Date().toISOString(),
       updated_date: new Date().toISOString(),
     };

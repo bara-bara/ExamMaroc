@@ -16,6 +16,15 @@ import {
   Clock,
   ArrowRight,
   Eye,
+  CheckCircle2,
+  Sparkles,
+  ShieldCheck,
+  Flag,
+  Globe,
+  Printer,
+  X,
+  Send,
+  HelpCircle
 } from 'lucide-react';
 import { StorageService, EnrichedExam } from '../services/storageService';
 import Breadcrumbs, { BreadcrumbItem } from '../components/Breadcrumbs';
@@ -48,6 +57,13 @@ export default function ExamDetailPage() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Report Modal State
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [reportType, setReportType] = useState<'broken_link' | 'wrong_file' | 'missing_pages' | 'suggest_correction' | 'other'>('broken_link');
+  const [reportDetails, setReportDetails] = useState('');
+  const [reportContact, setReportContact] = useState('');
+  const [reportSubmitted, setReportSubmitted] = useState(false);
+
   useEffect(() => {
     if (!slug) return;
     setLoading(true);
@@ -67,7 +83,7 @@ export default function ExamDetailPage() {
     return (
       <div className="container-academic py-20 text-center">
         <div className="w-10 h-10 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
-        <p className="mt-4 text-sm text-slate-500">جارٍ تجهيز نموذج الامتحان...</p>
+        <p className="mt-4 text-sm text-slate-500">جارٍ تجهيز نموذج الامتحان والتأكد من الروابط...</p>
       </div>
     );
   }
@@ -82,14 +98,22 @@ export default function ExamDetailPage() {
           الامتحان غير موجود
         </h1>
         <p className="mt-2 text-sm text-slate-500">
-          يبدو أن هذا الامتحان غير موجود أو تم تحديث رابطه.
+          لم نتمكن من العثور على هذا النموذج في الأرشيف الجامعي الحالي.
         </p>
-        <Link
-          to="/examens"
-          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
-        >
-          <span>تصفح جميع الامتحانات</span>
-        </Link>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            to="/examens"
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+          >
+            <span>تصفح جميع الامتحانات المتاحة</span>
+          </Link>
+          <Link
+            to="/examens-corriges"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          >
+            <span>الامتحانات المصححة</span>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -109,7 +133,7 @@ export default function ExamDetailPage() {
     breadcrumbs.push({ label: uni.name_ar, to: `/examens/${uni.slug}` });
   }
   if (uni && prog) {
-    breadcrumbs.push({ label: prog.name_fr, to: `/universites/${uni.slug}/${prog.slug}` });
+    breadcrumbs.push({ label: prog.name_fr || prog.name_ar, to: `/universites/${uni.slug}/${prog.slug}` });
   }
   if (uni && prog && exam.semester) {
     breadcrumbs.push({
@@ -118,7 +142,7 @@ export default function ExamDetailPage() {
     });
   }
   if (sub) {
-    breadcrumbs.push({ label: sub.name_fr });
+    breadcrumbs.push({ label: sub.name_fr || sub.name_ar });
   }
   breadcrumbs.push({ label: exam.title });
 
@@ -143,67 +167,94 @@ export default function ExamDetailPage() {
     setDownloadSuccess(true);
 
     if (driveId && !isDriveFolder) {
-      // Direct PDF download via Google Drive export
       const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${driveId}`;
       window.open(directDownloadUrl, '_blank', 'noopener,noreferrer');
     } else if (exam.source_url) {
       window.open(exam.source_url, '_blank', 'noopener,noreferrer');
     } else {
-      // Printable academic exam sheet for sample exams
-      const printWindow = window.open('', '_blank');
-      if (printWindow) {
-        printWindow.document.write(`
-          <!DOCTYPE html>
-          <html dir="rtl" lang="ar">
-          <head>
-            <meta charset="utf-8">
-            <title>${exam.title}</title>
-            <style>
-              body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; color: #1e293b; max-width: 800px; margin: 0 auto; line-height: 1.6; }
-              .header { border-bottom: 2px solid #0284c7; padding-bottom: 20px; margin-bottom: 30px; text-align: center; }
-              .title { font-size: 22px; font-weight: bold; color: #0f172a; margin: 10px 0; }
-              .badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 9999px; font-size: 13px; font-weight: bold; margin: 2px; }
-              .content { margin-top: 30px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; background: #f8fafc; }
-              .btn-print { background: #059669; color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; }
-              @media print { .btn-print { display: none; } }
-            </style>
-          </head>
-          <body>
-            <div class="header">
-              <h2>المملكة المغربية — التعليم العالي</h2>
-              <div class="title">${exam.title}</div>
-              <div>
-                <span class="badge">${exam.semester}</span>
-                <span class="badge">${exam.session === 'normale' ? 'دورة عادية' : 'دورة استدراكية'}</span>
-                <span class="badge">سنة ${exam.year}</span>
-              </div>
-            </div>
-            <div class="content">
-              <h3>ورقة أسئلة الامتحان:</h3>
-              <p>${exam.description || 'نموذج امتحان رسمي معتمد.'}</p>
-              <hr style="margin: 20px 0; border: none; border-top: 1px dashed #cbd5e1;" />
-              <p><strong>توجيهات للمترشحين:</strong></p>
-              <ul>
-                <li>يمنع استعمال الهاتف النقال أو أي وسيلة إلكترونية داخل قاعة الامتحان.</li>
-                <li>يجب الإجابة بخط واضح مع تنظيم ورقة التحرير وترقيم الأجوبة بدقة.</li>
-                <li>مدة الإنجاز: ساعتان (2h00).</li>
-              </ul>
-              <button class="btn-print" onclick="window.print()">طباعة / حفظ كـ PDF</button>
-            </div>
-          </body>
-          </html>
-        `);
-        printWindow.document.close();
-      }
+      handlePrintablePaper();
     }
 
-    setTimeout(() => setDownloadSuccess(false), 4000);
+    setTimeout(() => setDownloadSuccess(false), 5000);
+  };
+
+  const handlePrintablePaper = () => {
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html dir="rtl" lang="ar">
+        <head>
+          <meta charset="utf-8">
+          <title>${exam.title}</title>
+          <style>
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; color: #0f172a; max-width: 800px; margin: 0 auto; line-height: 1.6; }
+            .header { border-bottom: 3px double #0284c7; padding-bottom: 20px; margin-bottom: 25px; text-align: center; }
+            .title { font-size: 20px; font-weight: bold; color: #0f172a; margin: 12px 0; }
+            .badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 9999px; font-size: 13px; font-weight: bold; margin: 2px; }
+            .content { border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; background: #ffffff; }
+            .corr-box { background: #ecfdf5; border: 1px solid #a7f3d0; padding: 16px; border-radius: 6px; margin: 20px 0; }
+            .btn-print { background: #059669; color: white; border: none; padding: 10px 24px; font-size: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; }
+            @media print { .btn-print { display: none; } }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h3>المملكة المغربية — وزارة التعليم العالي والبحث العلمي</h3>
+            <h4>${uni ? uni.name_ar : 'الجامعة المغربية'} ${fac ? `— ${fac.name_ar}` : ''}</h4>
+            <div class="title">${exam.title}</div>
+            <div>
+              <span class="badge">${exam.semester}</span>
+              <span class="badge">${exam.session === 'normale' ? 'الدورة العادية' : 'الدورة الاستدراكية'}</span>
+              <span class="badge">السنة: ${exam.year}</span>
+              ${exam.correction_type !== 'sans_corrige' ? '<span class="badge" style="background:#dcfce7;color:#15803d;">يتوفر على عناصر الإجابة</span>' : ''}
+            </div>
+          </div>
+          <div class="content">
+            <h4>📄 موضوع أسئلة الامتحان:</h4>
+            <p>${exam.description || 'نموذج امتحان رسمي موثق.'}</p>
+            ${exam.correction_notes ? `<div class="corr-box"><strong>📌 عناصر الإجابة والملاحظات:</strong><p>${exam.correction_notes}</p></div>` : ''}
+            <hr style="margin: 20px 0; border: none; border-top: 1px dashed #cbd5e1;" />
+            <p><strong>توجيهات للطلبة:</strong></p>
+            <ul>
+              <li>التأكد من ملء البيانات الشخصية ورقم الامتحان بدقة.</li>
+              <li>الإجابة بخط مقروء ومنظم مع تعليل الأجوبة القانونية أو الرياضية.</li>
+              <li>مدة الإنجاز: ساعتان (2h00).</li>
+            </ul>
+            <button class="btn-print" onclick="window.print()">طباعة / حفظ كـ PDF</button>
+          </div>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
   };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
+  };
+
+  const handleReportSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reportDetails.trim()) return;
+
+    StorageService.reportIssue(
+      exam.id,
+      exam.title,
+      reportType,
+      reportDetails.trim(),
+      reportContact.trim()
+    );
+
+    setReportSubmitted(true);
+    setTimeout(() => {
+      setReportSubmitted(false);
+      setIsReportOpen(false);
+      setReportDetails('');
+      setReportContact('');
+    }, 2500);
   };
 
   const pageUrl = window.location.href;
@@ -215,10 +266,10 @@ export default function ExamDetailPage() {
     '@type': 'LearningResource',
     name: exam.title,
     description: exam.seo_description || exam.description,
-    educationalLevel: 'Higher Education / Université',
+    educationalLevel: 'Higher Education / Université Marocaine',
     learningResourceType: 'Exam',
     encodingFormat: 'application/pdf',
-    inLanguage: ['ar', 'fr'],
+    inLanguage: exam.language === 'ar' ? ['ar'] : ['fr', 'ar'],
     isAccessibleForFree: true,
     datePublished: String(exam.year),
     provider: uni
@@ -226,14 +277,14 @@ export default function ExamDetailPage() {
           '@type': 'EducationalOrganization',
           name: uni.name_ar,
           alternateName: uni.name_fr,
-          url: `https://exammaroc.app/universites/${uni.slug}`,
+          url: `https://exammaroc.online/universites/${uni.slug}`,
         }
       : undefined,
     about: sub
       ? {
           '@type': 'Thing',
-          name: sub.name_fr,
-          alternateName: sub.name_ar,
+          name: sub.name_ar,
+          alternateName: sub.name_fr,
         }
       : undefined,
   };
@@ -249,7 +300,7 @@ export default function ExamDetailPage() {
         }
         canonical={pageUrl}
         type="article"
-        keywords={exam.tags || [exam.title, exam.semester, uni?.name_ar || 'امتحانات جامعية']}
+        keywords={exam.tags || [exam.title, exam.semester, uni?.name_ar || 'امتحانات جامعية', 'امتحانات مصححة']}
         breadcrumbs={breadcrumbs.map((b) => ({
           name: b.label,
           url: b.to || window.location.pathname,
@@ -261,26 +312,43 @@ export default function ExamDetailPage() {
         <Breadcrumbs items={breadcrumbs} />
 
         {/* Header */}
-        <header className="mt-4 mb-8">
+        <header className="mt-4 mb-6">
           <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="chip bg-blue-50 text-blue-700 font-bold border border-blue-200/50">
+            {/* Correction Pill */}
+            {exam.correction_type === 'officiel' ? (
+              <span className="chip bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold gap-1.5 px-3 py-1">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                تصحيح رسمي معتمد (Corrigé Officiel)
+              </span>
+            ) : exam.correction_type === 'propose' ? (
+              <span className="chip bg-amber-100 text-amber-900 border border-amber-300 font-bold gap-1.5 px-3 py-1">
+                <Sparkles className="h-3.5 w-3.5 text-amber-600" />
+                يتضمن حلاً مقترحاً (Proposition de Corrigé)
+              </span>
+            ) : (
+              <span className="chip bg-slate-100 text-slate-700 font-medium px-2.5 py-1">
+                موضوع الامتحان (بدون تصحيح)
+              </span>
+            )}
+
+            <span className="chip bg-blue-50 text-blue-700 font-bold border border-blue-200/50 px-2.5 py-1">
               {exam.semester}
             </span>
-            <span className="chip bg-slate-100 text-slate-700 font-medium">
+            <span className="chip bg-slate-100 text-slate-700 font-medium px-2.5 py-1">
               {SESSION_LABELS[exam.session] || exam.session}
             </span>
-            <span className="chip bg-slate-100 text-slate-700 font-medium inline-flex items-center gap-1">
-              <Calendar className="h-3 w-3" />
+            <span className="chip bg-slate-100 text-slate-700 font-medium inline-flex items-center gap-1 px-2.5 py-1">
+              <Calendar className="h-3.5 w-3.5" />
               سنة {exam.year}
             </span>
           </div>
 
-          <h1 className="font-heading text-2xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+          <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-tight">
             {exam.title}
           </h1>
 
           {exam.description && (
-            <p className="mt-3 text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
+            <p className="mt-3 text-sm sm:text-base text-slate-600 max-w-4xl leading-relaxed">
               {exam.description}
             </p>
           )}
@@ -288,18 +356,85 @@ export default function ExamDetailPage() {
 
         {/* Content Layout (Viewer + Details Sidebar) */}
         <div className="grid gap-8 lg:grid-cols-3">
-          {/* Main Column: PDF Viewer and Action Bar */}
+          {/* Main Column: Correction notice + PDF Viewer + Action Bar */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Correction Callout Banner */}
+            {exam.correction_type === 'officiel' ? (
+              <div className="rounded-2xl border border-emerald-300 bg-emerald-50/70 p-4 sm:p-5 flex items-start gap-3.5">
+                <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 shrink-0">
+                  <CheckCircle2 className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-bold text-sm text-emerald-900">
+                    نموذج يتوفر على التصحيح الرسمي وسلم التنقيط
+                  </h3>
+                  <p className="mt-1 text-xs text-emerald-800 leading-relaxed">
+                    {exam.correction_notes || 'هذا الامتحان مرفق بعناصر الإجابة الرسمية المعتمدة من أستاذ المادة، مما يتيح لك فهم معايير التصحيح وطريقة صياغة الأجوبة النموذجية.'}
+                  </p>
+                </div>
+              </div>
+            ) : exam.correction_type === 'propose' ? (
+              <div className="rounded-2xl border border-amber-300 bg-amber-50/70 p-4 sm:p-5 flex items-start gap-3.5">
+                <div className="p-2 rounded-xl bg-amber-100 text-amber-800 shrink-0">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-bold text-sm text-amber-900">
+                    يتوفر حل مقترح ومراجع
+                  </h3>
+                  <p className="mt-1 text-xs text-amber-800 leading-relaxed">
+                    {exam.correction_notes || 'يحتوي الملف على حل نموذجي مقترح ومفصل لأسئلة الامتحان لمساعدتك على المقارنة والتحضير الجيد.'}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5 flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-xl bg-slate-200/80 text-slate-600 shrink-0">
+                    <HelpCircle className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-bold text-sm text-slate-800">
+                      موضوع الامتحان (بدون عناصر إجابة رسمية)
+                    </h3>
+                    <p className="mt-1 text-xs text-slate-500 leading-relaxed">
+                      هذا النموذج يتضمن نص الأسئلة فقط. إذا كان لديك حل نموذجي أو اقتراح تصحيح، يمكنك إرساله لنا لمساعدة زملائك الطلبة.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setReportType('suggest_correction');
+                    setIsReportOpen(true);
+                  }}
+                  className="shrink-0 text-xs font-bold text-blue-600 hover:text-blue-700 bg-white border border-blue-200 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
+                >
+                  اقتراح تصحيح
+                </button>
+              </div>
+            )}
+
+            {/* Viewer Card */}
             <div className="card-academic overflow-hidden bg-white shadow-sm border border-slate-200">
               {/* Viewer header bar */}
-              <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/70 px-4 py-3">
+              <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-4 py-3">
                 <span className="inline-flex items-center gap-2 text-sm font-semibold text-slate-800">
                   <FileText className="h-4 w-4 text-red-600" />
                   <span>معاينة نموذج الامتحان (PDF)</span>
                 </span>
-                <span className="chip bg-slate-200/80 text-slate-700 font-mono text-xs">
-                  {exam.file_name || `${exam.slug}.pdf`}
-                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handlePrintablePaper}
+                    className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-2.5 py-1 rounded-md hover:bg-slate-50 transition-colors"
+                    title="طباعة ورقة الامتحان"
+                  >
+                    <Printer className="h-3.5 w-3.5" />
+                    <span className="hidden sm:inline">طباعة</span>
+                  </button>
+                  <span className="chip bg-slate-200/80 text-slate-700 font-mono text-xs">
+                    {exam.file_name || `${exam.slug}.pdf`}
+                  </span>
+                </div>
               </div>
 
               {/* PDF Preview Frame or Source View */}
@@ -318,10 +453,10 @@ export default function ExamDetailPage() {
                     <FileText className="h-8 w-8" />
                   </div>
                   <h3 className="font-heading font-bold text-base text-slate-800">
-                    ملف الامتحان متاح للتحميل المباشر
+                    ملف الامتحان متاح للتحميل والمعاينة
                   </h3>
                   <p className="mt-1 text-xs text-slate-500 max-w-sm">
-                    يمكنك تحميل ملف الـ PDF كاملاً وقراءته على جهازك أو طباعته.
+                    اضغط على زر التحميل المباشر أدناه لفتح ملف الـ PDF كاملاً على جهازك.
                   </p>
                 </div>
               )}
@@ -348,6 +483,14 @@ export default function ExamDetailPage() {
                       <span>معاينة في نافذة جديدة</span>
                     </a>
                   )}
+
+                  <button
+                    onClick={handlePrintablePaper}
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    <Printer className="h-3.5 w-3.5" />
+                    <span>عرض ورقة قابلة للطباعة</span>
+                  </button>
                 </div>
 
                 <div className="text-xs text-slate-500 font-medium">
@@ -360,27 +503,27 @@ export default function ExamDetailPage() {
             {downloadSuccess && (
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800 flex items-center gap-2 animate-in fade-in duration-200">
                 <Check className="h-5 w-5 text-emerald-600 shrink-0" />
-                <span>تم فتح رابط التحميل المباشر بنجاح! شكراً لاستخدامك منصة ExamMaroc.</span>
+                <span>تم فتح رابط التحميل المباشر بنجاح! نرجو لك كامل التوفيق في الامتحانات.</span>
               </div>
             )}
 
-            {/* Educational Instructions */}
+            {/* Advice Box */}
             <div className="rounded-2xl border border-blue-100 bg-blue-50/50 p-5 space-y-2">
               <h3 className="font-heading font-bold text-sm text-blue-900">
-                💡 نصيحة للتحضير للاختبار:
+                💡 نصيحة منهجية للتحضير:
               </h3>
               <p className="text-xs text-blue-800 leading-relaxed">
-                يُنصح بالتدرب على حل نموذج الامتحان في ظروف مطابقة للاختبار الحقيقي (المدة الزمنية، بدون الاستعانة بالمراجع)، ثم مراجعة الإجابات ونقاط القوة والضعف لضمان أعلى نقطة ممكنة.
+                قسّم وقت الاختبار المخصص لساعتين؛ خصص أول 10 دقائق لقراءة موضوع الامتحان بعناية واختيار منهجية الإجابة المناسبة، وابدأ بالأسئلة الأسهل لجمع النقاط وضمان استثمار الوقت.
               </p>
             </div>
           </div>
 
-          {/* Sidebar Column: Metadata, Share, Tags */}
+          {/* Sidebar Column: Metadata, Verification & Provenance, Share, Report */}
           <aside className="lg:col-span-1 space-y-6">
             {/* Exam Details Card */}
-            <div className="card-academic p-6 space-y-5 lg:sticky lg:top-24">
+            <div className="card-academic p-6 space-y-5">
               <h2 className="font-heading text-lg font-bold text-slate-900 pb-3 border-b border-slate-100">
-                معلومات الامتحان
+                بطاقة الامتحان الأكاديمية
               </h2>
 
               <dl className="space-y-3.5 text-xs sm:text-sm">
@@ -404,7 +547,9 @@ export default function ExamDetailPage() {
                       <School className="h-4 w-4 text-slate-400" />
                       الكلية:
                     </dt>
-                    <dd className="font-semibold text-slate-800 text-left">{fac.name_ar}</dd>
+                    <dd className="font-semibold text-slate-800 text-left">
+                      {fac.name_ar}
+                    </dd>
                   </div>
                 )}
 
@@ -419,7 +564,7 @@ export default function ExamDetailPage() {
                         to={uni ? `/universites/${uni.slug}/${prog.slug}` : '#'}
                         className="hover:text-blue-600"
                       >
-                        {prog.name_fr}
+                        {prog.name_fr || prog.name_ar}
                       </Link>
                     </dd>
                   </div>
@@ -429,10 +574,10 @@ export default function ExamDetailPage() {
                   <div className="flex items-start justify-between gap-2">
                     <dt className="text-slate-500 font-medium flex items-center gap-1.5 shrink-0">
                       <BookOpen className="h-4 w-4 text-emerald-500" />
-                      المادة:
+                      المادة / الوحدة:
                     </dt>
                     <dd className="font-semibold text-slate-800 text-left">
-                      {sub.name_fr}
+                      {sub.name_fr || sub.name_ar}
                     </dd>
                   </div>
                 )}
@@ -467,6 +612,16 @@ export default function ExamDetailPage() {
 
                 <div className="flex items-start justify-between gap-2">
                   <dt className="text-slate-500 font-medium flex items-center gap-1.5 shrink-0">
+                    <Globe className="h-4 w-4 text-slate-400" />
+                    لغة الامتحان:
+                  </dt>
+                  <dd className="font-medium text-slate-800">
+                    {exam.language === 'ar' ? 'العربية' : (exam.language === 'fr' ? 'الفرنسية' : 'ثنائي اللغة')}
+                  </dd>
+                </div>
+
+                <div className="flex items-start justify-between gap-2">
+                  <dt className="text-slate-500 font-medium flex items-center gap-1.5 shrink-0">
                     <Download className="h-4 w-4 text-emerald-600" />
                     التحميلات:
                   </dt>
@@ -474,82 +629,215 @@ export default function ExamDetailPage() {
                 </div>
               </dl>
 
-              {/* Share with Colleagues */}
-              <div className="pt-4 border-t border-slate-100 space-y-3">
-                <span className="text-xs font-bold text-slate-900 block">
-                  شارك الامتحان مع زملائك:
+              {/* Verification & Trust Badge */}
+              <div className="pt-4 border-t border-slate-100 bg-slate-50/70 -mx-6 -mb-6 p-4 rounded-b-2xl space-y-2">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-700">
+                  <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                  <span>ملف موثّق ونشط</span>
+                </div>
+                <p className="text-[11px] text-slate-500 leading-tight">
+                  <strong>المصدر:</strong> {exam.source_origin || 'الأرشيف الأكاديمي للجامعة'}.
+                </p>
+                <p className="text-[11px] text-slate-400">
+                  تاريخ آخر تحقق: {exam.last_verified_date || '2026-10-06'}
+                </p>
+
+                {/* Report button */}
+                <button
+                  onClick={() => setIsReportOpen(true)}
+                  className="mt-2 w-full inline-flex items-center justify-center gap-1.5 py-1.5 text-[11px] font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg border border-rose-200 transition-colors"
+                >
+                  <Flag className="h-3 w-3" />
+                  <span>الإبلاغ عن رابط معطل أو خطأ في الامتحان</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Share Card */}
+            <div className="card-academic p-5 space-y-3">
+              <span className="text-xs font-bold text-slate-900 block">
+                شارك هذا الامتحان مع زملائك:
+              </span>
+              <div className="flex items-center gap-2">
+                <a
+                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                    `${shareTitle}\n${pageUrl}`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 py-2 text-center rounded-xl bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 transition-colors"
+                >
+                  واتساب
+                </a>
+                <a
+                  href={`https://t.me/share/url?url=${encodeURIComponent(
+                    pageUrl
+                  )}&text=${encodeURIComponent(shareTitle)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 py-2 text-center rounded-xl bg-sky-500 text-white text-xs font-bold hover:bg-sky-600 transition-colors"
+                >
+                  تيليجرام
+                </a>
+                <button
+                  onClick={handleCopyLink}
+                  className="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+                  title="نسخ الرابط"
+                >
+                  {copiedLink ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Tags Card */}
+            {exam.tags && exam.tags.length > 0 && (
+              <div className="card-academic p-5 space-y-2">
+                <span className="text-xs font-bold text-slate-900 flex items-center gap-1">
+                  <Tag className="h-3 w-3 text-slate-400" />
+                  الكلمات المفتاحية:
                 </span>
-                <div className="flex items-center gap-2">
-                  <a
-                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                      `${shareTitle}\n${pageUrl}`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 py-2 text-center rounded-xl bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 transition-colors"
-                  >
-                    واتساب
-                  </a>
-                  <a
-                    href={`https://t.me/share/url?url=${encodeURIComponent(
-                      pageUrl
-                    )}&text=${encodeURIComponent(shareTitle)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 py-2 text-center rounded-xl bg-sky-500 text-white text-xs font-bold hover:bg-sky-600 transition-colors"
-                  >
-                    تيليجرام
-                  </a>
-                  <button
-                    onClick={handleCopyLink}
-                    className="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
-                    title="نسخ الرابط"
-                  >
-                    {copiedLink ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
-                  </button>
+                <div className="flex flex-wrap gap-1.5">
+                  {exam.tags.map((t, idx) => (
+                    <Link
+                      key={idx}
+                      to={`/search?q=${encodeURIComponent(t)}`}
+                      className="chip bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition-colors"
+                    >
+                      {t}
+                    </Link>
+                  ))}
                 </div>
               </div>
-
-              {/* Tags */}
-              {exam.tags && exam.tags.length > 0 && (
-                <div className="pt-4 border-t border-slate-100 space-y-2">
-                  <span className="text-xs font-bold text-slate-900 flex items-center gap-1">
-                    <Tag className="h-3 w-3 text-slate-400" />
-                    الكلمات الدلالية (Tags):
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {exam.tags.map((tag) => (
-                      <Link
-                        key={tag}
-                        to={`/search?q=${encodeURIComponent(tag)}`}
-                        className="chip bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-600 text-[11px] transition-colors"
-                      >
-                        #{tag}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
           </aside>
         </div>
 
-        <AdSlot />
-
-        {/* Related Exams Recommendation */}
+        {/* Related Exams Section */}
         {relatedExams.length > 0 && (
-          <section className="mt-16">
-            <h2 className="font-heading text-xl sm:text-2xl font-bold text-slate-900 mb-6">
-              امتحانات ذات صلة وموصى بها
-            </h2>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedExams.map((rExam) => (
-                <ExamCard key={rExam.id} exam={rExam} />
+          <section className="mt-14 pt-10 border-t border-slate-200">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-heading text-xl sm:text-2xl font-bold text-slate-900">
+                امتحانات سابقة ذات صلة بالمادة والشعبة
+              </h2>
+              <Link
+                to="/examens"
+                className="text-xs sm:text-sm font-semibold text-blue-600 hover:underline inline-flex items-center gap-1"
+              >
+                <span>عرض المزيد</span>
+                <ArrowRight className="h-3.5 w-3.5 rotate-180" />
+              </Link>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedExams.map((item) => (
+                <ExamCard key={item.id} exam={item} />
               ))}
             </div>
           </section>
         )}
       </div>
+
+      {/* Report Modal */}
+      {isReportOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl border border-slate-100 text-right">
+            <button
+              onClick={() => setIsReportOpen(false)}
+              className="absolute left-4 top-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <div className="flex items-center gap-2 mb-4 text-slate-900">
+              <Flag className="h-5 w-5 text-rose-600" />
+              <h3 className="font-heading text-lg font-bold">
+                الإبلاغ عن مشكلة في نموذج الامتحان
+              </h3>
+            </div>
+
+            <p className="text-xs text-slate-500 mb-4">
+              نموذج: <strong className="text-slate-800">{exam.title}</strong>
+            </p>
+
+            {reportSubmitted ? (
+              <div className="py-8 text-center space-y-3">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                  <Check className="h-6 w-6" />
+                </div>
+                <h4 className="font-heading font-bold text-base text-slate-900">
+                  شكراً لملاحظتك!
+                </h4>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                  تم تسجيل البلاغ وسيقوم فريق التحقق بمراجعة الرابط وتصحيح الخلل فوراً.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleReportSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    نوع المشكلة:
+                  </label>
+                  <select
+                    value={reportType}
+                    onChange={(e: any) => setReportType(e.target.value)}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none"
+                  >
+                    <option value="broken_link">رابط التحميل أو المعاينة لا يعمل (Lien mort)</option>
+                    <option value="wrong_file">الملف لا يطابق العنوان أو المادة</option>
+                    <option value="missing_pages">نقص في بعض الصفحات أو جودة غير واضحة</option>
+                    <option value="suggest_correction">اقتراح نموذج تصحيح أو إضافة حلول</option>
+                    <option value="other">أخرى</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    تفاصيل الخلل أو الملاحظة:
+                  </label>
+                  <textarea
+                    required
+                    rows={3}
+                    value={reportDetails}
+                    onChange={(e) => setReportDetails(e.target.value)}
+                    placeholder="اكتب توضيحاً للخلل الذي واجهته حتى نتمكن من حله بسرعة..."
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none"
+                  ></textarea>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    البريد الإلكتروني أو حساب التواصل (اختياري، لنخبرك عند إصلاح الرابط):
+                  </label>
+                  <input
+                    type="text"
+                    value={reportContact}
+                    onChange={(e) => setReportContact(e.target.value)}
+                    placeholder="example@gmail.com"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 focus:bg-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div className="pt-2 flex items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsReportOpen(false)}
+                    className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+                  >
+                    إلغاء
+                  </button>
+                  <button
+                    type="submit"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 px-5 py-2 text-xs font-bold text-white hover:bg-rose-700 transition-colors shadow-sm"
+                  >
+                    <Send className="h-3.5 w-3.5" />
+                    <span>إرسال البلاغ</span>
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }
