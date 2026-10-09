@@ -39,9 +39,9 @@ export default function SubjectsPage() {
   return (
     <>
       <SEO
-        title="فهرس المواد الدراسية - نماذج امتحانات المواد الجامعية | ExamMaroc"
-        description="تصفح المواد الدراسية المتوفرة على منصة ExamMaroc وابحث عن نماذج امتحاناتها السابقة بصيغة PDF لجميع الجامعات المغربية."
-        canonical="https://exammaroc.app/subjects"
+        title="فهرس المواد الجامعية ونماذج امتحاناتها مع التصحيح [PDF مجاناً] | ExamMaroc"
+        description="دليل مواد ووحدات كليات المغرب الجامعية (القانون، الاقتصاد، الرياضيات، الفيزياء، الإعلاميات، الآداب). تصفح وحمّل نماذج امتحانات كل مادة مع عناصر الإجابة بصيغة PDF مجاناً."
+        canonical="https://exammaroc.online/subjects"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'المواد الدراسية', url: '/subjects' },

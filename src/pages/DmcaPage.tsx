@@ -10,7 +10,7 @@ export default function DmcaPage() {
       <SEO
         title="سياسة حقوق النشر (DMCA) - ExamMaroc"
         description="سياسة ExamMaroc بشأن حقوق النشر والملكية الفكرية وكيفية الإبلاغ عن محتوى أو طلب حذفه فوراً."
-        canonical="https://exammaroc.app/dmca"
+        canonical="https://exammaroc.online/dmca"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'حقوق النشر', url: '/dmca' },

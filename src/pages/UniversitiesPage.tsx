@@ -26,7 +26,7 @@ export default function UniversitiesPage() {
         '@type': 'EducationalOrganization',
         name: u.name_ar,
         alternateName: u.name_fr,
-        url: `https://exammaroc.app/universites/${u.slug}`,
+        url: `https://exammaroc.online/universites/${u.slug}`,
         address: {
           '@type': 'PostalAddress',
           addressLocality: u.city,
@@ -39,9 +39,9 @@ export default function UniversitiesPage() {
   return (
     <>
       <SEO
-        title="الجامعات المغربية - نماذج الامتحانات حسب الجامعة | ExamMaroc"
-        description="قائمة بجميع الجامعات المغربية المتوفرة على منصة ExamMaroc. تصفح وحمّل نماذج الامتحانات السابقة بصيغة PDF حسب كليات وشعب كل جامعة."
-        canonical="https://exammaroc.app/universites"
+        title="دليل الجامعات المغربية الـ 12 ونماذج امتحانات كلياتها [PDF مجاناً] | ExamMaroc"
+        description="دليل شامل لجميع الجامعات المغربية العمومية الـ 12 (ابن زهر، محمد الخامس، الحسن الثاني، القاضي عياض...). تصفح وحمّل نماذج امتحانات كلياتها من S1 إلى S6 مع عناصر الإجابة والتصحيح الرسمي بصيغة PDF مجاناً."
+        canonical="https://exammaroc.online/universites"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'الجامعات', url: '/universites' },

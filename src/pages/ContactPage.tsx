@@ -24,7 +24,7 @@ export default function ContactPage() {
       <SEO
         title="اتصل بنا - تواصل مع فريق ExamMaroc"
         description="تواصل مع فريق منصة ExamMaroc لأي استفسار أو ملاحظة أو طلب خاص بحقوق النشر أو اقتراح إضافة امتحانات جديدة."
-        canonical="https://exammaroc.app/contact"
+        canonical="https://exammaroc.online/contact"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'اتصل بنا', url: '/contact' },

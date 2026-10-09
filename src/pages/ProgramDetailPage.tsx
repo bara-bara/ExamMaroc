@@ -86,12 +86,11 @@ export default function ProgramDetailPage() {
   return (
     <>
       <SEO
-        title={`امتحانات شعبة ${program.name_fr} - ${university.name_ar} | ExamMaroc`}
+        title={`امتحانات شعبة ${program.name_fr} (${program.name_ar}) - ${university.name_ar} [PDF مع التصحيح] | ExamMaroc`}
         description={
-          program.description ||
-          `نماذج امتحانات شعبة ${program.name_fr} (${program.name_ar}) بجامعة ${university.name_ar}. منظمة حسب الفصل الدراسي S1, S2, S3, S4, S5, S6 بصيغة PDF.`
+          `نماذج امتحانات شعبة ${program.name_fr} (${program.name_ar}) بجامعة ${university.name_ar} للفصول S1 إلى S6. تحميل مباشر بصيغة PDF مع عناصر الإجابة والحلول المعتمدة مجاناً.`
         }
-        canonical={`https://exammaroc.app/universites/${university.slug}/${program.slug}`}
+        canonical={`https://exammaroc.online/universites/${university.slug}/${program.slug}`}
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'الجامعات', url: '/universites' },

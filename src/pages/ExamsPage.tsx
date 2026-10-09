@@ -55,6 +55,7 @@ export default function ExamsPage() {
   const selectedCorrType = searchParams.get('correction') || 'all';
   const searchQuery = searchParams.get('q') || '';
   const currentPageParam = parseInt(searchParams.get('page') || '1', 10);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   useEffect(() => {
     const unis = StorageService.getUniversities();
@@ -187,20 +188,37 @@ export default function ExamsPage() {
     });
   }
 
-  // SEO Title & Description
+  // SEO Title & Description with CTR Boosters & Long-Tail Keywords
   const seoTitle = currentSub
-    ? `نماذج امتحانات ${currentSub.name_fr} ${selectedSemester} – ${currentUni?.name_ar || 'الجامعات المغربية'} | ExamMaroc`
+    ? `امتحانات ${currentSub.name_ar} (${currentSub.name_fr}) ${selectedSemester ? `الفصل ${selectedSemester}` : ''} مع التصحيح [PDF مجاناً] | ExamMaroc`
     : selectedSemester && currentProg && currentUni
-    ? `امتحانات ${selectedSemester} شعبة ${currentProg.name_fr} – ${currentUni.name_ar} | ExamMaroc`
+    ? `امتحانات ${selectedSemester} شعبة ${currentProg.name_fr || currentProg.name_ar} – ${currentUni.name_ar} مع عناصر الإجابة [PDF] | ExamMaroc`
+    : selectedSemester
+    ? `امتحانات الفصل ${selectedSemester} لجميع كليات المغرب مع التصحيح النموذجي [PDF] | ExamMaroc`
     : currentUni
-    ? `نماذج امتحانات ${currentUni.name_ar} بصيغة PDF | ExamMaroc`
-    : 'جميع نماذج امتحانات الجامعات المغربية | تحميل PDF مجاناً - ExamMaroc';
+    ? `نماذج امتحانات ${currentUni.name_ar} مع التصحيح الرسمي لجميع الكليات [PDF مجاناً] | ExamMaroc`
+    : 'نماذج امتحانات الجامعات المغربية مع عناصر الإجابة والتصحيح الرسمي [PDF مجاناً] | ExamMaroc';
 
-  const seoDescription = `تحميل ومشاهدة نماذج امتحانات سابقة بصيغة PDF ${
-    currentUni ? `لـ ${currentUni.name_ar}` : 'لكافة الجامعات المغربية'
-  } ${currentProg ? `شعبة ${currentProg.name_fr}` : ''} ${
+  const seoDescription = `بنك امتحانات جامعية سابقة بصيغة PDF ${
+    currentUni ? `لجامعة ${currentUni.name_ar}` : 'لكافة الجامعات المغربية الـ 12'
+  } ${currentProg ? `شعبة ${currentProg.name_fr || currentProg.name_ar}` : ''} ${
     selectedSemester ? `الفصل ${selectedSemester}` : ''
-  } ${currentSub ? `مادة ${currentSub.name_fr}` : ''} مع إمكانية التحميل المباشر.`;
+  } ${currentSub ? `مادة ${currentSub.name_ar} (${currentSub.name_fr})` : ''} مع عناصر الإجابة والتصحيح النموذجي للدورة العادية والاستدراكية بروابط تحميل سريعة.`;
+
+  const examsFaqs = [
+    {
+      question: 'كيف أبحث عن امتحان محدد في بنك الامتحانات؟',
+      answer: 'يمكنك استخدام شريط البحث العلوي للبحث باسم المادة أو الكلية أو الأستاذ، أو تصفية النتائج باختيار الفصل (S1 إلى S6) والجامعة وسنة الامتحان ونوع التصحيح.',
+    },
+    {
+      question: 'هل تتوفر امتحانات الدورة العادية والاستدراكية؟',
+      answer: 'نعم، تشمل المنصة نماذج امتحانات الدورة العادية (Session Normale) ودورة الاستدراك (Session Rattrapage) لمعظم الكليات المغربية.',
+    },
+    {
+      question: 'هل تحميل الامتحانات مجاني؟',
+      answer: 'نعم، جميع نماذج الامتحانات وعناصر الإجابة بصيغة PDF متاحة للتحميل المباشر مجاناً بدون أي اشتراك أو قيود.',
+    },
+  ];
 
   const hasActiveFilters = Boolean(
     (!routeSemester && selectedSemester) ||
@@ -217,11 +235,12 @@ export default function ExamsPage() {
       <SEO
         title={seoTitle}
         description={seoDescription}
-        canonical={window.location.href}
+        canonical={window.location.pathname.startsWith('/examens') ? `https://exammaroc.online${window.location.pathname}` : 'https://exammaroc.online/examens'}
         breadcrumbs={breadcrumbs.map((b) => ({
           name: b.label,
           url: b.to || window.location.pathname,
         }))}
+        faqs={examsFaqs}
       />
 
       <div className="container-academic py-8">
@@ -242,18 +261,71 @@ export default function ExamsPage() {
           </p>
         </header>
 
+        {/* Quick Horizontal Semester Strip for Mobile & Desktop */}
+        <div className="mb-4 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          <button
+            type="button"
+            onClick={() => updateParam('semester', '')}
+            className={`shrink-0 rounded-xl px-4 py-2 text-xs font-bold transition-all ${
+              !selectedSemester
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            جميع الفصول
+          </button>
+          {SEMESTERS.map((sem) => (
+            <button
+              key={sem}
+              type="button"
+              onClick={() => updateParam('semester', selectedSemester === sem ? '' : sem)}
+              className={`shrink-0 rounded-xl px-4 py-2 text-xs font-bold transition-all ${
+                selectedSemester === sem
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              {sem}
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={() => updateParam('correction', selectedCorrType === 'officiel' ? 'all' : 'officiel')}
+            className={`shrink-0 rounded-xl px-4 py-2 text-xs font-bold transition-all ${
+              selectedCorrType === 'officiel'
+                ? 'bg-emerald-600 text-white shadow-xs'
+                : 'border border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+            }`}
+          >
+            ✓ المصححة رسمياً
+          </button>
+        </div>
+
         {/* Filter Toolbar */}
-        <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-4">
+        <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <span className="inline-flex items-center gap-2 text-sm font-bold text-slate-900">
-              <Filter className="h-4 w-4 text-blue-600" />
-              <span>تصفية وبحث في الأرشيف ({filteredExams.length} امتحان)</span>
-            </span>
+            <div className="flex items-center justify-between w-full sm:w-auto">
+              <span className="inline-flex items-center gap-2 text-sm font-bold text-slate-900">
+                <Filter className="h-4 w-4 text-blue-600" />
+                <span>تصفية وبحث في الأرشيف ({filteredExams.length} امتحان)</span>
+              </span>
+
+              <button
+                type="button"
+                onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+                className="inline-flex sm:hidden items-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200"
+              >
+                <span>{mobileFiltersOpen ? 'إخفاء الفلاتر' : 'تخصيص الفلاتر'}</span>
+                {hasActiveFilters && (
+                  <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                )}
+              </button>
+            </div>
 
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-3 py-1.5 rounded-lg transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-3 py-1.5 rounded-lg transition-colors self-start sm:self-auto"
               >
                 <RotateCcw className="h-3 w-3" />
                 <span>إلغاء جميع الفلاتر</span>
@@ -273,7 +345,7 @@ export default function ExamsPage() {
             />
           </div>
 
-          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 pt-1">
+          <div className={`gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 pt-1 ${mobileFiltersOpen ? 'grid' : 'hidden sm:grid'}`}>
             {/* Semester selector */}
             {!routeSemester && (
               <div>

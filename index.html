@@ -4,7 +4,6 @@
     <script>
       (function() {
         if (typeof window === 'undefined') return;
-
         // Catch and prevent error bubbling
         window.addEventListener('error', function(e) {
           if (e && e.message && e.message.indexOf('fetch') !== -1 && e.message.indexOf('getter') !== -1) {
@@ -13,7 +12,6 @@
             return true;
           }
         }, true);
-
         var prevOnError = window.onerror;
         window.onerror = function(msg) {
           if (typeof msg === 'string' && msg.indexOf('fetch') !== -1 && msg.indexOf('getter') !== -1) {
@@ -21,7 +19,6 @@
           }
           return prevOnError ? prevOnError.apply(this, arguments) : false;
         };
-
         // Ensure fetch has a setter on window and all prototypes
         try {
           var customFetch = null;
@@ -30,23 +27,21 @@
             try {
               var desc = Object.getOwnPropertyDescriptor(curr, 'fetch');
               if (desc && desc.get && !desc.set) {
-                (function(target, d) {
-                  Object.defineProperty(target, 'fetch', {
-                    configurable: true,
-                    enumerable: d.enumerable !== false,
-                    get: function() {
-                      return customFetch !== null ? customFetch : (d.get ? d.get.call(this) : d.value);
-                    },
-                    set: function(fn) {
-                      customFetch = fn;
-                    }
-                  });
-                })(curr, desc);
+                var origGet = desc.get;
+                Object.defineProperty(curr, 'fetch', {
+                  configurable: true,
+                  enumerable: desc.enumerable !== false,
+                  get: function() {
+                    return customFetch !== null ? customFetch : origGet.call(this);
+                  },
+                  set: function(fn) {
+                    customFetch = fn;
+                  }
+                });
               }
             } catch (_) {}
             curr = Object.getPrototypeOf(curr);
           }
-
           if (typeof Window !== 'undefined' && Window.prototype) {
             try {
               var pDesc = Object.getOwnPropertyDescriptor(Window.prototype, 'fetch');
@@ -86,15 +81,33 @@
     </script>
     <!-- End Google tag (gtag.js) -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ExamMaroc - جميع نماذج امتحانات الجامعات المغربية | تحميل PDF مجاناً</title>
-    <meta name="description" content="منصة ExamMaroc: أكبر بنك لنماذج امتحانات الجامعات المغربية. ابحث عن امتحانات سابقة حسب الجامعة، الشعبة، الفصل والمادة وحمّلها بسهولة بصيغة PDF." />
-    <meta name="keywords" content="امتحانات جامعية المغرب, نماذج امتحانات, جامعة ابن زهر, جامعة محمد الخامس, جامعة الحسن الثاني, جامعة القاضي عياض, كلية الآداب, كلية العلوم, FSJES, FLSH, امتحانات S1 S2 S3 S4 S5 S6, امتحانات دورة عادية استدراكية" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <title>ExamMaroc - جميع نماذج امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً]</title>
+    <meta name="description" content="أكبر بنك لنماذج امتحانات الجامعات المغربية الـ 12 مع عناصر الإجابة والتصحيح الرسمي [PDF مجاناً]. ابحث وحمّل امتحانات S1 إلى S6 لجميع الكليات مجاناً." />
+    <meta name="keywords" content="امتحانات جامعية المغرب, نماذج امتحانات الجامعات المغربية, امتحانات مصححة PDF, FSJES, كلية العلوم, كلية الآداب, جامعة ابن زهر, جامعة محمد الخامس, جامعة الحسن الثاني, جامعة القاضي عياض, جامعة سيدي محمد بن عبد الله, جامعة مولاي إسماعيل, جامعة محمد الأول, جامعة عبد المالك السعدي, جامعة ابن طفيل, جامعة شعيب الدكالي, جامعة السلطان مولاي سليمان, جامعة الحسن الأول, القانون باللغة العربية, الاقتصاد والتدبير, SMPC SMI, امتحانات S1 S2 S3 S4 S5 S6, امتحانات الدورة العادية والاستدراكية, examens universitaires maroc pdf, examens corriges maroc" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="theme-color" content="#0F172A" />
+    
+    <!-- Geo Targeting for Morocco SEO Ranking -->
+    <meta name="geo.region" content="MA" />
+    <meta name="geo.placename" content="Morocco" />
+    <meta name="geo.position" content="31.7917;-7.0926" />
+    <meta name="ICBM" content="31.7917, -7.0926" />
+
+    <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="W7fKJUjxrpF1E-Viq2hpfbaN8CB3usXMBam9_AoZJlc" />
 
-  
+    <!-- Canonical & Alternate Links -->
+    <link rel="canonical" href="https://exammaroc.online/" />
+    <link rel="alternate" hreflang="ar-ma" href="https://exammaroc.online/" />
+    <link rel="alternate" hreflang="fr-ma" href="https://exammaroc.online/" />
+    <link rel="alternate" hreflang="x-default" href="https://exammaroc.online/" />
+
     <!-- Favicon & Brand Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
@@ -104,22 +117,23 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="ExamMaroc" />
-    <meta property="og:title" content="ExamMaroc - جميع نماذج امتحانات الجامعات المغربية | تحميل PDF مجاناً" />
-    <meta property="og:description" content="ابحث عن امتحانات سابقة حسب الجامعة، الشعبة، الفصل والمادة وحمّلها بسهولة بصيغة PDF مجاناً من منصة ExamMaroc للطلاب المغاربة." />
-    <meta property="og:image" content="https://exammaroc.app/logo.png" />
+    <meta property="og:title" content="ExamMaroc - جميع نماذج امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً]" />
+    <meta property="og:description" content="أكبر بنك لنماذج امتحانات الجامعات المغربية الـ 12 مع عناصر الإجابة والحلول المعتمدة بصيغة PDF مجاناً." />
+    <meta property="og:url" content="https://exammaroc.online/" />
+    <meta property="og:image" content="https://exammaroc.online/favicon.png" />
     <meta property="og:locale" content="ar_MA" />
     <meta property="og:locale:alternate" content="fr_MA" />
 
-    <!-- Twitter -->
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="ExamMaroc - جميع نماذج امتحانات الجامعات المغربية | تحميل PDF مجاناً" />
-    <meta name="twitter:description" content="ابحث عن امتحانات سابقة حسب الجامعة، الشعبة، الفصل والمادة وحمّلها بسهولة بصيغة PDF مجاناً من منصة ExamMaroc للطلاب المغاربة." />
-    <meta name="twitter:image" content="https://exammaroc.app/logo.png" />
+    <meta name="twitter:title" content="ExamMaroc - جميع نماذج امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً]" />
+    <meta name="twitter:description" content="أكبر بنك لنماذج امتحانات الجامعات المغربية الـ 12 مع التصحيح الرسمي بصيغة PDF مجاناً." />
+    <meta name="twitter:image" content="https://exammaroc.online/favicon.png" />
 
-    <!-- Google Fonts: Cairo & Outfit -->
+    <!-- Google Fonts Preconnect for Lightning Speed on Mobile -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Structured Data (JSON-LD) for Search Engines -->
     <script type="application/ld+json">
@@ -128,27 +142,27 @@
       "@graph": [
         {
           "@type": "WebSite",
-          "@id": "https://exammaroc.app/#website",
-          "url": "https://exammaroc.app/",
+          "@id": "https://exammaroc.online/#website",
+          "url": "https://exammaroc.online/",
           "name": "ExamMaroc",
-          "alternateName": "Exam Maroc Atlas",
-          "description": "منصة مغربية متخصصة في توفير نماذج امتحانات الجامعات المغربية بصيغة PDF مع حلول وتنظيم حسب الشعبة والفصل والمادة.",
+          "alternateName": "منصة نماذج امتحانات الجامعات المغربية",
+          "description": "المنصة المغربية الأولى لنماذج امتحانات الجامعات والتعليم العالي بالمغرب بصيغة PDF مع عناصر الإجابة والحلول.",
           "inLanguage": "ar-MA",
           "potentialAction": {
             "@type": "SearchAction",
             "target": {
               "@type": "EntryPoint",
-              "urlTemplate": "https://exammaroc.app/search?q={search_term_string}"
+              "urlTemplate": "https://exammaroc.online/search?q={search_term_string}"
             },
             "query-input": "required name=search_term_string"
           }
         },
         {
           "@type": "EducationalOrganization",
-          "@id": "https://exammaroc.app/#organization",
+          "@id": "https://exammaroc.online/#organization",
           "name": "ExamMaroc",
-          "url": "https://exammaroc.app/",
-          "logo": "https://exammaroc.app/logo.png",
+          "url": "https://exammaroc.online/",
+          "logo": "https://exammaroc.online/favicon.png",
           "description": "منصة أكاديمية مغربية مستقلة لمشاركة وتنظيم الموارد التعليمية ونماذج الامتحانات الجامعية في المغرب."
         }
       ]
@@ -164,4 +178,3 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

@@ -11,7 +11,7 @@ export default function AboutPage() {
       <SEO
         title="حول ExamMaroc - المنصة المغربية لنماذج الامتحانات الجامعية"
         description="ExamMaroc منصة مغربية تساعد الطلاب على الوصول إلى نماذج الامتحانات والموارد الدراسية بسهولة وبطريقة منظمة."
-        canonical="https://exammaroc.app/about"
+        canonical="https://exammaroc.online/about"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'حول الموقع', url: '/about' },
@@ -100,10 +100,10 @@ export default function AboutPage() {
             <div>
               <p className="text-sm font-bold text-slate-900">للتواصل والاستفسار:</p>
               <a
-                href="mailto:contact@exammaroc.app"
+                href="mailto:contact@exammaroc.online"
                 className="text-sm font-semibold text-blue-600 hover:underline"
               >
-                contact@exammaroc.app
+                contact@exammaroc.online
               </a>
             </div>
           </div>

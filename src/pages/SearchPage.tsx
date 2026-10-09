@@ -38,11 +38,11 @@ export default function SearchPage() {
       <SEO
         title={
           query
-            ? `نتائج البحث عن "${query}" - نماذج امتحانات | ExamMaroc`
-            : 'البحث في نماذج امتحانات الجامعات المغربية | ExamMaroc'
+            ? `امتحانات "${query}" مع التصحيح [PDF مجاناً] | ExamMaroc`
+            : 'محرك البحث في امتحانات الجامعات المغربية [PDF مع التصحيح] | ExamMaroc'
         }
-        description={`نتائج البحث عن ${query} في بنك نماذج امتحانات الجامعات المغربية بصيغة PDF.`}
-        canonical={`https://exammaroc.app/search?q=${encodeURIComponent(query)}`}
+        description={`نتائج البحث وتحميل نماذج امتحانات ${query || 'الجامعات المغربية'} السابقة بصيغة PDF مع عناصر الإجابة والحلول المعتمدة مجاناً.`}
+        canonical={`https://exammaroc.online/search?q=${encodeURIComponent(query)}`}
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'البحث', url: '/search' },

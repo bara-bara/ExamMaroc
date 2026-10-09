@@ -9,7 +9,7 @@ export default function NotFoundPage() {
       <SEO
         title="الصفحة غير موجودة (404) - ExamMaroc"
         description="الصفحة أو نموذج الامتحان الذي تبحث عنه غير موجود."
-        canonical="https://exammaroc.app/404"
+        canonical="https://exammaroc.online/404"
       />
 
       <div className="container-academic py-20 text-center">

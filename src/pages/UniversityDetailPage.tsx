@@ -74,18 +74,17 @@ export default function UniversityDetailPage() {
       addressLocality: university.city,
       addressCountry: 'MA',
     },
-    url: `https://exammaroc.app/universites/${university.slug}`,
+    url: `https://exammaroc.online/universites/${university.slug}`,
   };
 
   return (
     <>
       <SEO
-        title={`نماذج امتحانات ${university.name_ar} - ${university.city_ar} | ExamMaroc`}
+        title={`نماذج امتحانات ${university.name_ar} مع التصحيح [PDF مجاناً] - كليات ${university.city_ar} | ExamMaroc`}
         description={
-          university.description ||
-          `تحميل ومشاهدة نماذج امتحانات ${university.name_ar} بـ${university.city_ar}. امتحانات سابقة بصيغة PDF منظمة حسب الكلية والشعبة والفصل.`
+          `تحميل ومشاهدة نماذج امتحانات ${university.name_ar} بـ${university.city_ar} لجميع الكليات (FSJES، العلوم، الآداب) من الفصل S1 إلى S6 بصيغة PDF مع عناصر الإجابة والتصحيح الرسمي للدورة العادية والاستدراكية مجاناً.`
         }
-        canonical={`https://exammaroc.app/universites/${university.slug}`}
+        canonical={`https://exammaroc.online/universites/${university.slug}`}
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'الجامعات', url: '/universites' },

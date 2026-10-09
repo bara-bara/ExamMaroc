@@ -26,7 +26,7 @@ export default function SEO({
   title,
   description,
   canonical,
-  image = 'https://media.base44.com/images/public/6ab97de406bed976df82af22/9048b3d3e_logo.png',
+  image = 'https://exammaroc.online/favicon.png',
   type = 'website',
   keywords,
   breadcrumbs,
@@ -64,7 +64,10 @@ export default function SEO({
     setMeta('property', 'og:locale', 'ar_MA');
     if (image) setMeta('property', 'og:image', image);
 
-    const fullCanonical = canonical || window.location.href;
+    const rawUrl = canonical || (typeof window !== 'undefined' ? `${window.location.pathname}${window.location.search}` : '/');
+    const fullCanonical = rawUrl.startsWith('http')
+      ? rawUrl.replace(/https?:\/\/[^/]+/, 'https://exammaroc.online')
+      : `https://exammaroc.online${rawUrl}`;
     setMeta('property', 'og:url', fullCanonical);
 
     // 4. Twitter tags
@@ -103,7 +106,9 @@ export default function SEO({
           '@type': 'ListItem',
           position: idx + 1,
           name: b.name,
-          item: b.url.startsWith('http') ? b.url : `${window.location.origin}${b.url}`,
+          item: b.url.startsWith('http')
+            ? b.url.replace(/https?:\/\/[^/]+/, 'https://exammaroc.online')
+            : `https://exammaroc.online${b.url.startsWith('/') ? '' : '/'}${b.url}`,
         })),
       });
     }

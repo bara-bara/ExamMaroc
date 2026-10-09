@@ -47,9 +47,9 @@ export default function LatestExamsPage() {
   return (
     <>
       <SEO
-        title="آخر الامتحانات المضافة - نماذج حديثة بصيغة PDF | ExamMaroc"
-        description="أحدث نماذج الامتحانات المضافة إلى منصة ExamMaroc. تصفح حسب الجامعة والفصل والمادة وحمّل بصيغة PDF."
-        canonical="https://exammaroc.app/latest-exams"
+        title="أحدث نماذج امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً] | ExamMaroc"
+        description="أحدث نماذج امتحانات الكليات والجامعات المغربية المضافة حديثاً. تصفح وحمّل نماذج الدورة العادية والاستدراكية مع عناصر الإجابة الرسمية بصيغة PDF مجاناً."
+        canonical="https://exammaroc.online/latest-exams"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'آخر الامتحانات', url: '/latest-exams' },
