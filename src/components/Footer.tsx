@@ -95,13 +95,23 @@ export default function Footer() {
           </div>
 
           {/* Contact & Verification info */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h3 className="font-heading text-xs sm:text-sm font-bold text-slate-900 mb-4 tracking-wide uppercase">
               تواصل ومساعدة
             </h3>
             <a
+              href="https://wa.me/212626551379"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm text-slate-700 hover:text-emerald-700 font-medium transition-colors"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>واتساب:</span>
+              <span className="font-bold font-mono text-emerald-600 dir-ltr">+212 626-551379</span>
+            </a>
+            <a
               href="mailto:contact@exammaroc.online"
-              className="inline-flex items-center gap-2 text-xs sm:text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors block"
             >
               <Mail className="h-4 w-4 text-blue-500" />
               contact@exammaroc.online

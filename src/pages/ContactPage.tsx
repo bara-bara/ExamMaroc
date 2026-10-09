@@ -48,6 +48,32 @@ export default function ContactPage() {
           </p>
         </header>
 
+        {/* WhatsApp Direct Contact Box */}
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <span className="text-xs font-bold text-emerald-950 block">تواصل مباشر عبر واتساب (WhatsApp):</span>
+            <a
+              href="https://wa.me/212626551379"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold text-emerald-700 text-lg hover:underline dir-ltr inline-block font-mono"
+            >
+              +212 626-551379
+            </a>
+            <p className="text-[11px] text-emerald-800">
+              متاح للرد على استفسارات الطلبة واستقبال نماذج الامتحانات والتصحيحات.
+            </p>
+          </div>
+          <a
+            href="https://wa.me/212626551379"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 transition-colors shadow-xs shrink-0 inline-flex items-center gap-1.5"
+          >
+            <span>مراسلة عبر واتساب</span>
+          </a>
+        </div>
+
         {submitted ? (
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-sm text-emerald-900 flex items-start gap-3">
             <CheckCircle2 className="h-6 w-6 text-emerald-600 shrink-0 mt-0.5" />

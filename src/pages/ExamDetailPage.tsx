@@ -656,7 +656,7 @@ export default function ExamDetailPage() {
             {/* Share Card */}
             <div className="card-academic p-5 space-y-3">
               <span className="text-xs font-bold text-slate-900 block">
-                شارك هذا الامتحان مع زملائك:
+                مشاركة وتواصل عبر واتساب:
               </span>
               <div className="flex items-center gap-2">
                 <a
@@ -665,27 +665,29 @@ export default function ExamDetailPage() {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-2 text-center rounded-xl bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 transition-colors"
+                  className="flex-1 py-2.5 text-center rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors shadow-xs"
                 >
-                  واتساب
-                </a>
-                <a
-                  href={`https://t.me/share/url?url=${encodeURIComponent(
-                    pageUrl
-                  )}&text=${encodeURIComponent(shareTitle)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 py-2 text-center rounded-xl bg-sky-500 text-white text-xs font-bold hover:bg-sky-600 transition-colors"
-                >
-                  تيليجرام
+                  مشاركة عبر واتساب
                 </a>
                 <button
                   onClick={handleCopyLink}
-                  className="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+                  className="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
                   title="نسخ الرابط"
                 >
                   {copiedLink ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
                 </button>
+              </div>
+
+              <div className="pt-2 border-t border-slate-100">
+                <a
+                  href="https://wa.me/212626551379"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between text-xs text-slate-600 hover:text-emerald-700 font-medium py-1"
+                >
+                  <span>رقم الواتساب للتواصل:</span>
+                  <span className="font-bold font-mono text-emerald-600 dir-ltr">+212 626-551379</span>
+                </a>
               </div>
             </div>
 
