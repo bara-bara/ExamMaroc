@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, ShieldAlert } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 import Breadcrumbs from '../components/Breadcrumbs';
 import AdSlot from '../components/AdSlot';
 import SEO from '../components/SEO';
@@ -65,28 +65,6 @@ export default function DmcaPage() {
               </li>
             </ul>
           </section>
-
-          {/* Contact Box */}
-          <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shrink-0">
-                <Mail className="h-5 w-5" />
-              </span>
-              <div>
-                <span className="text-xs font-bold text-blue-950 block">البريد الإلكتروني المخصص للإبلاغ:</span>
-                <a
-                  href="mailto:dmca@exammaroc.app"
-                  className="font-bold text-blue-700 text-base hover:underline"
-                >
-                  dmca@exammaroc.app
-                </a>
-              </div>
-            </div>
-
-            <span className="text-xs text-blue-800 font-medium">
-              الاستجابة خلال 24 - 48 ساعة كحد أقصى.
-            </span>
-          </div>
 
           <p className="text-xs text-slate-400">
             تلتزم إدارة ExamMaroc بمراجعة جميع الشكاوى فور استلامها وحذف أي محتوى مخالف فور التحقق من هوية صاحب الحق دون أي تأخير.
