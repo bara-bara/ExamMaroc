@@ -108,7 +108,7 @@ export default function CorrectedExamsPage() {
         ]}
       />
 
-      <div className="container-academic py-8">
+      <div className="container-academic py-4 sm:py-8">
         <Breadcrumbs
           items={[
             { label: 'الرئيسية', to: '/' },
@@ -118,41 +118,41 @@ export default function CorrectedExamsPage() {
         />
 
         {/* Hero Banner */}
-        <section className="mt-4 mb-8 rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50/80 via-white to-blue-50/40 p-6 sm:p-10 text-right shadow-sm relative overflow-hidden">
-          <div className="max-w-3xl space-y-3">
-            <span className="chip bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold px-3 py-1 gap-1.5 shadow-sm">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+        <section className="mt-3 mb-6 sm:mt-4 sm:mb-8 rounded-2xl sm:rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50/80 via-white to-blue-50/40 p-4 sm:p-10 text-right shadow-2xs relative overflow-hidden">
+          <div className="max-w-3xl space-y-2 sm:space-y-3">
+            <span className="chip bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 gap-1 text-[11px] sm:text-xs shadow-2xs">
+              <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600" />
               مكتبة الامتحانات ذات الحلول النموذجية
             </span>
 
-            <h1 className="font-heading text-2xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+            <h1 className="font-heading text-xl sm:text-4xl font-extrabold text-slate-900 leading-snug sm:leading-tight">
               نماذج امتحانات الجامعات المغربية مع التصحيح (Avec Corrigé)
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="text-xs sm:text-base text-slate-600 leading-relaxed">
               ابحث عن نماذج الامتحانات الجامعية السابقة المرفقة بعناصر الإجابة الرسمية (Corrigé Officiel) أو الحلول النموذجية المقترحة لمساعدتك على التفوق في الدورة العادية والاستدراكية.
             </p>
 
             {/* Quick Stats Pills */}
-            <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-semibold">
-              <span className="inline-flex items-center gap-1.5 bg-white border border-emerald-200 px-3 py-1.5 rounded-xl text-emerald-800 shadow-xs">
-                <FileCheck className="h-4 w-4 text-emerald-600" />
-                <strong>{allCorrectedExams.length}</strong> نموذج مصحح متوفر
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 pt-1 text-xs font-semibold">
+              <span className="inline-flex items-center gap-1 bg-white border border-emerald-200 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-emerald-800 shadow-2xs text-[11px] sm:text-xs">
+                <FileCheck className="h-3.5 w-3.5 text-emerald-600" />
+                <strong>{allCorrectedExams.length}</strong> نموذج مصحح
               </span>
-              <span className="inline-flex items-center gap-1.5 bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 shadow-xs">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+              <span className="inline-flex items-center gap-1 bg-white border border-slate-200 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-slate-700 shadow-2xs text-[11px] sm:text-xs">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
                 <strong>{officialCount}</strong> بتصحيح رسمي
               </span>
-              <span className="inline-flex items-center gap-1.5 bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-slate-700 shadow-xs">
-                <Sparkles className="h-4 w-4 text-amber-500" />
-                <strong>{proposedCount}</strong> بحلول مقترحة مفصلة
+              <span className="inline-flex items-center gap-1 bg-white border border-slate-200 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-slate-700 shadow-2xs text-[11px] sm:text-xs">
+                <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                <strong>{proposedCount}</strong> بحلول مقترحة
               </span>
             </div>
           </div>
         </section>
 
         {/* Filter Bar */}
-        <section className="card-academic p-5 mb-8 space-y-4">
+        <section className="card-academic p-3.5 sm:p-5 mb-6 sm:mb-8 space-y-3 sm:space-y-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Search Input */}
             <div className="relative w-full md:w-80">

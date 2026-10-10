@@ -72,7 +72,7 @@ export default function MobileSearchModal({ isOpen, onClose }: MobileSearchModal
       role="dialog"
       aria-modal="true"
       aria-label="البحث السريع في الامتحانات الجامعية"
-      className="fixed inset-0 z-50 flex flex-col bg-white animate-in fade-in duration-200"
+      className="fixed sm:absolute inset-0 z-50 flex flex-col bg-white animate-in fade-in duration-150"
     >
       {/* Top Search Header Bar */}
       <div className="flex items-center gap-2 p-3 border-b border-slate-200 bg-slate-50/80">

@@ -4,9 +4,10 @@ import { Home, FileText, CheckCircle2, School, Search } from 'lucide-react';
 
 interface MobileBottomNavProps {
   onOpenSearch?: () => void;
+  isPhoneMode?: boolean;
 }
 
-export default function MobileBottomNav({ onOpenSearch }: MobileBottomNavProps) {
+export default function MobileBottomNav({ onOpenSearch, isPhoneMode = true }: MobileBottomNavProps) {
   const location = useLocation();
 
   const navItems = [
@@ -43,8 +44,12 @@ export default function MobileBottomNav({ onOpenSearch }: MobileBottomNavProps) 
   return (
     <nav
       aria-label="التصفح السريع للهاتف"
-      className="fixed bottom-0 left-0 right-0 z-40 block md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] transition-all"
-      style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 6px)' }}
+      className={`${
+        isPhoneMode
+          ? 'sticky bottom-0 z-40 w-full'
+          : 'fixed bottom-0 left-0 right-0 z-40 md:hidden'
+      } bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] shrink-0 transition-all`}
+      style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 4px)' }}
     >
       <div className="grid grid-cols-5 h-14 items-center px-1">
         {navItems.map((item) => {
@@ -58,7 +63,7 @@ export default function MobileBottomNav({ onOpenSearch }: MobileBottomNavProps) 
                 key={item.label}
                 type="button"
                 onClick={item.action}
-                className={`flex flex-col items-center justify-center h-full w-full py-1 gap-0.5 transition-colors touch-manipulation active:scale-95 ${
+                className={`flex flex-col items-center justify-center h-full w-full py-1 gap-0.5 transition-colors touch-manipulation active:scale-95 cursor-pointer ${
                   isActive ? 'text-blue-600' : 'text-slate-500 hover:text-slate-900'
                 }`}
                 aria-label={item.label}

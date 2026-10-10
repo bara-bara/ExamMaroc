@@ -87,19 +87,19 @@ export default function Navbar({ onOpenMobileSearch }: NavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200/90 bg-white/95 backdrop-blur-md transition-all shadow-xs">
+    <header className="sticky top-0 z-40 border-b border-slate-200/90 bg-white/95 backdrop-blur-md transition-all shadow-2xs">
       <div className="container-academic">
-        <div className="flex h-16 items-center justify-between gap-3">
+        <div className="flex h-14 sm:h-16 items-center justify-between gap-2 sm:gap-3">
           {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm transition-transform group-hover:scale-105">
-              <GraduationCap className="h-5 w-5 text-blue-400" />
+          <Link to="/" className="flex items-center gap-2 shrink-0 group">
+            <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-slate-900 text-white shadow-2xs transition-transform group-hover:scale-105">
+              <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
             </span>
             <div className="flex flex-col">
-              <span className="font-heading text-lg sm:text-xl font-black tracking-tight text-slate-900 leading-tight">
+              <span className="font-heading text-base sm:text-xl font-black tracking-tight text-slate-900 leading-tight">
                 ExamMaroc
               </span>
-              <span className="text-[10px] text-blue-600 font-bold hidden sm:inline">
+              <span className="text-[9px] sm:text-[10px] text-blue-600 font-bold hidden xs:inline leading-none">
                 الأرشيف الجامعي المغربي
               </span>
             </div>

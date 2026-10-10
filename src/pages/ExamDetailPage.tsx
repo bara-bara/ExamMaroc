@@ -380,42 +380,42 @@ export default function ExamDetailPage() {
         jsonLd={jsonLd}
       />
 
-      <div className="container-academic py-8 pb-32 md:pb-12">
+      <div className="container-academic py-4 pb-24 sm:py-8 sm:pb-12">
         <Breadcrumbs items={breadcrumbs} />
 
         {/* Header */}
-        <header className="mt-4 mb-6">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
+        <header className="mt-3 mb-5 sm:mt-4 sm:mb-6">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2.5 sm:mb-3">
             {/* Correction Pill */}
             {exam.correction_type === 'officiel' ? (
-              <span className="chip bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold gap-1.5 px-3 py-1">
+              <span className="chip bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold gap-1 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs">
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-                تصحيح رسمي معتمد (Corrigé Officiel)
+                تصحيح رسمي معتمد
               </span>
             ) : exam.correction_type === 'propose' ? (
-              <span className="chip bg-amber-100 text-amber-900 border border-amber-300 font-bold gap-1.5 px-3 py-1">
+              <span className="chip bg-amber-100 text-amber-900 border border-amber-300 font-bold gap-1 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs">
                 <Sparkles className="h-3.5 w-3.5 text-amber-600" />
-                يتضمن حلاً مقترحاً (Proposition de Corrigé)
+                حل مقترح
               </span>
             ) : (
-              <span className="chip bg-slate-100 text-slate-700 font-medium px-2.5 py-1">
+              <span className="chip bg-slate-100 text-slate-700 font-medium px-2.5 py-0.5 sm:py-1 text-[11px] sm:text-xs">
                 موضوع الامتحان (بدون تصحيح)
               </span>
             )}
 
-            <span className="chip bg-blue-50 text-blue-700 font-bold border border-blue-200/50 px-2.5 py-1">
+            <span className="chip bg-blue-50 text-blue-700 font-bold border border-blue-200/50 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs">
               {exam.semester}
             </span>
-            <span className="chip bg-slate-100 text-slate-700 font-medium px-2.5 py-1">
+            <span className="chip bg-slate-100 text-slate-700 font-medium px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs">
               {SESSION_LABELS[exam.session] || exam.session}
             </span>
-            <span className="chip bg-slate-100 text-slate-700 font-medium inline-flex items-center gap-1 px-2.5 py-1">
-              <Calendar className="h-3.5 w-3.5" />
+            <span className="chip bg-slate-100 text-slate-700 font-medium inline-flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[11px] sm:text-xs">
+              <Calendar className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               سنة {exam.year}
             </span>
           </div>
 
-          <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-tight">
+          <h1 className="font-heading text-xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-snug sm:leading-tight">
             {exam.title}
           </h1>
 
@@ -917,22 +917,33 @@ export default function ExamDetailPage() {
         )}
       </div>
 
-      {/* Mobile Sticky Quick Action Bar */}
-      <div className="fixed bottom-14 left-0 right-0 z-30 block md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/90 p-2.5 shadow-lg">
-        <div className="flex items-center gap-2">
+      {/* Mobile Sticky Quick Action Bar (Single Dedicated Clean Bar) */}
+      <div
+        className="fixed bottom-0 left-0 right-0 z-40 block md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/90 p-2 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]"
+        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 8px)' }}
+      >
+        <div className="flex items-center gap-1.5 px-0.5">
+          <Link
+            to="/examens"
+            className="flex items-center justify-center rounded-xl border border-slate-200 bg-slate-100/90 p-2.5 text-slate-700 hover:bg-slate-200 shrink-0 min-h-[42px] min-w-[42px]"
+            title="الرجوع لقائمة الامتحانات"
+            aria-label="الرجوع لقائمة الامتحانات"
+          >
+            <ArrowRight className="h-4 w-4" />
+          </Link>
           <button
             onClick={handleDownload}
-            className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-3 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 active:scale-95 transition-all"
+            className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-2.5 px-3 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 active:scale-95 transition-all min-h-[42px]"
           >
-            <Download className="h-4 w-4" />
-            <span>تحميل PDF مجاناً</span>
+            <Download className="h-4 w-4 shrink-0" />
+            <span className="truncate">تحميل PDF مجاناً</span>
           </button>
           {exam.source_url && (
             <a
               href={exam.source_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-xs font-bold text-slate-700 hover:bg-slate-100"
+              className="flex items-center justify-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-100 min-h-[42px] shrink-0"
             >
               <ExternalLink className="h-3.5 w-3.5" />
               <span>معاينة</span>
@@ -944,7 +955,7 @@ export default function ExamDetailPage() {
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100"
+            className="flex items-center justify-center p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 min-h-[42px] min-w-[42px] shrink-0"
             title="مشاركة عبر واتساب"
             aria-label="مشاركة عبر واتساب"
           >

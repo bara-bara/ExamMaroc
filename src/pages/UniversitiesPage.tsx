@@ -49,7 +49,7 @@ export default function UniversitiesPage() {
         jsonLd={jsonLd}
       />
 
-      <div className="container-academic py-8">
+      <div className="container-academic py-4 sm:py-8">
         <Breadcrumbs
           items={[
             { label: 'الرئيسية', to: '/' },
@@ -57,16 +57,16 @@ export default function UniversitiesPage() {
           ]}
         />
 
-        <header className="mt-4 mb-8">
-          <h1 className="font-heading text-3xl font-extrabold text-slate-900">
+        <header className="mt-2 mb-5 sm:mt-4 sm:mb-8">
+          <h1 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900">
             الجامعات المغربية
           </h1>
-          <p className="mt-2 text-slate-600">
+          <p className="mt-1 text-xs sm:text-sm text-slate-600">
             تصفح نماذج الامتحانات والكليات حسب الجامعة في مختلف مدن المملكة.
           </p>
         </header>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3.5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {universities.map((uni) => {
             const faculties = StorageService.getFaculties(uni.id);
             const examsCount = StorageService.getExams({ university_id: uni.id }).length;
@@ -74,7 +74,7 @@ export default function UniversitiesPage() {
             return (
               <div
                 key={uni.id}
-                className="card-academic p-6 flex flex-col justify-between hover:border-blue-300 transition-all group"
+                className="card-academic p-4 sm:p-6 flex flex-col justify-between hover:border-blue-300 transition-all group"
               >
                 <div className="space-y-4">
                   <div className="flex items-start justify-between">

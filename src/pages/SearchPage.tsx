@@ -49,7 +49,7 @@ export default function SearchPage() {
         ]}
       />
 
-      <div className="container-academic py-8">
+      <div className="container-academic py-5 sm:py-8">
         <Breadcrumbs
           items={[
             { label: 'الرئيسية', to: '/' },
@@ -58,9 +58,9 @@ export default function SearchPage() {
         />
 
         {/* Search Header */}
-        <header className="mt-4 mb-8">
-          <h1 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-2.5">
-            <Search className="h-7 w-7 text-blue-600" />
+        <header className="mt-3 mb-6">
+          <h1 className="font-heading text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2">
+            <Search className="h-5 w-5 text-blue-600" />
             <span>نتائج البحث</span>
           </h1>
           {query && (

@@ -93,7 +93,7 @@ export default function UniversityDetailPage() {
         jsonLd={jsonLd}
       />
 
-      <div className="container-academic py-8">
+      <div className="container-academic py-4 sm:py-8">
         <Breadcrumbs
           items={[
             { label: 'الرئيسية', to: '/' },
@@ -103,23 +103,23 @@ export default function UniversityDetailPage() {
         />
 
         {/* Header Profile */}
-        <header className="mt-4 mb-8 flex flex-wrap items-start justify-between gap-4 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm">
-          <div className="space-y-2 max-w-2xl">
-            <span className="chip bg-blue-50 text-blue-700 font-semibold mb-1">
+        <header className="mt-3 mb-6 sm:mt-4 sm:mb-8 flex flex-col sm:flex-row items-start justify-between gap-4 p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-white border border-slate-200 shadow-2xs">
+          <div className="space-y-1.5 sm:space-y-2 max-w-2xl">
+            <span className="chip bg-blue-50 text-blue-700 font-semibold mb-1 text-[11px] sm:text-xs">
               مؤسسة جامعية مغربية
             </span>
-            <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900">
+            <h1 className="font-heading text-xl sm:text-4xl font-extrabold text-slate-900 leading-snug sm:leading-tight">
               {university.name_ar}
             </h1>
-            <p className="text-lg text-slate-500 font-medium">
+            <p className="text-sm sm:text-lg text-slate-500 font-medium">
               {university.name_fr}
             </p>
-            <p className="inline-flex items-center gap-1.5 text-sm text-slate-500 font-medium pt-1">
-              <MapPin className="h-4 w-4 text-blue-600" />
+            <p className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 font-medium pt-1">
+              <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600" />
               <span>{university.city_ar} · {university.city}</span>
             </p>
             {university.description && (
-              <p className="pt-2 text-sm text-slate-600 leading-relaxed">
+              <p className="pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed">
                 {university.description}
               </p>
             )}
@@ -127,10 +127,10 @@ export default function UniversityDetailPage() {
 
           <Link
             to={`/examens/${university.slug}`}
-            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-all self-start sm:self-center"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-bold text-white shadow-xs hover:bg-blue-700 transition-all shrink-0"
           >
             <FileText className="h-4 w-4" />
-            <span>كل امتحانات {university.name_ar}</span>
+            <span>امتحانات {university.name_ar}</span>
           </Link>
         </header>
 

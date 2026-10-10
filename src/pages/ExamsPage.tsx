@@ -243,11 +243,11 @@ export default function ExamsPage() {
         faqs={examsFaqs}
       />
 
-      <div className="container-academic py-8">
+      <div className="container-academic py-4 sm:py-8">
         <Breadcrumbs items={breadcrumbs} />
 
-        <header className="mt-4 mb-8">
-          <h1 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+        <header className="mt-2 mb-4 sm:mt-4 sm:mb-8">
+          <h1 className="font-heading text-xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
             {currentSub
               ? `نماذج امتحانات ${currentSub.name_fr || currentSub.name_ar}`
               : selectedSemester && currentProg
@@ -256,17 +256,17 @@ export default function ExamsPage() {
               ? `امتحانات ${currentUni.name_ar}`
               : 'بنك نماذج امتحانات الجامعات المغربية'}
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-1.5 text-xs sm:text-sm text-slate-500">
             تصفح وحمّل نماذج الامتحانات السابقة بصيغة PDF مع البحث والفلترة حسب الكلية، الدورة، الفصل والتصحيح.
           </p>
         </header>
 
         {/* Quick Horizontal Semester Strip for Mobile & Desktop */}
-        <div className="mb-4 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div className="mb-3 sm:mb-4 -mx-3 px-3 sm:mx-0 sm:px-0 flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1.5 scrollbar-none">
           <button
             type="button"
             onClick={() => updateParam('semester', '')}
-            className={`shrink-0 rounded-xl px-4 py-2 text-xs font-bold transition-all ${
+            className={`shrink-0 rounded-lg sm:rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-bold transition-all ${
               !selectedSemester
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
@@ -279,7 +279,7 @@ export default function ExamsPage() {
               key={sem}
               type="button"
               onClick={() => updateParam('semester', selectedSemester === sem ? '' : sem)}
-              className={`shrink-0 rounded-xl px-4 py-2 text-xs font-bold transition-all ${
+              className={`shrink-0 rounded-lg sm:rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-bold transition-all ${
                 selectedSemester === sem
                   ? 'bg-blue-600 text-white shadow-xs'
                   : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
@@ -291,7 +291,7 @@ export default function ExamsPage() {
           <button
             type="button"
             onClick={() => updateParam('correction', selectedCorrType === 'officiel' ? 'all' : 'officiel')}
-            className={`shrink-0 rounded-xl px-4 py-2 text-xs font-bold transition-all ${
+            className={`shrink-0 rounded-lg sm:rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-bold transition-all ${
               selectedCorrType === 'officiel'
                 ? 'bg-emerald-600 text-white shadow-xs'
                 : 'border border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
@@ -302,7 +302,7 @@ export default function ExamsPage() {
         </div>
 
         {/* Filter Toolbar */}
-        <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm space-y-4">
+        <div className="mb-6 sm:mb-8 rounded-xl sm:rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-5 shadow-2xs space-y-3 sm:space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center justify-between w-full sm:w-auto">
               <span className="inline-flex items-center gap-2 text-sm font-bold text-slate-900">

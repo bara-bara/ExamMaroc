@@ -34,16 +34,16 @@ const UNIVERSITIES_SEO = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-50/90 mt-16 text-slate-600">
-      <div className="container-academic py-12 lg:py-16">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+    <footer className="border-t border-slate-200 bg-slate-50/90 mt-8 sm:mt-16 text-slate-600">
+      <div className="container-academic py-8 sm:py-12 lg:py-16">
+        <div className="grid gap-6 sm:gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand info */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <div className="flex items-center gap-2.5">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-white">
                 <GraduationCap className="h-5 w-5 text-blue-400" />
               </span>
-              <span className="font-heading text-xl font-bold text-slate-900">
+              <span className="font-heading text-lg sm:text-xl font-bold text-slate-900">
                 ExamMaroc
               </span>
             </div>
@@ -58,7 +58,7 @@ export default function Footer() {
 
           {/* Quick links */}
           <div>
-            <h3 className="font-heading text-xs sm:text-sm font-bold text-slate-900 mb-4 tracking-wide uppercase">
+            <h3 className="font-heading text-xs sm:text-sm font-bold text-slate-900 mb-3 sm:mb-4 tracking-wide uppercase">
               أقسام المنصة
             </h3>
             <ul className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
@@ -77,7 +77,7 @@ export default function Footer() {
 
           {/* Universities directory for SEO */}
           <div>
-            <h3 className="font-heading text-xs sm:text-sm font-bold text-slate-900 mb-4 tracking-wide uppercase">
+            <h3 className="font-heading text-xs sm:text-sm font-bold text-slate-900 mb-3 sm:mb-4 tracking-wide uppercase">
               الجامعات المغربية الـ 12
             </h3>
             <ul className="space-y-1.5 text-xs">
@@ -95,8 +95,8 @@ export default function Footer() {
           </div>
 
           {/* Contact & Verification info */}
-          <div className="space-y-3">
-            <h3 className="font-heading text-xs sm:text-sm font-bold text-slate-900 mb-4 tracking-wide uppercase">
+          <div className="space-y-2.5 sm:space-y-3">
+            <h3 className="font-heading text-xs sm:text-sm font-bold text-slate-900 mb-3 sm:mb-4 tracking-wide uppercase">
               تواصل ومساعدة
             </h3>
             <a
@@ -120,7 +120,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom copyright */}
-        <div className="mt-12 pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-slate-400">
           <p>© {new Date().getFullYear()} ExamMaroc. جميع الحقوق محفوظة للطلاب المغاربة.</p>
           <div className="flex items-center gap-4">
             <Link to="/privacy-policy" className="hover:text-slate-600">سياسة الخصوصية</Link>

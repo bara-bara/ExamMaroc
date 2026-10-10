@@ -143,34 +143,34 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-blue-50/60 via-slate-50/40 to-white">
-        <div className="container-academic py-14 sm:py-20 text-center">
-          <div className="inline-flex items-center gap-2 chip bg-blue-100/90 text-blue-800 font-bold mb-5 px-3.5 py-1.5 shadow-xs">
-            <GraduationCap className="h-4 w-4" />
-            <span>المنصة الأكاديمية الشاملة للامتحانات الجامعية بالمغرب 🇲🇦</span>
+        <div className="container-academic py-8 sm:py-16 text-center">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 chip bg-blue-100/90 text-blue-800 font-bold mb-3 sm:mb-5 px-3 py-1 sm:px-3.5 sm:py-1.5 shadow-2xs text-[11px] sm:text-xs">
+            <GraduationCap className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span>المنصة الأكاديمية للامتحانات الجامعية بالمغرب 🇲🇦</span>
           </div>
 
-          <h1 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto leading-tight">
+          <h1 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto leading-tight sm:leading-tight">
             جميع نماذج امتحانات الجامعات المغربية في مكان واحد
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="mt-3 sm:mt-4 text-xs sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
             بنك موثّق يضم أكثر من <strong>{stats.exams}</strong> نموذج امتحان لكليات الحقوق والاقتصاد والعلوم والآداب، منظمة حسب الجامعة والكلية والفصل الدراسي، بصيغة PDF مجانية مع عناصر الإجابة والتصحيح.
           </p>
 
           {/* Central Search Bar */}
-          <form onSubmit={handleSearch} className="mt-8 mx-auto max-w-2xl">
+          <form onSubmit={handleSearch} className="mt-5 sm:mt-8 mx-auto max-w-2xl">
             <div className="relative group">
-              <Search className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+              <Search className="pointer-events-none absolute right-3.5 sm:right-4 top-1/2 h-4 w-4 sm:h-5 sm:w-5 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
               <input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 type="search"
                 placeholder="ابحث باسم المادة، الكلية، الشعبة، أو الأستاذ..."
-                className="w-full rounded-2xl border border-slate-300 bg-white py-4 pr-12 pl-4 text-sm sm:text-base text-slate-900 shadow-sm outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15"
+                className="w-full rounded-xl sm:rounded-2xl border border-slate-300 bg-white py-3 sm:py-4 pr-10 sm:pr-12 pl-20 sm:pl-4 text-xs sm:text-base text-slate-900 shadow-2xs outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15"
               />
               <button
                 type="submit"
-                className="absolute left-2.5 top-1/2 -translate-y-1/2 rounded-xl bg-blue-600 px-4 py-2 text-xs sm:text-sm font-bold text-white hover:bg-blue-700 transition-colors"
+                className="absolute left-1.5 sm:left-2.5 top-1/2 -translate-y-1/2 rounded-lg sm:rounded-xl bg-blue-600 px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-white hover:bg-blue-700 transition-colors"
               >
                 بحث
               </button>
@@ -178,13 +178,13 @@ export default function HomePage() {
           </form>
 
           {/* Popular searches tags */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-            <span className="text-xs text-slate-500 font-bold">الأكثر بحثًا:</span>
+          <div className="mt-4 sm:mt-6 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+            <span className="text-[11px] sm:text-xs text-slate-500 font-bold">الأكثر بحثًا:</span>
             {POPULAR_SEARCHES.map((query) => (
               <button
                 key={query}
                 onClick={() => navigate(`/search?q=${encodeURIComponent(query)}`)}
-                className="chip border border-slate-200 bg-white text-slate-700 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors cursor-pointer text-xs"
+                className="chip border border-slate-200 bg-white text-slate-700 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors cursor-pointer text-[11px] sm:text-xs px-2.5 py-1"
               >
                 {query}
               </button>
@@ -192,37 +192,37 @@ export default function HomePage() {
           </div>
 
           {/* Key Statistics Bar */}
-          <div className="mt-10 pt-8 border-t border-slate-200/80 max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div className="p-3">
-              <span className="block font-heading text-2xl sm:text-3xl font-black text-blue-600">
+          <div className="mt-6 sm:mt-10 pt-5 sm:pt-8 border-t border-slate-200/80 max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-center">
+            <div className="p-2.5 sm:p-3 bg-white/70 rounded-xl sm:bg-transparent border border-slate-200/60 sm:border-0 shadow-2xs sm:shadow-none">
+              <span className="block font-heading text-xl sm:text-3xl font-black text-blue-600">
                 12
               </span>
-              <span className="text-xs text-slate-500 font-semibold">جامعة مغربية مغطاة</span>
+              <span className="text-[11px] sm:text-xs text-slate-500 font-semibold">جامعة مغربية</span>
             </div>
-            <div className="p-3">
-              <span className="block font-heading text-2xl sm:text-3xl font-black text-purple-600">
+            <div className="p-2.5 sm:p-3 bg-white/70 rounded-xl sm:bg-transparent border border-slate-200/60 sm:border-0 shadow-2xs sm:shadow-none">
+              <span className="block font-heading text-xl sm:text-3xl font-black text-purple-600">
                 {stats.faculties}
               </span>
-              <span className="text-xs text-slate-500 font-semibold">كلية ومؤسسة جامعية</span>
+              <span className="text-[11px] sm:text-xs text-slate-500 font-semibold">كلية ومؤسسة</span>
             </div>
-            <div className="p-3">
-              <span className="block font-heading text-2xl sm:text-3xl font-black text-slate-900">
+            <div className="p-2.5 sm:p-3 bg-white/70 rounded-xl sm:bg-transparent border border-slate-200/60 sm:border-0 shadow-2xs sm:shadow-none">
+              <span className="block font-heading text-xl sm:text-3xl font-black text-slate-900">
                 +{stats.exams}
               </span>
-              <span className="text-xs text-slate-500 font-semibold">نموذج امتحان بصيغة PDF</span>
+              <span className="text-[11px] sm:text-xs text-slate-500 font-semibold">نموذج PDF</span>
             </div>
-            <div className="p-3">
-              <span className="block font-heading text-2xl sm:text-3xl font-black text-emerald-600">
+            <div className="p-2.5 sm:p-3 bg-white/70 rounded-xl sm:bg-transparent border border-slate-200/60 sm:border-0 shadow-2xs sm:shadow-none">
+              <span className="block font-heading text-xl sm:text-3xl font-black text-emerald-600">
                 +{stats.correctedExams}
               </span>
-              <span className="text-xs text-slate-500 font-semibold">نموذج مع عناصر الإجابة</span>
+              <span className="text-[11px] sm:text-xs text-slate-500 font-semibold">نموذج مصحح</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Main Content Area */}
-      <div className="container-academic py-12 space-y-16">
+      <div className="container-academic py-8 sm:py-12 space-y-10 sm:space-y-16">
         {/* Banner: Corrected Exams Feature */}
         <section className="rounded-3xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-teal-50/50 to-white p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
           <div className="space-y-2 text-right">
@@ -358,20 +358,20 @@ export default function HomePage() {
 
         {/* Browse by Semester */}
         <section>
-          <h2 className="font-heading text-2xl font-bold text-slate-900 mb-6">
+          <h2 className="font-heading text-lg sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-6">
             تصفح حسب الفصل الدراسي (Semestres S1 à S6)
           </h2>
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5 sm:gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
             {SEMESTERS.map((sem) => (
               <Link
                 key={sem}
                 to={`/examens?semester=${sem}`}
-                className="card-academic py-6 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all group"
+                className="card-academic py-3 sm:py-6 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all group"
               >
-                <span className="font-heading text-2xl font-bold text-blue-600 group-hover:scale-110 inline-block transition-transform">
+                <span className="font-heading text-lg sm:text-2xl font-bold text-blue-600 group-hover:scale-110 inline-block transition-transform">
                   {sem}
                 </span>
-                <p className="mt-1 text-xs text-slate-500 font-medium">
+                <p className="mt-0.5 sm:mt-1 text-[11px] sm:text-xs text-slate-500 font-medium">
                   الفصل {sem.replace('S', '')}
                 </p>
               </Link>
@@ -381,8 +381,8 @@ export default function HomePage() {
 
         {/* Most Searched Subjects */}
         <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="font-heading text-2xl font-bold text-slate-900">
+          <div className="flex items-center justify-between mb-3 sm:mb-6">
+            <h2 className="font-heading text-lg sm:text-2xl font-bold text-slate-900">
               أكثر الوحدات والمواد بحثًا
             </h2>
             <Link
@@ -392,18 +392,18 @@ export default function HomePage() {
               جميع المواد ({subjects.length})
             </Link>
           </div>
-          <div className="flex flex-wrap gap-2.5">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2.5">
             {subjects.map((sub) => (
               <Link
                 key={sub.id}
                 to={`/search?q=${encodeURIComponent(sub.name_ar)}`}
-                className="card-academic px-4 py-2.5 flex items-center gap-2 hover:border-blue-300 hover:bg-blue-50/30 transition-all"
+                className="card-academic px-3 py-2 sm:px-4 sm:py-2.5 flex items-center gap-1.5 sm:gap-2 hover:border-blue-300 hover:bg-blue-50/30 transition-all"
               >
-                <BookOpen className="h-4 w-4 text-blue-600 shrink-0" />
+                <BookOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600 shrink-0" />
                 <span className="font-semibold text-xs sm:text-sm text-slate-800">
                   {sub.name_ar}
                 </span>
-                <span className="text-xs text-slate-400 font-mono">
+                <span className="text-[10px] sm:text-xs text-slate-400 font-mono">
                   · {sub.name_fr}
                 </span>
               </Link>
@@ -412,8 +412,8 @@ export default function HomePage() {
         </section>
 
         {/* Why ExamMaroc? */}
-        <section className="rounded-3xl border border-slate-200 bg-white p-8 sm:p-12 shadow-sm">
-          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-slate-900 text-center">
+        <section className="rounded-2xl sm:rounded-3xl border border-slate-200 bg-white p-5 sm:p-12 shadow-sm">
+          <h2 className="font-heading text-xl sm:text-3xl font-bold text-slate-900 text-center">
             مميزات منصة ExamMaroc للطلاب الجامعيين
           </h2>
           <p className="text-center text-sm text-slate-500 mt-2 max-w-xl mx-auto">
