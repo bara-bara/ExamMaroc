@@ -42,6 +42,17 @@
     min-height: 100vh;
     position: relative;
     -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  #root {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   img, svg, iframe {

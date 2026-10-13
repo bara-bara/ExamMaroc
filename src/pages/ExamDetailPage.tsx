@@ -29,7 +29,9 @@ import {
   ChevronDown,
   ChevronUp,
   ArrowLeft,
-  Star
+  Star,
+  ZoomIn,
+  Maximize2
 } from 'lucide-react';
 import { StorageService, EnrichedExam } from '../services/storageService';
 import Breadcrumbs, { BreadcrumbItem } from '../components/Breadcrumbs';
@@ -172,13 +174,23 @@ export default function ExamDetailPage() {
     setDownloadCount(newCount);
     setDownloadSuccess(true);
 
+    const openSafely = (url: string) => {
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
+
     if (driveId && !isDriveFolder) {
       const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${driveId}`;
-      window.open(directDownloadUrl, '_blank', 'noopener,noreferrer');
+      openSafely(directDownloadUrl);
     } else if (exam.source_url) {
-      window.open(exam.source_url, '_blank', 'noopener,noreferrer');
+      openSafely(exam.source_url);
     } else {
-      handlePrintablePaper();
+      window.print();
     }
 
     setTimeout(() => setDownloadSuccess(false), 5000);
@@ -509,9 +521,58 @@ export default function ExamDetailPage() {
                 </div>
               </div>
 
-              {/* PDF Preview Frame or Source View */}
-              {embedUrl ? (
-                <div className="relative w-full h-[45vh] sm:h-[65vh] min-h-[320px] sm:min-h-[500px] bg-slate-100">
+              {/* PDF Preview Frame or Exam Sheet Images */}
+              {exam.image_urls && exam.image_urls.length > 0 ? (
+                <div className="p-3 sm:p-5 bg-slate-100/80 space-y-4">
+                  <div className="flex items-center justify-between text-xs font-bold text-slate-700 pb-1">
+                    <span className="flex items-center gap-1.5">
+                      <FileText className="h-4 w-4 text-blue-600" />
+                      أوراق وصفحات الامتحان ({exam.image_urls.length} صفحات):
+                    </span>
+                    <span className="text-[11px] text-blue-700 bg-blue-50 border border-blue-200 rounded-md px-2 py-0.5 font-medium">
+                      انقر على أي ورقة لفتحها بدقة عالية
+                    </span>
+                  </div>
+                  <div className="space-y-4">
+                    {exam.image_urls.map((imgUrl, idx) => (
+                      <div
+                        key={idx}
+                        className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xs group"
+                      >
+                        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/90 px-3 py-1.5 text-xs font-bold text-slate-700">
+                          <span>الصفحة {idx + 1} من {exam.image_urls?.length || 1}</span>
+                          <a
+                            href={imgUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[11px] text-blue-600 hover:text-blue-800 transition-colors"
+                          >
+                            <Maximize2 className="h-3 w-3" />
+                            <span>تكبير ملء الشاشة</span>
+                          </a>
+                        </div>
+                        <div className="p-2 sm:p-3 flex justify-center bg-slate-50/40">
+                          <a
+                            href={imgUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block w-full max-w-full text-center"
+                            title="انقر لتكبير الصفحة وعرضها بالحجم الكامل"
+                          >
+                            <img
+                              src={imgUrl}
+                              alt={`${exam.title} - الصفحة ${idx + 1}`}
+                              loading="lazy"
+                              className="w-full max-h-[80vh] object-contain rounded transition-transform hover:scale-[1.01]"
+                            />
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : embedUrl && !embedUrl.match(/\.(jpg|jpeg|png|webp)($|\?)/i) ? (
+                <div className="relative w-full h-[50vh] sm:h-[65vh] min-h-[340px] sm:min-h-[500px] bg-slate-100">
                   <iframe
                     src={embedUrl}
                     title={exam.title}
@@ -519,12 +580,29 @@ export default function ExamDetailPage() {
                     allow="autoplay"
                   />
                 </div>
+              ) : embedUrl ? (
+                <div className="p-3 sm:p-4 bg-slate-100 flex justify-center">
+                  <a
+                    href={embedUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full max-w-full text-center"
+                    title="انقر لعرض النموذج بالحجم الكامل"
+                  >
+                    <img
+                      src={embedUrl}
+                      alt={exam.title}
+                      className="w-full max-h-[75vh] object-contain rounded-xl shadow-xs"
+                      loading="lazy"
+                    />
+                  </a>
+                </div>
               ) : (
-                <div className="flex h-[55vh] flex-col items-center justify-center p-8 text-center bg-slate-50/50">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 text-red-500 mb-3">
-                    <FileText className="h-8 w-8" />
+                <div className="flex h-[45vh] sm:h-[55vh] flex-col items-center justify-center p-6 sm:p-8 text-center bg-slate-50/50">
+                  <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-red-50 text-red-500 mb-3">
+                    <FileText className="h-7 w-7 sm:h-8 sm:w-8" />
                   </div>
-                  <h3 className="font-heading font-bold text-base text-slate-800">
+                  <h3 className="font-heading font-bold text-sm sm:text-base text-slate-800">
                     ملف الامتحان متاح للتحميل والمعاينة
                   </h3>
                   <p className="mt-1 text-xs text-slate-500 max-w-sm">

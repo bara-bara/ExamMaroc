@@ -24,14 +24,18 @@ import AdSlot from '../components/AdSlot';
 import SEO from '../components/SEO';
 
 const POPULAR_SEARCHES = [
+  'امتحانات English S1',
   'القانون الجنائي S2',
+  'Reading Comprehension S1',
   'Microéconomie 1 S1',
-  'الالتزامات والعقود DOC',
-  'Comptabilité Générale',
-  'Analyse 1 SMPC',
+  'Grammar 1 S1',
+  'المدخل لدراسة القانون S1',
+  'Paragraph Writing S1',
+  'الالتزامات والعقود S3',
+  'Comptabilité Générale S1',
   'صعوبات المقاولة S5',
-  'FSJES Agdal',
-  'FSJES Agadir'
+  'FSJES Agadir',
+  'FLSH Agadir'
 ];
 
 const SEMESTERS = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6'];
@@ -64,6 +68,7 @@ export default function HomePage() {
   const [universities, setUniversities] = useState<University[]>([]);
   const [latestExams, setLatestExams] = useState<EnrichedExam[]>([]);
   const [correctedSample, setCorrectedSample] = useState<EnrichedExam[]>([]);
+  const [englishExams, setEnglishExams] = useState<EnrichedExam[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [stats, setStats] = useState({
     universities: 12,
@@ -79,6 +84,18 @@ export default function HomePage() {
     setUniversities(StorageService.getUniversities());
     setLatestExams(StorageService.getExams({ limit: 6 }));
     setCorrectedSample(StorageService.getCorrectedExams({ limit: 6 }));
+    
+    // Load English S1 exams directly for instant access
+    const eng = StorageService.getExams({ semester: 'S1' })
+      .filter((e) => 
+        e.tags?.some((t) => t.toLowerCase().includes('english') || t.toLowerCase().includes('reading') || t.toLowerCase().includes('grammar') || t.toLowerCase().includes('writing')) ||
+        e.title.toLowerCase().includes('english') ||
+        e.title.toLowerCase().includes('reading') ||
+        e.title.toLowerCase().includes('grammar')
+      )
+      .slice(0, 6);
+    setEnglishExams(eng);
+
     setSubjects(StorageService.getSubjects().slice(0, 16));
     setStats(StorageService.getStats());
   }, []);
@@ -222,15 +239,106 @@ export default function HomePage() {
       </section>
 
       {/* Main Content Area */}
-      <div className="container-academic py-8 sm:py-12 space-y-10 sm:space-y-16">
+      <div className="container-academic py-6 sm:py-10 space-y-8 sm:space-y-14">
+        {/* Fast Browse by Semester (S1 - S6) - Instant Phone Access */}
+        <section>
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <h2 className="font-heading text-base sm:text-xl font-bold text-slate-900">
+              تصفح سريع حسب الفصل الدراسي (S1 - S6)
+            </h2>
+            <Link
+              to="/examens"
+              className="text-xs sm:text-sm font-semibold text-blue-600 hover:underline"
+            >
+              جميع الفصول
+            </Link>
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
+            {SEMESTERS.map((sem) => (
+              <Link
+                key={sem}
+                to={`/examens?semester=${sem}`}
+                className="card-academic py-2.5 sm:py-4 px-2 text-center hover:border-blue-500 hover:bg-blue-50/40 transition-all group shadow-2xs active:scale-95"
+              >
+                <span className="font-heading text-base sm:text-2xl font-black text-blue-600 group-hover:scale-105 inline-block transition-transform">
+                  {sem}
+                </span>
+                <p className="text-[10px] sm:text-xs text-slate-500 font-medium">
+                  الفصل {sem.replace('S', '')}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Dedicated High-Traffic Niche: English Studies S1 Section */}
+        {englishExams.length > 0 && (
+          <section className="rounded-2xl sm:rounded-3xl border border-blue-200 bg-gradient-to-br from-blue-50/70 via-indigo-50/30 to-white p-4 sm:p-7 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
+              <div>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="chip bg-blue-100 text-blue-800 border border-blue-300 font-bold px-2.5 py-0.5 text-[11px] sm:text-xs gap-1">
+                    <BookOpen className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-blue-600" />
+                    شعبة الدراسات الإنجليزية · English Studies S1
+                  </span>
+                  <span className="chip bg-emerald-100 text-emerald-800 text-[10px] sm:text-[11px] font-bold">
+                    13 نموذج موثق
+                  </span>
+                </div>
+                <h2 className="font-heading text-lg sm:text-2xl font-black text-slate-900 leading-snug">
+                  امتحانات شعبة الدراسات الإنجليزية الفصل الأول (English S1)
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
+                  نماذج حقيقية لكليات الآداب والعلوم الإنسانية (فاس، الدار البيضاء، مراكش، أكادير، مكناس...) لمواد: Reading Comprehension, Grammar 1, Paragraph Writing, Spoken English, Study Skills.
+                </p>
+              </div>
+
+              <Link
+                to="/search?q=English+S1"
+                className="shrink-0 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-blue-600 hover:text-blue-700 hover:underline bg-white/80 border border-blue-200 px-3.5 py-2 rounded-xl"
+              >
+                <span>عرض جميع نماذج English S1</span>
+                <ArrowLeft className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+
+            {/* Quick module tags */}
+            <div className="flex flex-wrap items-center gap-1.5 mb-5 text-[11px]">
+              <span className="text-slate-500 font-bold ml-1">مواد الفصل الأول:</span>
+              {[
+                'Reading Comprehension and Précis 1',
+                'Grammar 1',
+                'Paragraph Writing',
+                'Guided Reading',
+                'Spoken English',
+                'Study Skills'
+              ].map((subTitle) => (
+                <Link
+                  key={subTitle}
+                  to={`/search?q=${encodeURIComponent(subTitle)}`}
+                  className="rounded-lg bg-white border border-blue-200/80 px-2.5 py-1 text-blue-800 font-semibold hover:bg-blue-600 hover:text-white transition-colors shadow-2xs"
+                >
+                  {subTitle}
+                </Link>
+              ))}
+            </div>
+
+            <div className="grid gap-3.5 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {englishExams.map((exam) => (
+                <ExamCard key={exam.id} exam={exam} />
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Banner: Corrected Exams Feature */}
-        <section className="rounded-3xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-teal-50/50 to-white p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
-          <div className="space-y-2 text-right">
-            <span className="chip bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold px-3 py-1 gap-1">
+        <section className="rounded-2xl sm:rounded-3xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-teal-50/50 to-white p-4 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 shadow-xs">
+          <div className="space-y-1.5 sm:space-y-2 text-right">
+            <span className="chip bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 gap-1 text-[11px] sm:text-xs">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
               جديد: قسم الامتحانات المصححة
             </span>
-            <h2 className="font-heading text-xl sm:text-2xl font-extrabold text-slate-900">
+            <h2 className="font-heading text-lg sm:text-2xl font-extrabold text-slate-900 leading-snug">
               تصفح مئات نماذج الامتحانات المرفقة بعناصر الإجابة الرسمية
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
@@ -239,86 +347,40 @@ export default function HomePage() {
           </div>
           <Link
             to="/examens-corriges"
-            className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
+            className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-xs hover:bg-emerald-700 transition-colors"
           >
             <span>دخول قسم الامتحانات المصححة</span>
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </section>
 
-        {/* Browse by the 12 Universities */}
-        <section>
-          <div className="flex items-end justify-between mb-6">
-            <div>
-              <h2 className="font-heading text-2xl font-bold text-slate-900">
-                تصفح حسب الجامعة المغربية (12 جامعة)
-              </h2>
-              <p className="text-sm text-slate-500 mt-1">
-                اختر جامعتك للوصول إلى كلياتها وشعبها وامتحاناتها السابقة.
-              </p>
-            </div>
-            <Link
-              to="/universites"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline"
-            >
-              <span>عرض الدليل الكامل</span>
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {universities.map((uni) => (
-              <Link
-                key={uni.id}
-                to={`/universites/${uni.slug}`}
-                className="card-academic p-5 flex items-start gap-4 hover:border-blue-400 group"
-              >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 group-hover:scale-105 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-xs">
-                  <School className="h-6 w-6" />
-                </span>
-                <div className="space-y-1">
-                  <h3 className="font-heading font-bold text-slate-900 group-hover:text-blue-600 transition-colors text-base">
-                    {uni.name_ar}
-                  </h3>
-                  <p className="text-xs text-slate-500 font-medium">
-                    {uni.name_fr}
-                  </p>
-                  <p className="text-xs text-slate-400">
-                    {uni.city_ar} · {uni.city}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-
         {/* Sample Corrected Exams */}
         {correctedSample.length > 0 && (
           <section>
-            <div className="flex items-end justify-between mb-6">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="p-1 rounded-md bg-emerald-100 text-emerald-700">
-                    <CheckCircle2 className="h-4 w-4" />
+                    <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </span>
-                  <h2 className="font-heading text-2xl font-bold text-slate-900">
+                  <h2 className="font-heading text-lg sm:text-2xl font-bold text-slate-900">
                     نماذج امتحانات مختارة مع التصحيح
                   </h2>
                 </div>
-                <p className="text-sm text-slate-500 mt-1">
+                <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
                   نماذج امتحانات حديثة تتضمن عناصر الإجابة والحلول المعتمدة.
                 </p>
               </div>
               <Link
                 to="/examens-corriges"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-700 hover:underline"
+                className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-emerald-600 hover:text-emerald-700 hover:underline"
               >
-                <span>جميع الامتحانات المصححة</span>
-                <ArrowLeft className="h-4 w-4" />
+                <span>عرض الكل</span>
+                <ArrowLeft className="h-3.5 w-3.5" />
               </Link>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3.5 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {correctedSample.map((exam) => (
                 <ExamCard key={exam.id} exam={exam} />
               ))}
@@ -331,49 +393,72 @@ export default function HomePage() {
 
         {/* Latest Exams */}
         <section>
-          <div className="flex items-end justify-between mb-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div>
-              <h2 className="font-heading text-2xl font-bold text-slate-900">
+              <h2 className="font-heading text-lg sm:text-2xl font-bold text-slate-900">
                 أحدث نماذج الامتحانات المضافة
               </h2>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
                 نماذج امتحانات جامعية حديثة تمت إضافتها وتوثيق روابطها.
               </p>
             </div>
             <Link
               to="/latest-exams"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+              className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline"
             >
               <span>عرض الكل</span>
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-3.5 w-3.5" />
             </Link>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3.5 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {latestExams.map((exam) => (
               <ExamCard key={exam.id} exam={exam} />
             ))}
           </div>
         </section>
 
-        {/* Browse by Semester */}
+        {/* Browse by the 12 Universities (Compact 2-col mobile grid) */}
         <section>
-          <h2 className="font-heading text-lg sm:text-2xl font-bold text-slate-900 mb-3 sm:mb-6">
-            تصفح حسب الفصل الدراسي (Semestres S1 à S6)
-          </h2>
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
-            {SEMESTERS.map((sem) => (
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <div>
+              <h2 className="font-heading text-lg sm:text-2xl font-bold text-slate-900">
+                تصفح حسب الجامعة المغربية (12 جامعة)
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                اختر جامعتك للوصول إلى كلياتها وشعبها وامتحاناتها السابقة.
+              </p>
+            </div>
+            <Link
+              to="/universites"
+              className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+            >
+              <span>الدليل الكامل</span>
+              <ArrowLeft className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
+            {universities.map((uni) => (
               <Link
-                key={sem}
-                to={`/examens?semester=${sem}`}
-                className="card-academic py-3 sm:py-6 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all group"
+                key={uni.id}
+                to={`/universites/${uni.slug}`}
+                className="card-academic p-3 sm:p-5 flex items-start gap-2.5 sm:gap-4 hover:border-blue-400 group transition-all"
               >
-                <span className="font-heading text-lg sm:text-2xl font-bold text-blue-600 group-hover:scale-110 inline-block transition-transform">
-                  {sem}
+                <span className="flex h-9 w-9 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-blue-50 text-blue-600 group-hover:scale-105 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-xs">
+                  <School className="h-4 w-4 sm:h-6 sm:w-6" />
                 </span>
-                <p className="mt-0.5 sm:mt-1 text-[11px] sm:text-xs text-slate-500 font-medium">
-                  الفصل {sem.replace('S', '')}
-                </p>
+                <div className="space-y-0.5 sm:space-y-1 min-w-0 flex-1">
+                  <h3 className="font-heading font-bold text-slate-900 group-hover:text-blue-600 transition-colors text-xs sm:text-base truncate">
+                    {uni.name_ar}
+                  </h3>
+                  <p className="text-[10px] sm:text-xs text-slate-500 font-medium truncate hidden xs:block">
+                    {uni.name_fr}
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-slate-400 truncate">
+                    {uni.city_ar}
+                  </p>
+                </div>
               </Link>
             ))}
           </div>

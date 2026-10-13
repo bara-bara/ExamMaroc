@@ -4,10 +4,9 @@ import { Home, FileText, CheckCircle2, School, Search } from 'lucide-react';
 
 interface MobileBottomNavProps {
   onOpenSearch?: () => void;
-  isPhoneMode?: boolean;
 }
 
-export default function MobileBottomNav({ onOpenSearch, isPhoneMode = true }: MobileBottomNavProps) {
+export default function MobileBottomNav({ onOpenSearch }: MobileBottomNavProps) {
   const location = useLocation();
 
   const navItems = [
@@ -44,12 +43,8 @@ export default function MobileBottomNav({ onOpenSearch, isPhoneMode = true }: Mo
   return (
     <nav
       aria-label="التصفح السريع للهاتف"
-      className={`${
-        isPhoneMode
-          ? 'sticky bottom-0 z-40 w-full'
-          : 'fixed bottom-0 left-0 right-0 z-40 md:hidden'
-      } bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] shrink-0 transition-all`}
-      style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 4px)' }}
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] transition-all"
+      style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 6px)' }}
     >
       <div className="grid grid-cols-5 h-14 items-center px-1">
         {navItems.map((item) => {

@@ -34,7 +34,7 @@ const UNIVERSITIES_SEO = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-50/90 mt-8 sm:mt-16 text-slate-600">
+    <footer className="border-t border-slate-200 bg-slate-50/90 mt-8 sm:mt-16 text-slate-600 pb-20 md:pb-0">
       <div className="container-academic py-8 sm:py-12 lg:py-16">
         <div className="grid gap-6 sm:gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand info */}

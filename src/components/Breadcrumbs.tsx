@@ -13,7 +13,7 @@ interface BreadcrumbsProps {
 
 export default function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
-    <nav aria-label="breadcrumb" className="flex flex-wrap items-center gap-1.5 text-sm text-slate-500 py-1">
+    <nav aria-label="breadcrumb" className="flex items-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs text-slate-500 py-1 overflow-x-auto whitespace-nowrap scrollbar-none touch-pan-x">
       {items.map((item, idx) => {
         const isLast = idx === items.length - 1;
         return (

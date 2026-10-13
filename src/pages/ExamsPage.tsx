@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import {
   Filter,
   FileText,
@@ -37,6 +37,7 @@ export default function ExamsPage() {
   }>();
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const [currentUni, setCurrentUni] = useState<University | null>(null);
   const [currentProg, setCurrentProg] = useState<Program | null>(null);
@@ -378,7 +379,7 @@ export default function ExamsPage() {
                   onChange={(e) => {
                     const uSlug = e.target.value;
                     if (uSlug) {
-                      window.location.href = `/examens/${uSlug}`;
+                      navigate(`/examens/${uSlug}`);
                     }
                   }}
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs sm:text-sm text-slate-800 outline-none focus:border-blue-500 focus:bg-white"
