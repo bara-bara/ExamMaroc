@@ -295,7 +295,7 @@ export default function ExamDetailPage() {
       : 'نسخة واضحة قابلة للتحميل والطباعة للمراجعة والتحضير لامتحانات الكلية.'
   } مخصص لطلبة ${uni ? uni.name_ar : 'الجامعات المغربية'}${fac ? ` بكلية ${fac.name_ar}` : ''}${prog ? `، شعبة ${prog.name_ar}` : ''}.`;
 
-  const canonicalUrl = `https://exammaroc.online/examens/${exam.slug}`;
+  const canonicalUrl = `https://www.exammaroc.online/examens/${exam.slug}`;
   const pageUrl = canonicalUrl;
   const shareTitle = `${ctrTitle} - منصة ExamMaroc`;
 
@@ -347,7 +347,7 @@ export default function ExamDetailPage() {
             '@type': 'EducationalOrganization',
             name: uni.name_ar,
             alternateName: uni.name_fr,
-            url: `https://exammaroc.online/universites/${uni.slug}`,
+            url: `https://www.exammaroc.online/universites/${uni.slug}`,
           }
         : undefined,
       about: sub

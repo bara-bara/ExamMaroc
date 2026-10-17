@@ -42,7 +42,7 @@ export default function SearchPage() {
             : 'محرك البحث في امتحانات الجامعات المغربية [PDF مع التصحيح] | ExamMaroc'
         }
         description={`نتائج البحث وتحميل نماذج امتحانات ${query || 'الجامعات المغربية'} السابقة بصيغة PDF مع عناصر الإجابة والحلول المعتمدة مجاناً.`}
-        canonical={`https://exammaroc.online/search?q=${encodeURIComponent(query)}`}
+        canonical={`https://www.exammaroc.online/search?q=${encodeURIComponent(query)}`}
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'البحث', url: '/search' },

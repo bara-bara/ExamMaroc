@@ -9,7 +9,7 @@ export default function PrivacyPolicyPage() {
       <SEO
         title="سياسة الخصوصية - ExamMaroc"
         description="سياسة الخصوصية لمنصة ExamMaroc وكيفية معالجة بيانات الزوار واستخدام ملفات تعريف الارتباط والإعلانات."
-        canonical="https://exammaroc.online/privacy-policy"
+        canonical="https://www.exammaroc.online/privacy-policy"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'سياسة الخصوصية', url: '/privacy-policy' },

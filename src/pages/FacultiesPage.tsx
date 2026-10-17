@@ -54,7 +54,7 @@ export default function FacultiesPage() {
       <SEO
         title="دليل كليات المغرب الجامعية (FSJES, FS, FLSH, FST) ونماذج امتحاناتها [PDF] | ExamMaroc"
         description="دليل شامل لكليات ومؤسسات التعليم العالي بالجامعات المغربية الـ 12. تصفح كليات الحقوق والاقتصاد والعلوم والآداب والعلوم والتقنيات مع نماذج امتحانات كل مؤسسة مع عناصر الإجابة بصيغة PDF مجاناً."
-        canonical="https://exammaroc.online/etablissements"
+        canonical="https://www.exammaroc.online/etablissements"
         keywords={[
           'كليات المغرب الجامعية',
           'دليل كليات FSJES بالمغرب',

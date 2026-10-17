@@ -90,7 +90,7 @@ export default function ProgramDetailPage() {
         description={
           `نماذج امتحانات شعبة ${program.name_fr} (${program.name_ar}) بجامعة ${university.name_ar} للفصول S1 إلى S6. تحميل مباشر بصيغة PDF مع عناصر الإجابة والحلول المعتمدة مجاناً.`
         }
-        canonical={`https://exammaroc.online/universites/${university.slug}/${program.slug}`}
+        canonical={`https://www.exammaroc.online/universites/${university.slug}/${program.slug}`}
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'الجامعات', url: '/universites' },

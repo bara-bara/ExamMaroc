@@ -81,7 +81,7 @@ export default function CorrectedExamsPage() {
       <SEO
         title="امتحانات الجامعات المغربية المصححة 2026 مع عناصر الإجابة الرسمية [PDF مجاناً] | ExamMaroc"
         description="بنك نماذج امتحانات الجامعات المغربية المصححة (S1 إلى S6) بصيغة PDF. حلول نموذجية وعناصر الإجابة الرسمية لكليات الحقوق والاقتصاد والعلوم والآداب بالمغرب للدورة العادية والاستدراكية."
-        canonical="https://exammaroc.online/examens-corriges"
+        canonical="https://www.exammaroc.online/examens-corriges"
         keywords={[
           'امتحانات جامعية مصححة بالمغرب',
           'examens corriges universite maroc',

@@ -10,7 +10,7 @@ export default function TermsPage() {
       <SEO
         title="شروط الاستخدام - ExamMaroc"
         description="شروط استخدام منصة ExamMaroc لتنظيم ومشاركة الموارد التعليمية ونماذج الامتحانات الجامعية."
-        canonical="https://exammaroc.online/terms"
+        canonical="https://www.exammaroc.online/terms"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'شروط الاستخدام', url: '/terms' },

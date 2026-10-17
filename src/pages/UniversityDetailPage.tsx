@@ -194,7 +194,7 @@ export default function UniversityDetailPage({ defaultUniSlug }: UniversityDetai
       addressLocality: university.city,
       addressCountry: 'MA',
     },
-    url: `https://exammaroc.online/universites/${university.slug}`,
+    url: `https://www.exammaroc.online/universites/${university.slug}`,
   };
 
   return (
@@ -202,7 +202,7 @@ export default function UniversityDetailPage({ defaultUniSlug }: UniversityDetai
       <SEO
         title={pageTitle}
         description={pageDescription}
-        canonical={`https://exammaroc.online/universites/${university.slug}`}
+        canonical={`https://www.exammaroc.online/universites/${university.slug}`}
         keywords={
           isIbnZohr
             ? [

@@ -49,7 +49,7 @@ export default function LatestExamsPage() {
       <SEO
         title="أحدث نماذج امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً] | ExamMaroc"
         description="أحدث نماذج امتحانات الكليات والجامعات المغربية المضافة حديثاً. تصفح وحمّل نماذج الدورة العادية والاستدراكية مع عناصر الإجابة الرسمية بصيغة PDF مجاناً."
-        canonical="https://exammaroc.online/latest-exams"
+        canonical="https://www.exammaroc.online/latest-exams"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'آخر الامتحانات', url: '/latest-exams' },

@@ -116,7 +116,7 @@ export default function HomePage() {
       <SEO
         title="ExamMaroc - جميع نماذج امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً]"
         description="أكبر بنك لنماذج امتحانات الجامعات المغربية الـ 12 مع عناصر الإجابة والتصحيح الرسمي [PDF مجاناً]. ابحث وحمّل امتحانات S1 إلى S6 لجميع كليات الحقوق والاقتصاد والعلوم والآداب للدورة العادية والاستدراكية."
-        canonical="https://exammaroc.online/"
+        canonical="https://www.exammaroc.online/"
         keywords={[
           'امتحانات جامعية المغرب',
           'نماذج امتحانات الجامعات المغربية',
@@ -149,10 +149,10 @@ export default function HomePage() {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           name: 'ExamMaroc',
-          url: 'https://exammaroc.online',
+          url: 'https://www.exammaroc.online',
           potentialAction: {
             '@type': 'SearchAction',
-            target: 'https://exammaroc.online/search?q={search_term_string}',
+            target: 'https://www.exammaroc.online/search?q={search_term_string}',
             'query-input': 'required name=search_term_string',
           },
         }}

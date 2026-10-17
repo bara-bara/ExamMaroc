@@ -275,13 +275,13 @@ function generateHtmlForRoute({
         "@type": "ListItem",
         "position": 1,
         "name": "الرئيسية",
-        "item": "https://exammaroc.online/"
+        "item": "https://www.exammaroc.online/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "الجامعات المغربية",
-        "item": "https://exammaroc.online/universites"
+        "item": "https://www.exammaroc.online/universites"
       },
       {
         "@type": "ListItem",
@@ -395,7 +395,7 @@ function writeRoute(routePath, htmlContent) {
 // 1. Generate Universites for all 12 universities
 for (const uni of universitiesData) {
   const uniHtml = generateHtmlForRoute({
-    url: `https://exammaroc.online/universites/${uni.slug}`,
+    url: `https://www.exammaroc.online/universites/${uni.slug}`,
     title: uni.title,
     description: uni.description,
     keywords: uni.keywords || '',
@@ -465,7 +465,7 @@ const staticPages = [
 
 for (const p of staticPages) {
   const pageHtml = generateHtmlForRoute({
-    url: `https://exammaroc.online/${p.path}`,
+    url: `https://www.exammaroc.online/${p.path}`,
     title: p.title,
     description: p.description,
     h1: p.h1,

@@ -11,7 +11,7 @@ export default function AboutPage() {
       <SEO
         title="حول ExamMaroc - المنصة المغربية لنماذج الامتحانات الجامعية"
         description="ExamMaroc منصة مغربية تساعد الطلاب على الوصول إلى نماذج الامتحانات والموارد الدراسية بسهولة وبطريقة منظمة."
-        canonical="https://exammaroc.online/about"
+        canonical="https://www.exammaroc.online/about"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'حول الموقع', url: '/about' },

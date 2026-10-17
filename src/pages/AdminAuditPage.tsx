@@ -124,17 +124,17 @@ export default function AdminAuditPage() {
 
   const generatedSitemap = useMemo(() => {
     const urls = [
-      'https://exammaroc.online/',
-      'https://exammaroc.online/examens',
-      'https://exammaroc.online/examens-corriges',
-      'https://exammaroc.online/universites',
-      'https://exammaroc.online/etablissements',
-      'https://exammaroc.online/subjects',
-      'https://exammaroc.online/latest-exams',
+      'https://www.exammaroc.online/',
+      'https://www.exammaroc.online/examens',
+      'https://www.exammaroc.online/examens-corriges',
+      'https://www.exammaroc.online/universites',
+      'https://www.exammaroc.online/etablissements',
+      'https://www.exammaroc.online/subjects',
+      'https://www.exammaroc.online/latest-exams',
     ];
 
     exams.forEach((ex) => {
-      urls.push(`https://exammaroc.online/examens/${ex.slug}`);
+      urls.push(`https://www.exammaroc.online/examens/${ex.slug}`);
     });
 
     return `<?xml version="1.0" encoding="UTF-8"?>

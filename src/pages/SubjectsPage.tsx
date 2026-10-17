@@ -41,7 +41,7 @@ export default function SubjectsPage() {
       <SEO
         title="فهرس المواد الجامعية ونماذج امتحاناتها مع التصحيح [PDF مجاناً] | ExamMaroc"
         description="دليل مواد ووحدات كليات المغرب الجامعية (القانون، الاقتصاد، الرياضيات، الفيزياء، الإعلاميات، الآداب). تصفح وحمّل نماذج امتحانات كل مادة مع عناصر الإجابة بصيغة PDF مجاناً."
-        canonical="https://exammaroc.online/subjects"
+        canonical="https://www.exammaroc.online/subjects"
         breadcrumbs={[
           { name: 'الرئيسية', url: '/' },
           { name: 'المواد الدراسية', url: '/subjects' },

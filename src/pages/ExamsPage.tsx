@@ -236,7 +236,7 @@ export default function ExamsPage() {
       <SEO
         title={seoTitle}
         description={seoDescription}
-        canonical={window.location.pathname.startsWith('/examens') ? `https://exammaroc.online${window.location.pathname}` : 'https://exammaroc.online/examens'}
+        canonical={window.location.pathname.startsWith('/examens') ? `https://www.exammaroc.online${window.location.pathname}` : 'https://www.exammaroc.online/examens'}
         breadcrumbs={breadcrumbs.map((b) => ({
           name: b.label,
           url: b.to || window.location.pathname,
