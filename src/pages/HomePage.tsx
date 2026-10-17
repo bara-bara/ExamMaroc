@@ -24,17 +24,17 @@ import AdSlot from '../components/AdSlot';
 import SEO from '../components/SEO';
 
 const POPULAR_SEARCHES = [
+  'امتحانات جامعة ابن زهر',
+  'امتحانات كلية القانون ابن زهر',
+  'FSJES Agadir ابن زهر',
+  'استدعاء امتحانات ابن زهر Apogee',
   'امتحانات English S1',
   'القانون الجنائي S2',
   'Reading Comprehension S1',
   'Microéconomie 1 S1',
   'Grammar 1 S1',
   'المدخل لدراسة القانون S1',
-  'Paragraph Writing S1',
-  'الالتزامات والعقود S3',
   'Comptabilité Générale S1',
-  'صعوبات المقاولة S5',
-  'FSJES Agadir',
   'FLSH Agadir'
 ];
 
@@ -330,6 +330,77 @@ export default function HomePage() {
             </div>
           </section>
         )}
+
+        {/* Featured High-Authority Hub: Université Ibn Zohr Agadir (UIZ) */}
+        <section className="rounded-2xl sm:rounded-3xl border-2 border-blue-500/30 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white p-5 sm:p-8 shadow-md relative overflow-hidden">
+          <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
+          <div className="relative z-10 space-y-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <span className="chip bg-blue-500/20 text-blue-200 border border-blue-400/30 font-bold text-[11px] sm:text-xs">
+                    جامعة ابن زهر · UIZ Agadir 🇲🇦
+                  </span>
+                  <span className="chip bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 font-bold text-[11px] sm:text-xs">
+                    +121 نموذج PDF متوفر
+                  </span>
+                  <span className="chip bg-amber-500/20 text-amber-200 border border-amber-400/30 font-bold text-[11px] sm:text-xs">
+                    دليل استدعاء Apogee 2026
+                  </span>
+                </div>
+                <h2 className="font-heading text-xl sm:text-3xl font-black text-white leading-tight">
+                  امتحانات جامعة ابن زهر بأكادير والكليات التابعة لها (FSJES · FLSH · FSA)
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-3xl leading-relaxed">
+                  أكبر أرشيف لنماذج امتحانات كلية العلوم القانونية والاقتصادية بأكادير وأيت ملول، كلية الآداب، وكلية العلوم مع عناصر الإجابة، تواريخ الدورة العادية والاستدراكية، ودليل طبع الاستدعاء عبر أبوجي.
+                </p>
+              </div>
+
+              <Link
+                to="/universites/ibn-zohr"
+                className="shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 px-5 py-3 text-xs sm:text-sm font-bold text-white transition-all shadow-md"
+              >
+                <span>دخول قسم امتحانات ابن زهر</span>
+                <ArrowLeft className="h-4 w-4" />
+              </Link>
+            </div>
+
+            {/* Quick Filter links for Ibn Zohr */}
+            <div className="pt-3 border-t border-slate-800 flex flex-wrap items-center gap-2 text-xs">
+              <span className="text-slate-400 font-bold">أقسام ابن زهر السريعة:</span>
+              <Link
+                to="/universites/ibn-zohr"
+                className="chip bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10"
+              >
+                ⚖️ كلية القانون بالعربية (S1-S6)
+              </Link>
+              <Link
+                to="/universites/ibn-zohr"
+                className="chip bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10"
+              >
+                📊 كلية الاقتصاد والتدبير (FSJES)
+              </Link>
+              <Link
+                to="/universites/ibn-zohr"
+                className="chip bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10"
+              >
+                🔬 كلية العلوم بأكادير (FSA)
+              </Link>
+              <Link
+                to="/universites/ibn-zohr"
+                className="chip bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10"
+              >
+                📚 كلية الآداب والدراسات الإنجليزية
+              </Link>
+              <Link
+                to="/universites/ibn-zohr#convocation-guide"
+                className="chip bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/30"
+              >
+                🖨️ دليل استدعاء الامتحانات Apogee
+              </Link>
+            </div>
+          </div>
+        </section>
 
         {/* Banner: Corrected Exams Feature */}
         <section className="rounded-2xl sm:rounded-3xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-teal-50/50 to-white p-4 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 shadow-xs">

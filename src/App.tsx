@@ -42,6 +42,8 @@ export default function App() {
           <Route path="/universites/:uniSlug/:progSlug" element={<ProgramDetailPage />} />
           
           <Route path="/examens" element={<ExamsPage />} />
+          <Route path="/examens-ibn-zohr" element={<UniversityDetailPage defaultUniSlug="ibn-zohr" />} />
+          <Route path="/guide-examens-ibn-zohr" element={<UniversityDetailPage defaultUniSlug="ibn-zohr" />} />
           <Route path="/examens-corriges" element={<CorrectedExamsPage />} />
           <Route path="/etablissements" element={<FacultiesPage />} />
           <Route path="/facultes" element={<FacultiesPage />} />

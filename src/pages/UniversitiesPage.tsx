@@ -9,10 +9,28 @@ import SEO from '../components/SEO';
 
 export default function UniversitiesPage() {
   const [universities, setUniversities] = useState<University[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCity, setSelectedCity] = useState('ALL');
 
   useEffect(() => {
     setUniversities(StorageService.getUniversities());
   }, []);
+
+  const cities = Array.from(new Set(universities.map(u => u.city_ar.split(' ')[0]))).filter(Boolean);
+
+  const filteredUniversities = universities.filter((u) => {
+    const matchesSearch =
+      !searchQuery.trim() ||
+      u.name_ar.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      u.name_fr.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      u.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      u.city_ar.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (u.description && u.description.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    const matchesCity = selectedCity === 'ALL' || u.city_ar.includes(selectedCity);
+
+    return matchesSearch && matchesCity;
+  });
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -59,15 +77,73 @@ export default function UniversitiesPage() {
 
         <header className="mt-2 mb-5 sm:mt-4 sm:mb-8">
           <h1 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900">
-            الجامعات المغربية
+            الجامعات المغربية الـ 12
           </h1>
           <p className="mt-1 text-xs sm:text-sm text-slate-600">
-            تصفح نماذج الامتحانات والكليات حسب الجامعة في مختلف مدن المملكة.
+            تصفح وحمل نماذج امتحانات جميع كليات ومعاهد الجامعات المغربية العمومية مع التصحيح [PDF مجاناً].
           </p>
+
+          <div className="mt-4 flex flex-col sm:flex-row gap-2.5">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="ابحث عن جامعة، كلية، أو مدينة (مثلاً: ابن زهر، الرباط، أكادير، القاضي عياض...)"
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="px-3 py-2 text-xs text-slate-500 hover:text-slate-800 bg-slate-100 rounded-xl"
+              >
+                مسح
+              </button>
+            )}
+          </div>
+
+          <div className="mt-3 flex flex-wrap gap-1.5 items-center">
+            <span className="text-xs text-slate-500 font-medium ml-1">المدن:</span>
+            <button
+              onClick={() => setSelectedCity('ALL')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                selectedCity === 'ALL'
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              الكل ({universities.length})
+            </button>
+            {cities.map((city) => (
+              <button
+                key={city}
+                onClick={() => setSelectedCity(city)}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                  selectedCity === city
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                {city}
+              </button>
+            ))}
+          </div>
         </header>
 
-        <div className="grid gap-3.5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {universities.map((uni) => {
+        {filteredUniversities.length === 0 ? (
+          <div className="text-center py-12 bg-white rounded-2xl border border-slate-200">
+            <School className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+            <p className="text-slate-700 font-bold">لم نجد أي جامعة تطابق بحثك</p>
+            <p className="text-xs text-slate-400 mt-1">جرب البحث بكلمات أخرى أو عرض جميع الجامعات</p>
+            <button
+              onClick={() => { setSearchQuery(''); setSelectedCity('ALL'); }}
+              className="mt-4 px-4 py-2 text-xs bg-blue-50 text-blue-600 font-semibold rounded-xl hover:bg-blue-100"
+            >
+              عرض كل الجامعات
+            </button>
+          </div>
+        ) : (
+          <div className="grid gap-3.5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredUniversities.map((uni) => {
             const faculties = StorageService.getFaculties(uni.id);
             const examsCount = StorageService.getExams({ university_id: uni.id }).length;
 
@@ -143,6 +219,7 @@ export default function UniversitiesPage() {
             );
           })}
         </div>
+        )}
 
         <AdSlot />
       </div>
