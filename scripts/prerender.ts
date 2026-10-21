@@ -102,22 +102,36 @@ function generateHtml(cfg: RouteConfig): string {
 
   html = html.replace('</head>', `${schemaTags}\n</head>`);
 
-  // 6. Inject semantic HTML inside <div id="root">
+  // 6. Inject semantic HTML inside <div id="root"> only for sub-pages, keeping homepage clean to prevent FOUC flash
   const rootContent = `
-    <div style="max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #1e293b;">
-      <nav aria-label="Breadcrumb" style="font-size: 0.875rem; margin-bottom: 1.5rem; color: #64748b;">
-        ${cfg.breadcrumbs.map((b, i) => `
-          ${i > 0 ? ' <span style="margin: 0 0.25rem;">&gt;</span> ' : ''}
-          <a href="${b.url.replace(BASE_URL, '') || '/'}" style="color: #2563eb; text-decoration: none;">${escapeHtml(b.name)}</a>
-        `).join('')}
-      </nav>
-      <header style="margin-bottom: 2rem;">
-        <h1 style="font-size: 2rem; font-weight: 800; color: #0f172a; line-height: 1.3; margin-bottom: 0.75rem;">${escapeHtml(cfg.h1)}</h1>
-        <p style="font-size: 1.1rem; color: #475569; line-height: 1.7;">${escapeHtml(cfg.description)}</p>
+    <div style="min-height: 100vh; background-color: #F8FAFC; color: #0F172A; font-family: system-ui, -apple-system, sans-serif; line-height: 1.6;">
+      <header style="background: #FFFFFF; border-bottom: 1px solid #E2E8F0; padding: 0.85rem 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+        <a href="/" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: #0F172A; font-weight: 800; font-size: 1.1rem;">
+          <span style="background: #2563EB; color: white; padding: 0.2rem 0.5rem; border-radius: 0.375rem; font-size: 0.8rem; font-weight: 900;">EM</span>
+          <span>ExamMaroc</span>
+        </a>
+        <nav style="display: flex; gap: 1rem; font-size: 0.85rem;">
+          <a href="/" style="color: #475569; text-decoration: none; font-weight: 600;">الرئيسية</a>
+          <a href="/universites" style="color: #475569; text-decoration: none; font-weight: 600;">الجامعات</a>
+          <a href="/examens" style="color: #475569; text-decoration: none; font-weight: 600;">الامتحانات</a>
+          <a href="/examens-corriges" style="color: #2563EB; text-decoration: none; font-weight: 700;">المصححة</a>
+        </nav>
       </header>
-      ${cfg.bodyHtml}
-      <footer style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; font-size: 0.875rem; color: #94a3b8; text-align: center;">
-        <p>منصة ExamMaroc - الأرشيف الأكاديمي المفتوح لنماذج امتحانات الجامعات المغربية الـ 12 مع التصحيح الرسمي بصيغة PDF مجاناً.</p>
+      <main style="max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem;">
+        <nav aria-label="Breadcrumb" style="font-size: 0.875rem; margin-bottom: 1.5rem; color: #64748b;">
+          ${cfg.breadcrumbs.map((b, i) => `
+            ${i > 0 ? ' <span style="margin: 0 0.25rem;">&gt;</span> ' : ''}
+            <a href="${b.url.replace(BASE_URL, '') || '/'}" style="color: #2563eb; text-decoration: none;">${escapeHtml(b.name)}</a>
+          `).join('')}
+        </nav>
+        <header style="margin-bottom: 2rem;">
+          <h1 style="font-size: 2rem; font-weight: 800; color: #0f172a; line-height: 1.3; margin-bottom: 0.75rem;">${escapeHtml(cfg.h1)}</h1>
+          <p style="font-size: 1.1rem; color: #475569; line-height: 1.7;">${escapeHtml(cfg.description)}</p>
+        </header>
+        ${cfg.bodyHtml}
+      </main>
+      <footer style="margin-top: 3rem; padding: 2rem 1rem; border-top: 1px solid #e2e8f0; font-size: 0.875rem; color: #94a3b8; text-align: center; background: #FFFFFF;">
+        <p>منصة ExamMaroc - الأرشيف الأكاديمي المفتوح لجميع امتحانات الجامعات المغربية الـ 12 مع التصحيح الرسمي بصيغة PDF مجاناً.</p>
         <p style="margin-top: 0.5rem;">
           <a href="/universites" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">الجامعات المغربية</a> |
           <a href="/examens" style="color: #2563eb; text-decoration: none; margin: 0 0.5rem;">جميع الامتحانات</a> |
@@ -128,7 +142,10 @@ function generateHtml(cfg: RouteConfig): string {
     </div>
   `;
 
-  html = html.replace('<div id="root"></div>', `<div id="root">${rootContent}</div>`);
+  // On the homepage, keep root clean so React mounts with zero flash/FOUC
+  if (cfg.relativePath !== '') {
+    html = html.replace('<div id="root"></div>', `<div id="root">${rootContent}</div>`);
+  }
   return html;
 }
 
@@ -158,9 +175,9 @@ function recordUrl(loc: string, priority: string = '0.8', changefreq: string = '
 const hubs = [
   {
     path: '',
-    title: 'ExamMaroc - جميع نماذج امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً]',
-    description: 'أكبر بنك لنماذج امتحانات الجامعات المغربية الـ 12 مع عناصر الإجابة والحلول المعتمدة بصيغة PDF مجاناً. كليات القانون، الاقتصاد، الآداب، والعلوم.',
-    h1: 'بنك نماذج امتحانات الجامعات المغربية 2026 مع التصحيح PDF',
+    title: 'ExamMaroc - جميع امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً]',
+    description: 'أكبر بنك لجميع امتحانات الجامعات المغربية الـ 12 مع عناصر الإجابة والحلول المعتمدة بصيغة PDF مجاناً. كليات القانون، الاقتصاد، الآداب، والعلوم.',
+    h1: 'جميع امتحانات الجامعات المغربية في مكان واحد',
     priority: '1.0',
     changefreq: 'daily',
     body: `
@@ -179,6 +196,60 @@ const hubs = [
           <h2 style="font-size: 1.25rem; font-weight: bold; color: #1e293b; margin-bottom: 0.5rem;">✅ الامتحانات المصححة رسمياً</h2>
           <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1rem;">نماذج مصححة بعناصر الإجابة وسلم التنقيط المعتمد للتحضير المتفوق لاجتياز الاختبارات.</p>
           <a href="/examens-corriges" style="color: #2563eb; font-weight: bold; text-decoration: none;">تصفح النماذج المصححة &larr;</a>
+        </div>
+      </section>
+
+      <!-- Moroccan Student Keywords Directory Matrix -->
+      <section style="margin: 2.5rem 0; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem;">🔥 بنك الكلمات والمواد الأكثر بحثاً للطلبة والتلاميذ بالمغرب</h2>
+        <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1.5rem;">تصفح امتحانات أكثر من 50 مادة وشعبة الأكثر طلباً في كليات ومعاهد المملكة المغربية بصيغة PDF مع التصحيح:</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+          <div style="background: white; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+            <h3 style="font-weight: 800; font-size: 1.05rem; color: #047857; margin-bottom: 0.75rem;">⚖️ القانون باللغة العربية (FSJES)</h3>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.875rem; line-height: 2;">
+              <li><a href="/examens?semester=S1&q=المدخل+لدراسة+القانون" style="color: #2563eb; text-decoration: none;">المدخل لدراسة القانون S1</a></li>
+              <li><a href="/examens?semester=S1&q=المدخل+للشريعة+الإسلامية" style="color: #2563eb; text-decoration: none;">المدخل للشريعة الإسلامية S1</a></li>
+              <li><a href="/examens?semester=S2&q=الالتزامات+والعقود" style="color: #2563eb; text-decoration: none;">النظرية العامة للالتزامات والعقود S2</a></li>
+              <li><a href="/examens?semester=S2&q=القانون+الجنائي+العام" style="color: #2563eb; text-decoration: none;">القانون الجنائي العام S2</a></li>
+              <li><a href="/examens?semester=S2&q=القانون+الدستوري" style="color: #2563eb; text-decoration: none;">القانون الدستوري والأنظمة السياسية S2</a></li>
+              <li><a href="/examens?semester=S3&q=المسطرة+المدنية" style="color: #2563eb; text-decoration: none;">المسطرة المدنية والجنائية S3</a></li>
+              <li><a href="/examens?semester=S3&q=المسؤولية+المدنية" style="color: #2563eb; text-decoration: none;">المسؤولية المدنية S3</a></li>
+              <li><a href="/examens?semester=S4&q=قانون+الشركات" style="color: #2563eb; text-decoration: none;">قانون الشركات التجارية S4</a></li>
+              <li><a href="/examens?semester=S5&q=صعوبات+المقاولة" style="color: #2563eb; text-decoration: none;">صعوبات المقاولة S5</a></li>
+              <li><a href="/examens?semester=S6&q=المواريث+والتركات" style="color: #2563eb; text-decoration: none;">المواريث والتركات S6</a></li>
+            </ul>
+          </div>
+
+          <div style="background: white; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+            <h3 style="font-weight: 800; font-size: 1.05rem; color: #1d4ed8; margin-bottom: 0.75rem;">📊 الاقتصاد والتدبير (Sciences Éco)</h3>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.875rem; line-height: 2;">
+              <li><a href="/examens?semester=S1&q=Microéconomie" style="color: #2563eb; text-decoration: none;">Microéconomie 1 S1</a></li>
+              <li><a href="/examens?semester=S1&q=Macroéconomie" style="color: #2563eb; text-decoration: none;">Macroéconomie 1 S1</a></li>
+              <li><a href="/examens?semester=S1&q=Comptabilité+Générale" style="color: #2563eb; text-decoration: none;">Comptabilité Générale S1</a></li>
+              <li><a href="/examens?semester=S1&q=Management" style="color: #2563eb; text-decoration: none;">Management 1 S1</a></li>
+              <li><a href="/examens?semester=S2&q=Algèbre" style="color: #2563eb; text-decoration: none;">Algèbre & Mathématiques S2</a></li>
+              <li><a href="/examens?semester=S3&q=Économie+Monétaire" style="color: #2563eb; text-decoration: none;">Économie Monétaire 1 S3</a></li>
+              <li><a href="/examens?semester=S3&q=Comptabilité+Analytique" style="color: #2563eb; text-decoration: none;">Comptabilité Analytique S3</a></li>
+              <li><a href="/examens?semester=S3&q=Marketing" style="color: #2563eb; text-decoration: none;">Marketing Fondamental S3</a></li>
+              <li><a href="/examens?semester=S4&q=Analyse+Financière" style="color: #2563eb; text-decoration: none;">Analyse Financière S4</a></li>
+              <li><a href="/examens?semester=S5&q=Fiscalité" style="color: #2563eb; text-decoration: none;">Fiscalité des Entreprises S5</a></li>
+            </ul>
+          </div>
+
+          <div style="background: white; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+            <h3 style="font-weight: 800; font-size: 1.05rem; color: #7e22ce; margin-bottom: 0.75rem;">🔬 العلوم والآداب (Sciences & FLSH)</h3>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.875rem; line-height: 2;">
+              <li><a href="/examens?semester=S1&q=Reading+Comprehension" style="color: #2563eb; text-decoration: none;">Reading Comprehension S1 (English)</a></li>
+              <li><a href="/examens?semester=S1&q=Grammar" style="color: #2563eb; text-decoration: none;">Grammar 1 S1 (English Studies)</a></li>
+              <li><a href="/examens?semester=S1&q=Analyse" style="color: #2563eb; text-decoration: none;">Analyse 1 S1 (SMIA/SMPC)</a></li>
+              <li><a href="/examens?semester=S1&q=Algèbre" style="color: #2563eb; text-decoration: none;">Algèbre 1 S1</a></li>
+              <li><a href="/examens?semester=S1&q=Mécanique" style="color: #2563eb; text-decoration: none;">Mécanique du Point S1</a></li>
+              <li><a href="/examens?semester=S1&q=Thermodynamique" style="color: #2563eb; text-decoration: none;">Thermodynamique S1</a></li>
+              <li><a href="/examens?semester=S2&q=Algorithmique" style="color: #2563eb; text-decoration: none;">Algorithmique et Langage C S2</a></li>
+              <li><a href="/examens?semester=S3&q=Bases+de+Données" style="color: #2563eb; text-decoration: none;">Bases de Données (SQL) S3</a></li>
+            </ul>
+          </div>
         </div>
       </section>
     `

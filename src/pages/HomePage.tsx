@@ -20,21 +20,25 @@ import {
 import { StorageService, EnrichedExam } from '../services/storageService';
 import { University, Subject } from '../data/initialData';
 import ExamCard from '../components/ExamCard';
+import StudentKeywordsHub from '../components/StudentKeywordsHub';
 import AdSlot from '../components/AdSlot';
 import SEO from '../components/SEO';
 
 const POPULAR_SEARCHES = [
   'امتحانات جامعة ابن زهر',
-  'امتحانات كلية القانون ابن زهر',
-  'FSJES Agadir ابن زهر',
+  'الالتزامات والعقود S2',
+  'المدخل لدراسة القانون S1',
   'استدعاء امتحانات ابن زهر Apogee',
-  'امتحانات English S1',
+  'Microéconomie 1 S1',
+  'امتحانات كلية القانون ابن زهر',
+  'Comptabilité Générale S1',
+  'FSJES Agadir ابن زهر',
   'القانون الجنائي S2',
   'Reading Comprehension S1',
-  'Microéconomie 1 S1',
+  'المسطرة المدنية والجنائية S3',
+  'مباريات الماستر بالمغرب',
   'Grammar 1 S1',
-  'المدخل لدراسة القانون S1',
-  'Comptabilité Générale S1',
+  'كلية الحقوق أكدال الرباط',
   'FLSH Agadir'
 ];
 
@@ -114,7 +118,7 @@ export default function HomePage() {
   return (
     <>
       <SEO
-        title="ExamMaroc - جميع نماذج امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً]"
+        title="ExamMaroc - جميع امتحانات الجامعات المغربية 2026 مع التصحيح [PDF مجاناً]"
         description="أكبر بنك لنماذج امتحانات الجامعات المغربية الـ 12 مع عناصر الإجابة والتصحيح الرسمي [PDF مجاناً]. ابحث وحمّل امتحانات S1 إلى S6 لجميع كليات الحقوق والاقتصاد والعلوم والآداب للدورة العادية والاستدراكية."
         canonical="https://www.exammaroc.online/"
         keywords={[
@@ -167,7 +171,7 @@ export default function HomePage() {
           </div>
 
           <h1 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto leading-tight sm:leading-tight">
-            جميع نماذج امتحانات الجامعات المغربية في مكان واحد
+            جميع امتحانات الجامعات المغربية في مكان واحد
           </h1>
 
           <p className="mt-3 sm:mt-4 text-xs sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
@@ -270,6 +274,9 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+
+        {/* Moroccan Student Keywords & Fast Directory Hub */}
+        <StudentKeywordsHub />
 
         {/* Dedicated High-Traffic Niche: English Studies S1 Section */}
         {englishExams.length > 0 && (
