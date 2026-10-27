@@ -12,12 +12,12 @@ import {
 } from '../data/initialData';
 
 const STORAGE_KEYS = {
-  UNIVERSITIES: 'exammaroc_universities_v3',
-  FACULTIES: 'exammaroc_faculties_v3',
-  PROGRAMS: 'exammaroc_programs_v3',
-  SUBJECTS: 'exammaroc_subjects_v3',
-  EXAMS: 'exammaroc_exams_v3',
-  REPORTS: 'exammaroc_reports_v1',
+  UNIVERSITIES: 'exammaroc_universities_v5',
+  FACULTIES: 'exammaroc_faculties_v5',
+  PROGRAMS: 'exammaroc_programs_v5',
+  SUBJECTS: 'exammaroc_subjects_v5',
+  EXAMS: 'exammaroc_exams_v5',
+  REPORTS: 'exammaroc_reports_v3',
 };
 
 export interface ExamReport {
@@ -40,19 +40,29 @@ function getStoredOrInit<T extends { id: string }>(key: string, initial: T[]): T
     }
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed) && parsed.length > 0) {
-      // Auto-merge: keep existing items + append any newly added initial items by id
-      const existingIds = new Set(parsed.map((p: any) => p.id));
-      let hasNew = false;
-      const merged = [...parsed];
-      for (const item of initial) {
-        if (!existingIds.has(item.id)) {
-          merged.push(item);
-          hasNew = true;
+      // Reconcile and purge any non-working or deleted items
+      const initialMap = new Map(initial.map((item) => [item.id, item]));
+
+      // Only retain items that are present in the verified initial array
+      const validStored = parsed.filter((storedItem: any) => initialMap.has(storedItem.id));
+      const validStoredMap = new Map(validStored.map((s: any) => [s.id, s]));
+
+      const merged: T[] = initial.map((freshItem) => {
+        const stored = validStoredMap.get(freshItem.id);
+        if (stored) {
+          return {
+            ...freshItem,
+            ...stored,
+            // Keep fresh verified url
+            source_url: (freshItem as any).source_url || (stored as any).source_url,
+            verification_status: 'verified',
+            download_count: Math.max((stored as any).download_count || 0, (freshItem as any).download_count || 0),
+          };
         }
-      }
-      if (hasNew) {
-        localStorage.setItem(key, JSON.stringify(merged));
-      }
+        return freshItem;
+      });
+
+      localStorage.setItem(key, JSON.stringify(merged));
       return merged;
     }
     localStorage.setItem(key, JSON.stringify(initial));

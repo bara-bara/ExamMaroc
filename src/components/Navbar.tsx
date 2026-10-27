@@ -19,6 +19,7 @@ import { StorageService } from '../services/storageService';
 const NAV_LINKS = [
   { to: '/', label: 'الرئيسية' },
   { to: '/examens-corriges', label: 'الامتحانات المصححة', badge: 'جديد' },
+  { to: '/examens-master-maroc', label: 'مباريات الماستر', badge: 'هام' },
   { to: '/examens', label: 'بنك الامتحانات' },
   { to: '/universites', label: 'الجامعات الـ 12' },
   { to: '/etablissements', label: 'الكليات والمؤسسات' },

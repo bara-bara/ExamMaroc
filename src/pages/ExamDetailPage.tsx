@@ -64,8 +64,8 @@ export default function ExamDetailPage() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Report Modal State
   const [isReportOpen, setIsReportOpen] = useState(false);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const [reportType, setReportType] = useState<'broken_link' | 'wrong_file' | 'missing_pages' | 'suggest_correction' | 'other'>('broken_link');
   const [reportDetails, setReportDetails] = useState('');
   const [reportContact, setReportContact] = useState('');
@@ -197,55 +197,7 @@ export default function ExamDetailPage() {
   };
 
   const handlePrintablePaper = () => {
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html dir="rtl" lang="ar">
-        <head>
-          <meta charset="utf-8">
-          <title>${exam.title}</title>
-          <style>
-            body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; color: #0f172a; max-width: 800px; margin: 0 auto; line-height: 1.6; }
-            .header { border-bottom: 3px double #0284c7; padding-bottom: 20px; margin-bottom: 25px; text-align: center; }
-            .title { font-size: 20px; font-weight: bold; color: #0f172a; margin: 12px 0; }
-            .badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 9999px; font-size: 13px; font-weight: bold; margin: 2px; }
-            .content { border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; background: #ffffff; }
-            .corr-box { background: #ecfdf5; border: 1px solid #a7f3d0; padding: 16px; border-radius: 6px; margin: 20px 0; }
-            .btn-print { background: #059669; color: white; border: none; padding: 10px 24px; font-size: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; }
-            @media print { .btn-print { display: none; } }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h3>المملكة المغربية — وزارة التعليم العالي والبحث العلمي</h3>
-            <h4>${uni ? uni.name_ar : 'الجامعة المغربية'} ${fac ? `— ${fac.name_ar}` : ''}</h4>
-            <div class="title">${exam.title}</div>
-            <div>
-              <span class="badge">${exam.semester}</span>
-              <span class="badge">${exam.session === 'normale' ? 'الدورة العادية' : 'الدورة الاستدراكية'}</span>
-              <span class="badge">السنة: ${exam.year}</span>
-              ${exam.correction_type !== 'sans_corrige' ? '<span class="badge" style="background:#dcfce7;color:#15803d;">يتوفر على عناصر الإجابة</span>' : ''}
-            </div>
-          </div>
-          <div class="content">
-            <h4>📄 موضوع أسئلة الامتحان:</h4>
-            <p>${exam.description || 'نموذج امتحان رسمي موثق.'}</p>
-            ${exam.correction_notes ? `<div class="corr-box"><strong>📌 عناصر الإجابة والملاحظات:</strong><p>${exam.correction_notes}</p></div>` : ''}
-            <hr style="margin: 20px 0; border: none; border-top: 1px dashed #cbd5e1;" />
-            <p><strong>توجيهات للطلبة:</strong></p>
-            <ul>
-              <li>التأكد من ملء البيانات الشخصية ورقم الامتحان بدقة.</li>
-              <li>الإجابة بخط مقروء ومنظم مع تعليل الأجوبة القانونية أو الرياضية.</li>
-              <li>مدة الإنجاز: ساعتان (2h00).</li>
-            </ul>
-            <button class="btn-print" onclick="window.print()">طباعة / حفظ كـ PDF</button>
-          </div>
-        </body>
-        </html>
-      `);
-      printWindow.document.close();
-    }
+    setIsPrintModalOpen(true);
   };
 
   const handleCopyLink = () => {
@@ -572,11 +524,28 @@ export default function ExamDetailPage() {
                   </div>
                 </div>
               ) : embedUrl && !embedUrl.match(/\.(jpg|jpeg|png|webp)($|\?)/i) ? (
-                <div className="relative w-full h-[50vh] sm:h-[65vh] min-h-[340px] sm:min-h-[500px] bg-slate-100">
+                <div className="relative w-full h-[50vh] sm:h-[65vh] min-h-[340px] sm:min-h-[500px] bg-slate-100 flex flex-col">
+                  {exam.source_url && (
+                    <div className="bg-slate-100/90 border-b border-slate-200 px-3.5 py-1.5 flex items-center justify-between text-xs text-slate-700">
+                      <span className="flex items-center gap-1.5 text-[11px] text-slate-600">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                        <span>معاينة المستند عبر قارئ السحابة (Google Drive)</span>
+                      </span>
+                      <a
+                        href={exam.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <span>فتح في نافذة كاملة</span>
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </div>
+                  )}
                   <iframe
                     src={embedUrl}
                     title={exam.title}
-                    className="w-full h-full border-0"
+                    className="w-full flex-1 border-0"
                     allow="autoplay"
                   />
                 </div>
@@ -1140,6 +1109,114 @@ export default function ExamDetailPage() {
                 </div>
               </form>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* In-App Printable Paper Modal */}
+      {isPrintModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-3xl rounded-2xl bg-white p-6 sm:p-8 shadow-2xl border border-slate-200 my-8">
+            <button
+              onClick={() => setIsPrintModalOpen(false)}
+              className="absolute left-4 top-4 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              title="إغلاق"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* Official University Paper Header */}
+            <div className="text-center border-b-2 border-slate-900 pb-5 mb-6">
+              <h3 className="font-heading font-extrabold text-sm sm:text-base text-slate-900">
+                المملكة المغربية — وزارة التعليم العالي والبحث العلمي والابتكار
+              </h3>
+              <h4 className="font-heading font-bold text-xs sm:text-sm text-slate-700 mt-1">
+                {uni ? uni.name_ar : 'الجامعة المغربية'} {fac ? `— ${fac.name_ar}` : ''}
+              </h4>
+              <div className="mt-3 text-lg sm:text-xl font-black text-slate-900">
+                {exam.title}
+              </div>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+                <span className="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-bold text-slate-700">
+                  الفصل: {exam.semester}
+                </span>
+                <span className="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-bold text-slate-700">
+                  الدورة: {SESSION_LABELS[exam.session] || exam.session}
+                </span>
+                <span className="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-bold text-slate-700">
+                  السنة الجامعية: {exam.year}
+                </span>
+                {exam.correction_type !== 'sans_corrige' && (
+                  <span className="rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-bold text-emerald-800">
+                    مرفق بعناصر الإجابة
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Exam Body */}
+            <div className="space-y-4 text-slate-800 text-sm leading-relaxed">
+              <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+                <h5 className="font-heading font-bold text-xs sm:text-sm text-slate-900 mb-2 flex items-center gap-1.5">
+                  <FileText className="h-4 w-4 text-blue-600" />
+                  <span>نص موضوع أسئلة الامتحان:</span>
+                </h5>
+                <p className="text-xs sm:text-sm text-slate-700 whitespace-pre-line leading-relaxed">
+                  {exam.description || 'ورقة موضوع الامتحان الرسمي للدورة العادية والاستدراكية.'}
+                </p>
+              </div>
+
+              {exam.correction_notes && (
+                <div className="rounded-xl border border-emerald-200 bg-emerald-50/80 p-4">
+                  <h5 className="font-heading font-bold text-xs sm:text-sm text-emerald-900 mb-2 flex items-center gap-1.5">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-700" />
+                    <span>عناصر الإجابة وسلم التنقيط المعتمد:</span>
+                  </h5>
+                  <p className="text-xs sm:text-sm text-emerald-950 whitespace-pre-line leading-relaxed">
+                    {exam.correction_notes}
+                  </p>
+                </div>
+              )}
+
+              <div className="border-t border-dashed border-slate-200 pt-3 text-xs text-slate-500">
+                <div className="font-bold text-slate-700 mb-1">تعليمات للمترشحين:</div>
+                <ul className="list-disc list-inside space-y-0.5">
+                  <li>كتابة الاسم الكامل ورقم التسجيل بدقة في المكان المخصص على ورقة التحرير.</li>
+                  <li>تنظيم الأجوبة وتفادي التشطيب مع تعليل التحليل القانوني أو الرياضي.</li>
+                  <li>مدة الإنجاز: ساعتان (2h00).</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-4">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-5 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-blue-700 transition-colors shadow-sm"
+                >
+                  <Printer className="h-4 w-4" />
+                  <span>طباعة ورقة الامتحان فوراً</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-emerald-700 transition-colors"
+                >
+                  <Download className="h-4 w-4" />
+                  <span>تحميل PDF الأصلي</span>
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsPrintModalOpen(false)}
+                className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition-colors"
+              >
+                إغلاق
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -352,6 +352,124 @@ const hubs = [
         `).join('')}
       </section>
     `
+  },
+  {
+    path: 'examens-master-maroc',
+    title: 'نماذج امتحانات ولوج الماستر بالجامعات المغربية مع التصحيح PDF | ExamMaroc',
+    description: 'تحميل نماذج امتحانات مباريات ولوج الماستر بالجامعات المغربية (FSJES، FLSH، FS) بصيغة PDF مجاناً مع التصحيحات النموذجية ومنهجية اجتياز الاختبارات الكتابية والشفوية.',
+    h1: 'نماذج امتحانات ولوج الماستر بالجامعات المغربية مع عناصر الإجابة',
+    priority: '0.98',
+    changefreq: 'daily',
+    body: `
+      <section style="margin: 2rem 0;">
+        <h2 style="font-size: 1.35rem; font-weight: bold; color: #0f172a; margin-bottom: 1rem;">🎓 مستودع مباريات الماستر والماستر المتخصص بالمغرب</h2>
+        <p style="color: #475569; font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem;">تجميعة شاملة لمواضيع الاختبارات الكتابية لمباريات سلك الماستر بكليات العلوم القانونية والاقتصادية والآداب والعلوم مع عناصر الإجابة وشبكات التنقيط المعتمدة.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-size: 1.1rem; font-weight: bold; color: #1e293b;">⚖️ ماستر القانون الخاص والعام</h3>
+            <p style="color: #64748b; font-size: 0.875rem; margin: 0.5rem 0;">قانون الأعمال، القانون المدني والمعاملات الإلكترونية، العلوم الجنائية، المنازعات العمومية.</p>
+            <a href="/examens?semester=Master&q=قانون" style="color: #2563eb; font-weight: 600; font-size: 0.875rem; text-decoration: none;">تحميل نماذج ماستر القانون &larr;</a>
+          </div>
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-size: 1.1rem; font-weight: bold; color: #1e293b;">📊 ماستر الاقتصاد والتدبير والمالية</h3>
+            <p style="color: #64748b; font-size: 0.875rem; margin: 0.5rem 0;">المالية والبنك، التدقيق ومراقبة التسيير، اللوجستيك وسلاسل الإمداد، التسويق الرقمي.</p>
+            <a href="/examens?semester=Master&q=Finance" style="color: #2563eb; font-weight: 600; font-size: 0.875rem; text-decoration: none;">تحميل نماذج ماستر الاقتصاد &larr;</a>
+          </div>
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-size: 1.1rem; font-weight: bold; color: #1e293b;">🔬 ماستر العلوم الدقيقة والتطبيقية</h3>
+            <p style="color: #64748b; font-size: 0.875rem; margin: 0.5rem 0;">الذكاء الاصطناعي وعلوم البيانات، أمن الأنظمة المعلوماتية، الرياضيات التطبيقية.</p>
+            <a href="/examens?semester=Master&q=Informatique" style="color: #2563eb; font-weight: 600; font-size: 0.875rem; text-decoration: none;">تحميل نماذج ماستر العلوم &larr;</a>
+          </div>
+        </div>
+      </section>
+    `
+  },
+  {
+    path: 'examens/droit-arabe',
+    title: 'امتحانات شعبة القانون باللغة العربية S1-S6 مع التصحيح PDF | ExamMaroc',
+    description: 'أرشيف شامل لجميع نماذج امتحانات شعبة القانون باللغة العربية بجميع كليات الحقوق المغربية (FSJES) من الفصل الأول S1 إلى الفصل السادس S6 بصيغة PDF مع عناصر الإجابة والتصحيحات الرسمية مجاناً.',
+    h1: 'امتحانات شعبة القانون باللغة العربية S1-S6 مع عناصر الإجابة الرسمية',
+    priority: '0.98',
+    changefreq: 'daily',
+    body: `
+      <section style="margin: 2rem 0;">
+        <p style="font-size: 1.05rem; color: #475569; line-height: 1.7; margin-bottom: 1.5rem;">أكبر قاعدة بيانات مغربية لنماذج امتحانات كلية العلوم القانونية والاقتصادية والاجتماعية لجميع فصول الإجازة في القانون باللغة العربية مع التصحيح الرسمي وسلم التنقيط.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-weight: bold; color: #1e293b;">الفصل الأول S1</h3>
+            <p style="font-size: 0.875rem; color: #64748b;">المدخل لدراسة القانون، الشريعة الإسلامية، العلوم السياسية، العلاقات الدولية.</p>
+            <a href="/examens?semester=S1&q=قانون" style="color: #2563eb; font-weight: bold; text-decoration: none; font-size: 0.875rem;">نماذج الفصل S1 &larr;</a>
+          </div>
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-weight: bold; color: #1e293b;">الفصل الثاني S2</h3>
+            <p style="font-size: 0.875rem; color: #64748b;">النظرية العامة للالتزامات والعقود، القانون الجنائي العام، القانون الدستوري.</p>
+            <a href="/examens?semester=S2&q=قانون" style="color: #2563eb; font-weight: bold; text-decoration: none; font-size: 0.875rem;">نماذج الفصل S2 &larr;</a>
+          </div>
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-weight: bold; color: #1e293b;">الفصل الثالث والرابع S3-S4</h3>
+            <p style="font-size: 0.875rem; color: #64748b;">المسؤولية المدنية، قانون الميزانية، قانون الشركات، التنظيم القضائي.</p>
+            <a href="/examens?semester=S3&q=قانون" style="color: #2563eb; font-weight: bold; text-decoration: none; font-size: 0.875rem;">نماذج الفصول S3-S4 &larr;</a>
+          </div>
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-weight: bold; color: #1e293b;">الفصل الخامس والسادس S5-S6</h3>
+            <p style="font-size: 0.875rem; color: #64748b;">العقود الخاصة، صعوبات المقاولة، المسطرة المدنية والجنائية، القانون العقاري.</p>
+            <a href="/examens?semester=S5&q=قانون" style="color: #2563eb; font-weight: bold; text-decoration: none; font-size: 0.875rem;">نماذج الفصول S5-S6 &larr;</a>
+          </div>
+        </div>
+      </section>
+    `
+  },
+  {
+    path: 'examens/economie-gestion',
+    title: 'امتحانات شعبة الاقتصاد والتدبير S1-S6 مع التصحيح PDF | ExamMaroc',
+    description: 'تحميل جميع نماذج امتحانات شعبة الاقتصاد والتدبير (Économie & Gestion) من الفصل S1 إلى S6 لجميع الكليات والمدارس المغربية بصيغة PDF مع حلول التمارين وعناصر الإجابة الرسمية.',
+    h1: 'امتحانات شعبة الاقتصاد والتدبير (Économie & Gestion) مع التصحيح PDF',
+    priority: '0.98',
+    changefreq: 'daily',
+    body: `
+      <section style="margin: 2rem 0;">
+        <p style="font-size: 1.05rem; color: #475569; line-height: 1.7; margin-bottom: 1.5rem;">نماذج امتحانات المحاسبة العامة، الاقتصاد الجزئي والكلي، التحليل المالي، والإحصاء لطلبة كليات FSJES ومدارس ENCG بصيغة PDF مع التصحيح الرياضي المفصل.</p>
+      </section>
+    `
+  },
+  {
+    path: 'examens/sciences-technologies',
+    title: 'امتحانات كليات العلوم والتقنيات SMIA SMP SMC مع الحلول PDF | ExamMaroc',
+    description: 'أرشيف امتحانات كليات العلوم المغربية (FS & FST) لمسالك الرياضيات والإعلاميات SMIA والفيزياء SMP والكيمياء SMC من S1 إلى S6 بصيغة PDF مع عناصر الإجابة والحلول البرمجية والفيزيائية.',
+    h1: 'امتحانات كليات العلوم والتقنيات (SMIA, SMP, SMC) مع التصحيح PDF',
+    priority: '0.98',
+    changefreq: 'daily',
+    body: `
+      <section style="margin: 2rem 0;">
+        <p style="font-size: 1.05rem; color: #475569; line-height: 1.7; margin-bottom: 1.5rem;">تحميل امتحانات الرياضيات، الإعلاميات والفيزياء: Analyse 1-4, Algèbre 1-3, Langage C, Électrostatique, Mécanique du Point لجميع الفصول بصيغة PDF.</p>
+      </section>
+    `
+  },
+  {
+    path: 'examens/etudes-anglaises',
+    title: 'English Studies Semester Exams FLSH Morocco PDF with Keys | ExamMaroc',
+    description: 'Download Moroccan University English Studies exams (S1, S2, S3, S4, S5, S6) with answer keys in PDF format. FLSH Ibn Zohr, Mohammed V, Hassan II, Cadi Ayyad.',
+    h1: 'English Studies Semester Exams FLSH Morocco PDF with Keys',
+    priority: '0.98',
+    changefreq: 'daily',
+    body: `
+      <section style="margin: 2rem 0;">
+        <p style="font-size: 1.05rem; color: #475569; line-height: 1.7; margin-bottom: 1.5rem;">Full collection of FLSH English department examination papers: Reading & Writing, Grammar, Linguistics, and Literature with keys for S1, S2, S3, S4, S5, S6.</p>
+      </section>
+    `
+  },
+  {
+    path: 'guide-convocation-examens',
+    title: 'دليل استدعاء الامتحانات وجداول المراقبة بالجامعات المغربية 2024-2026 | ExamMaroc',
+    description: 'الدليل الإرشادي الشامل للطلبة المغاربة: كيفية استخراج استدعاء الامتحانات الجامعية (Convocation)، الوثائق المطلوبة، ضوابط النزاهة داخل المدرجات، ونظام استيفاء الفصول والمجزوءات.',
+    h1: 'دليل استدعاء الامتحانات الجامعية وجداول المراقبة المستمرة',
+    priority: '0.95',
+    changefreq: 'weekly',
+    body: `
+      <section style="margin: 2rem 0;">
+        <p style="font-size: 1.05rem; color: #475569; line-height: 1.7; margin-bottom: 1.5rem;">شرح عملي مفصل للطلبة المغاربة حول طرق استخراج استدعاءات الامتحانات من الفضاء الرقمي للطالب (ENT/Apogée)، الوثائق الرسمية المطلوبة، والضوابط التنظيمية للدورة العادية والاستدراكية.</p>
+      </section>
+    `
   }
 ];
 

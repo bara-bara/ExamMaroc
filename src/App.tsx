@@ -20,6 +20,10 @@ import TermsPage from './pages/TermsPage';
 import DmcaPage from './pages/DmcaPage';
 import NotFoundPage from './pages/NotFoundPage';
 
+import MasterConcoursPage from './pages/MasterConcoursPage';
+import DisciplineLandingPage from './pages/DisciplineLandingPage';
+import ExamGuidePage from './pages/ExamGuidePage';
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -42,6 +46,13 @@ export default function App() {
           <Route path="/universites/:uniSlug/:progSlug" element={<ProgramDetailPage />} />
           
           <Route path="/examens" element={<ExamsPage />} />
+          <Route path="/examens/droit-arabe" element={<DisciplineLandingPage />} />
+          <Route path="/examens/economie-gestion" element={<DisciplineLandingPage />} />
+          <Route path="/examens/sciences-technologies" element={<DisciplineLandingPage />} />
+          <Route path="/examens/etudes-anglaises" element={<DisciplineLandingPage />} />
+          <Route path="/examens-master-maroc" element={<MasterConcoursPage />} />
+          <Route path="/guide-convocation-examens" element={<ExamGuidePage />} />
+
           <Route path="/examens-ibn-zohr" element={<UniversityDetailPage defaultUniSlug="ibn-zohr" />} />
           <Route path="/guide-examens-ibn-zohr" element={<UniversityDetailPage defaultUniSlug="ibn-zohr" />} />
           <Route path="/examens-corriges" element={<CorrectedExamsPage />} />
