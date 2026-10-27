@@ -12,6 +12,7 @@ import {
   Subject,
   Exam
 } from '../src/data/initialData';
+import { UNIVERSITY_GUIDES } from '../src/data/universityGuides';
 
 const BASE_URL = 'https://www.exammaroc.online';
 const distDir = path.resolve('dist');
@@ -504,12 +505,13 @@ for (const uni of INITIAL_UNIVERSITIES) {
   const url = `${BASE_URL}/universites/${uni.slug}`;
   const faculties = INITIAL_FACULTIES.filter(f => f.university_id === uni.id);
   const uniExams = INITIAL_EXAMS.filter(e => e.university_id === uni.id);
+  const guide = UNIVERSITY_GUIDES[uni.slug];
 
-  const title = `امتحانات ${uni.name_ar} 2026 مع التصحيح PDF | ExamMaroc`;
-  const description = `نماذج امتحانات كليات ${uni.name_ar} (${uni.name_fr} - ${uni.city_ar}) لجميع الفصول S1, S2, S3, S4, S5, S6 بصيغة PDF مع التصحيح وسلم التنقيط وتواريخ الامتحانات 2026.`;
-  const h1 = `امتحانات ${uni.name_ar} 2026 (${uni.name_fr}) - النماذج الرسمية والتصحيح`;
+  const title = `امتحانات ${uni.name_ar} مع التصحيح PDF [جدول الامتحانات المتاحة] | ExamMaroc`;
+  const description = `جدول كامل ومفصل لجميع امتحانات كليات ${uni.name_ar} (${uni.name_fr} - ${uni.city_ar}) مقسمة حسب الكلية والشعبة من الفصل S1 إلى S6 بصيغة PDF مع عناصر الإجابة ودليل سحب الاستدعاء.`;
+  const h1 = `امتحانات ${uni.name_ar} (${uni.name_fr}) - جدول الامتحانات والدليل الشامل`;
 
-  const faqs = [
+  const faqs = guide ? guide.faqs.map(f => ({ q: f.question, a: f.answer })) : [
     {
       q: `كيف يمكنني سحب استدعاء امتحانات ${uni.name_ar} 2026؟`,
       a: `يتم سحب استدعاء الامتحانات عبر المنصة الرقمية للشؤون الطلابية للكلية المعنية التابعة لـ ${uni.name_ar} بإدخال الرقم الوطني للطالب (مسار/CNE) ورقم التسجيل الأبوجي (Apogée) وطباعته في ورقة A4 واضحة.`
@@ -520,53 +522,117 @@ for (const uni of INITIAL_UNIVERSITIES) {
     },
     {
       q: `أين أجد نماذج امتحانات كليات ${uni.name_ar} مع التصحيح؟`,
-      a: `يوفر موقع ExamMaroc مكتبة كاملة لجميع امتحانات كليات ${uni.name_ar} (${faculties.map(f => f.name_ar).slice(0, 3).join('، ')}) بصيغة PDF مجاناً مع عناصر الإجابة المعتمدة.`
+      a: `يوفر موقع ExamMaroc مكتبة كاملة لجميع امتحانات كليات ${uni.name_ar} بصيغة PDF مجاناً مع عناصر الإجابة المعتمدة.`
     }
   ];
 
   const bodyHtml = `
-    <div style="background: #fffbeb; border: 1px solid #fef3c7; border-right: 4px solid #f59e0b; padding: 1.25rem; border-radius: 0.5rem; margin-bottom: 2rem;">
-      <h2 style="font-weight: 700; color: #92400e; font-size: 1.1rem; margin-bottom: 0.5rem;">📅 مواعيد وتواريخ الامتحانات الرسمية 2026 (${escapeHtml(uni.name_ar)})</h2>
-      <ul style="list-style: disc; margin-right: 1.5rem; color: #78350f; font-size: 0.95rem; line-height: 1.8;">
-        <li>توقف الدراسة للدورة الربيعية: <strong>السبت 16 ماي 2026</strong></li>
-        <li>انطلاق امتحانات الدورة الربيعية العادية: <strong>الإثنين 01 يونيو 2026</strong></li>
-        <li>امتحانات الدورة الخريفية: <strong>يناير 2026</strong></li>
-      </ul>
+    <!-- University Regional & Guide Card -->
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem;">
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+        <span style="background: #eff6ff; color: #1d4ed8; font-weight: bold; font-size: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 9999px; border: 1px solid #bfdbfe;">مؤسسة جامعية معتمدة 🇲🇦</span>
+        ${guide ? `<span style="background: #eef2ff; color: #4338ca; font-weight: bold; font-size: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 9999px;">تأسست سنة ${guide.established} (${guide.acronym})</span>` : ''}
+        <span style="background: #ecfdf5; color: #047857; font-weight: bold; font-size: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 9999px;">${uniExams.length} نموذج امتحان متوفر</span>
+      </div>
+      <p style="font-size: 1rem; color: #334155; line-height: 1.7; margin-bottom: 1rem;">
+        ${escapeHtml(guide?.hero_tag || uni.description)}
+      </p>
+      ${guide ? `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; background: white; padding: 1rem; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
+          <div>
+            <strong style="font-size: 0.85rem; color: #1e293b;">🏛️ الموقع والجهة:</strong>
+            <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.25rem;">${escapeHtml(uni.city_ar)} — ${escapeHtml(guide.region)}</p>
+          </div>
+          <div>
+            <strong style="font-size: 0.85rem; color: #1e293b;">💻 بوابة الطالب الرسمية:</strong>
+            <p style="font-size: 0.85rem; color: #2563eb; margin-top: 0.25rem;">
+              <a href="${guide.portal_url}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: none; font-weight: bold;">${escapeHtml(guide.portal_name)} &nearr;</a>
+            </p>
+          </div>
+          <div>
+            <strong style="font-size: 0.85rem; color: #1e293b;">📅 برمجة الامتحانات 2026:</strong>
+            <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.25rem;">${escapeHtml(guide.exam_calendar_note)}</p>
+          </div>
+        </div>
+      ` : ''}
     </div>
 
+    <!-- Faculties Directory -->
     <section style="margin-top: 2rem;">
-      <h2 style="font-size: 1.4rem; font-weight: bold; color: #0f172a; margin-bottom: 1rem;">الكليات والمؤسسات التابعة لـ ${escapeHtml(uni.name_ar)} (${faculties.length} مؤسسة)</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+      <h2 style="font-size: 1.35rem; font-weight: bold; color: #0f172a; margin-bottom: 1rem;">الكليات والمؤسسات التابعة لـ ${escapeHtml(uni.name_ar)} (${faculties.length} مؤسسة)</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
         ${faculties.map(f => `
           <div style="padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; background: #ffffff;">
-            <h3 style="font-weight: 700; font-size: 1.1rem; color: #1e293b; margin-bottom: 0.5rem;">${escapeHtml(f.name_ar)}</h3>
-            <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 0.5rem;">${escapeHtml(f.name_fr)} — ${escapeHtml(f.city || uni.city_ar)}</p>
+            <h3 style="font-weight: 700; font-size: 1.05rem; color: #1e293b; margin-bottom: 0.25rem;">${escapeHtml(f.name_ar)}</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">${escapeHtml(f.name_fr)} — ${escapeHtml(f.city || uni.city_ar)}</p>
             <p style="font-size: 0.85rem; color: #475569;">${escapeHtml(f.description || '')}</p>
           </div>
         `).join('')}
       </div>
     </section>
 
+    <!-- PRIMARY: TABLE OF AVAILABLE EXAMS DIVIDED BY FACULTY & PROGRAM -->
     <section style="margin-top: 2.5rem;">
-      <h2 style="font-size: 1.4rem; font-weight: bold; color: #0f172a; margin-bottom: 1rem;">نماذج الامتحانات المتوفرة لـ ${escapeHtml(uni.name_ar)} (${uniExams.length} امتحان)</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-        ${uniExams.slice(0, 18).map(e => `
-          <div style="padding: 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background: white;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <span style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; background: #eff6ff; color: #2563eb; border-radius: 0.25rem;">${escapeHtml(e.semester)}</span>
-              <span style="font-size: 0.75rem; color: #64748b;">${e.year} (${e.session === 'normale' ? 'دورة عادية' : 'استدراك'})</span>
-            </div>
-            <h3 style="font-size: 1rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">
-              <a href="/examens/${e.slug}" style="color: #1e293b; text-decoration: none;">${escapeHtml(e.title)}</a>
-            </h3>
-            <a href="/examens/${e.slug}" style="display: inline-block; font-size: 0.85rem; color: #2563eb; font-weight: 600; text-decoration: none;">تحميل الامتحان والتصحيح PDF &larr;</a>
-          </div>
-        `).join('')}
+      <h2 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem;">جدول امتحانات ${escapeHtml(uni.name_ar)} مقسمة حسب الكلية والشعبة (${uniExams.length} امتحان)</h2>
+      <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 1.25rem;">تصفح وحمل جميع النماذج الرسمية لجميع الفصول S1 إلى S6 بصيغة PDF مجاناً مع عناصر الإجابة والحلول المعتمدة:</p>
+      
+      <div style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 0.75rem; background: white;">
+        <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 0.875rem;">
+          <thead>
+            <tr style="background: #f1f5f9; border-bottom: 2px solid #cbd5e1; color: #1e293b; font-weight: 700;">
+              <th style="padding: 0.75rem 1rem; width: 40px; text-align: center;">#</th>
+              <th style="padding: 0.75rem 1rem;">اسم الامتحان والمادة</th>
+              <th style="padding: 0.75rem 1rem;">الكلية</th>
+              <th style="padding: 0.75rem 1rem;">الشعبة</th>
+              <th style="padding: 0.75rem 0.5rem; text-align: center;">الفصل</th>
+              <th style="padding: 0.75rem 1rem; text-align: center;">الدورة والسنة</th>
+              <th style="padding: 0.75rem 1rem; text-align: center;">التصحيح</th>
+              <th style="padding: 0.75rem 1rem; text-align: center;">رابط التحميل</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${uniExams.map((e, idx) => {
+              const fac = facMap.get(e.faculty_id || '');
+              const prog = progMap.get(e.program_id || '');
+              const hasCorr = e.has_correction || e.correction_type !== 'sans_corrige';
+              const isOfficial = e.correction_type === 'officiel';
+
+              return `
+                <tr style="border-bottom: 1px solid #f1f5f9; ${idx % 2 === 1 ? 'background: #f8fafc;' : ''}">
+                  <td style="padding: 0.75rem 1rem; text-align: center; color: #94a3b8; font-family: monospace;">${idx + 1}</td>
+                  <td style="padding: 0.75rem 1rem; font-weight: 700; color: #0f172a;">
+                    <a href="/examens/${e.slug}" style="color: #2563eb; text-decoration: none;">${escapeHtml(e.title)}</a>
+                  </td>
+                  <td style="padding: 0.75rem 1rem; color: #475569;">${escapeHtml(fac?.name_ar || '—')}</td>
+                  <td style="padding: 0.75rem 1rem; color: #475569;">${escapeHtml(prog?.name_ar || '—')}</td>
+                  <td style="padding: 0.75rem 0.5rem; text-align: center;">
+                    <span style="background: #eff6ff; color: #1d4ed8; font-weight: bold; padding: 0.15rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">${escapeHtml(e.semester)}</span>
+                  </td>
+                  <td style="padding: 0.75rem 1rem; text-align: center; color: #475569; font-size: 0.8rem;">
+                    <strong>${e.year}</strong> (${e.session === 'normale' ? 'عادية' : 'استدراكية'})
+                  </td>
+                  <td style="padding: 0.75rem 1rem; text-align: center;">
+                    ${isOfficial 
+                      ? '<span style="background: #dcfce7; color: #15803d; font-weight: bold; font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 9999px;">تصحيح رسمي</span>'
+                      : hasCorr 
+                      ? '<span style="background: #fef3c7; color: #b45309; font-weight: bold; font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 9999px;">حل مقترح</span>'
+                      : '<span style="color: #94a3b8; font-size: 0.75rem;">موضوع</span>'
+                    }
+                  </td>
+                  <td style="padding: 0.75rem 1rem; text-align: center;">
+                    <a href="/examens/${e.slug}" style="background: #059669; color: white; padding: 0.35rem 0.75rem; border-radius: 0.375rem; font-weight: bold; text-decoration: none; font-size: 0.75rem; display: inline-block;">تحميل PDF &larr;</a>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <section style="margin-top: 2.5rem; background: #f8fafc; padding: 1.5rem; border-radius: 0.75rem;">
-      <h2 style="font-size: 1.4rem; font-weight: bold; color: #0f172a; margin-bottom: 1rem;">الأسئلة الشائعة حول امتحانات ${escapeHtml(uni.name_ar)}</h2>
+    <!-- FAQs Section -->
+    <section style="margin-top: 2.5rem; background: #f8fafc; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+      <h2 style="font-size: 1.35rem; font-weight: bold; color: #0f172a; margin-bottom: 1rem;">الأسئلة الشائعة حول امتحانات ${escapeHtml(uni.name_ar)}</h2>
       <div style="display: flex; flex-direction: column; gap: 1rem;">
         ${faqs.map(f => `
           <div style="background: white; padding: 1rem 1.25rem; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
@@ -586,6 +652,22 @@ for (const uni of INITIAL_UNIVERSITIES) {
       'alternateName': uni.name_fr,
       'url': url,
       'description': description
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      'name': title,
+      'description': description,
+      'url': url,
+      'mainEntity': {
+        '@type': 'ItemList',
+        'itemListElement': uniExams.slice(0, 30).map((e, index) => ({
+          '@type': 'ListItem',
+          'position': index + 1,
+          'name': e.title,
+          'url': `${BASE_URL}/examens/${e.slug}`
+        }))
+      }
     },
     {
       '@context': 'https://schema.org',
