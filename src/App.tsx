@@ -23,6 +23,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import MasterConcoursPage from './pages/MasterConcoursPage';
 import DisciplineLandingPage from './pages/DisciplineLandingPage';
 import ExamGuidePage from './pages/ExamGuidePage';
+import { Analytics } from '@vercel/analytics/react';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -38,6 +39,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <Analytics />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
@@ -50,6 +52,7 @@ export default function App() {
           <Route path="/examens/economie-gestion" element={<DisciplineLandingPage />} />
           <Route path="/examens/sciences-technologies" element={<DisciplineLandingPage />} />
           <Route path="/examens/etudes-anglaises" element={<DisciplineLandingPage />} />
+          <Route path="/examens/etudes-islamiques" element={<DisciplineLandingPage />} />
           <Route path="/examens-master-maroc" element={<MasterConcoursPage />} />
           <Route path="/guide-convocation-examens" element={<ExamGuidePage />} />
 

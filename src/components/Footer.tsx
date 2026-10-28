@@ -10,6 +10,7 @@ const QUICK_LINKS = [
   { to: '/examens/economie-gestion', label: 'امتحانات الاقتصاد والتدبير' },
   { to: '/examens/sciences-technologies', label: 'امتحانات العلوم والتقنيات' },
   { to: '/examens/etudes-anglaises', label: 'English Studies Exams' },
+  { to: '/examens/etudes-islamiques', label: 'امتحانات الدراسات الإسلامية S1' },
   { to: '/guide-convocation-examens', label: 'دليل استدعاء الامتحانات' },
   { to: '/universites', label: 'الجامعات الـ 12' },
   { to: '/etablissements', label: 'الكليات والمؤسسات' },

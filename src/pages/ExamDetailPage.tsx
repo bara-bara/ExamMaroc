@@ -251,10 +251,6 @@ export default function ExamDetailPage() {
   const pageUrl = canonicalUrl;
   const shareTitle = `${ctrTitle} - منصة ExamMaroc`;
 
-  // Deterministic Google Rich Snippets Rating
-  const ratingCount = Math.max(32, ((exam.title.length * 7) % 60) + 26);
-  const ratingValue = (4.8 + ((exam.year % 3) * 0.1)).toFixed(1);
-
   // Dynamic FAQs answering Search Intent for Google Rich Snippets
   const examFaqs = [
     {
@@ -283,8 +279,8 @@ export default function ExamDetailPage() {
   const jsonLd = [
     {
       '@context': 'https://schema.org',
-      '@type': 'EducationalResource',
-      '@id': `${canonicalUrl}#educational-resource`,
+      '@type': 'LearningResource',
+      '@id': `${canonicalUrl}#learning-resource`,
       name: exam.title,
       description: ctrDescription,
       educationalLevel: 'Higher Education / Université Marocaine',
@@ -310,13 +306,6 @@ export default function ExamDetailPage() {
             courseCode: sub.slug,
           }
         : undefined,
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: ratingValue,
-        bestRating: '5',
-        worstRating: '1',
-        ratingCount: ratingCount,
-      },
     },
   ];
 

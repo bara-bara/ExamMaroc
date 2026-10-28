@@ -12,11 +12,11 @@ import {
 } from '../data/initialData';
 
 const STORAGE_KEYS = {
-  UNIVERSITIES: 'exammaroc_universities_v5',
-  FACULTIES: 'exammaroc_faculties_v5',
-  PROGRAMS: 'exammaroc_programs_v5',
-  SUBJECTS: 'exammaroc_subjects_v5',
-  EXAMS: 'exammaroc_exams_v5',
+  UNIVERSITIES: 'exammaroc_universities_v6',
+  FACULTIES: 'exammaroc_faculties_v6',
+  PROGRAMS: 'exammaroc_programs_v6',
+  SUBJECTS: 'exammaroc_subjects_v6',
+  EXAMS: 'exammaroc_exams_v6',
   REPORTS: 'exammaroc_reports_v3',
 };
 

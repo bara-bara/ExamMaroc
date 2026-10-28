@@ -251,6 +251,19 @@ const hubs = [
               <li><a href="/examens?semester=S3&q=Bases+de+Données" style="color: #2563eb; text-decoration: none;">Bases de Données (SQL) S3</a></li>
             </ul>
           </div>
+
+          <div style="background: white; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+            <h3 style="font-weight: 800; font-size: 1.05rem; color: #b45309; margin-bottom: 0.75rem;">📖 الدراسات الإسلامية والآداب (FLSH)</h3>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.875rem; line-height: 2;">
+              <li><a href="/examens/etudes-islamiques" style="color: #2563eb; font-weight: bold; text-decoration: none;">نماذج امتحانات شعبة الدراسات الإسلامية S1 PDF</a></li>
+              <li><a href="/examens?semester=S1&q=الشريعة" style="color: #2563eb; text-decoration: none;">مدخل لدراسة الشريعة الإسلامية S1</a></li>
+              <li><a href="/examens?semester=S1&q=قرآن" style="color: #2563eb; text-decoration: none;">علوم القرآن ومناهج التفسير S1</a></li>
+              <li><a href="/examens?semester=S1&q=حديث" style="color: #2563eb; text-decoration: none;">علوم الحديث النبوي ومصطلحه S1</a></li>
+              <li><a href="/examens?semester=S1&q=عقيدة" style="color: #2563eb; text-decoration: none;">العقيدة الإسلامية والتوحيد S1</a></li>
+              <li><a href="/examens?semester=S1&q=سيرة" style="color: #2563eb; text-decoration: none;">السيرة النبوية وتاريخ الخلافة S1</a></li>
+              <li><a href="/examens/etudes-anglaises" style="color: #2563eb; font-weight: bold; text-decoration: none;">English Studies FLSH S1-S6</a></li>
+            </ul>
+          </div>
         </div>
       </section>
     `
@@ -456,6 +469,36 @@ const hubs = [
     body: `
       <section style="margin: 2rem 0;">
         <p style="font-size: 1.05rem; color: #475569; line-height: 1.7; margin-bottom: 1.5rem;">Full collection of FLSH English department examination papers: Reading & Writing, Grammar, Linguistics, and Literature with keys for S1, S2, S3, S4, S5, S6.</p>
+      </section>
+    `
+  },
+  {
+    path: 'examens/etudes-islamiques',
+    title: 'نماذج امتحانات شعبة الدراسات الإسلامية s1 pdf مع التصحيح | ExamMaroc',
+    description: 'أكبر بنك لنماذج امتحانات شعبة الدراسات الإسلامية للفصل الأول S1 وجميع الفصول بصيغة PDF مع عناصر الإجابة والحلول المعتمدة مجاناً. كليات الآداب والعلوم الإنسانية وكلية أصول الدين بالمغرب.',
+    h1: 'نماذج امتحانات شعبة الدراسات الإسلامية S1 مع عناصر الإجابة الرسمية',
+    priority: '0.99',
+    changefreq: 'daily',
+    body: `
+      <section style="margin: 2rem 0;">
+        <p style="font-size: 1.05rem; color: #475569; line-height: 1.7; margin-bottom: 1.5rem;">نماذج امتحانات مواد الفصل الأول S1 شعبة الدراسات الإسلامية: علوم القرآن، علوم الحديث ومصطلحه، العقيدة الإسلامية، السيرة النبوية، ومدخل لدراسة الشريعة الإسلامية لكليات جامعة ابن زهر، القاضي عياض، محمد الخامس، وكلية أصول الدين بتطوان بصيغة PDF مجاناً.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-weight: bold; color: #1e293b;">مدخل لدراسة الشريعة الإسلامية S1</h3>
+            <p style="font-size: 0.875rem; color: #64748b;">نماذج امتحانات ومواضيع مصححة حول خصائص التشريع ومصادر الأحكام.</p>
+            <a href="/examens?semester=S1&q=شريعة" style="color: #2563eb; font-weight: bold; text-decoration: none; font-size: 0.875rem;">تصفح النماذج &larr;</a>
+          </div>
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-weight: bold; color: #1e293b;">علوم القرآن والحديث S1</h3>
+            <p style="font-size: 0.875rem; color: #64748b;">امتحانات مناهج المفسرين وقواعد مصطلح الحديث وتخريج الأسانيد.</p>
+            <a href="/examens?semester=S1&q=قرآن" style="color: #2563eb; font-weight: bold; text-decoration: none; font-size: 0.875rem;">تصفح النماذج &larr;</a>
+          </div>
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem;">
+            <h3 style="font-weight: bold; color: #1e293b;">العقيدة والسيرة النبوية S1</h3>
+            <p style="font-size: 0.875rem; color: #64748b;">امتحانات العقيدة وقضايا الفكر العقدي ومحطات السيرة وفقهها.</p>
+            <a href="/examens?semester=S1&q=عقيدة" style="color: #2563eb; font-weight: bold; text-decoration: none; font-size: 0.875rem;">تصفح النماذج &larr;</a>
+          </div>
+        </div>
       </section>
     `
   },
